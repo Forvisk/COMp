@@ -15,9 +15,9 @@
 
 /* Nao terminais o bit mais significativo ligado indica que se trata de um nao
 terminal */
-#define EXPR   0x8001
-#define EXPRL  0x8002
-#define TERMO  0x8003
+#define EXPR   0x8001	// E
+#define EXPRL  0x8002	// E'
+#define TERMO  0x8003	// C
 #define TERMOL 0x8004
 #define FATOR  0x8005
 
@@ -35,12 +35,12 @@ terminal */
 */
 #define ERRO 	0x0000
 #define AND     0x0100	// e
-#define OR 		0X0200	// ou
+#define OR 	0X0200	// ou
 #define SESOSE	0x0300	// se e somente se
 #define SEENT	0x0400	// se então
 #define VALLOG  0x0500 	// V ou F
-#define NOT   0x0600	// negação
-#define FIM    0x0800
+#define NOT	0x0600	// negação
+#define FIM	0x0800
 
 //Mascaras
 #define NTER   0x8000
@@ -71,11 +71,11 @@ const int PROD10[]= {3, APAR, EXPR, FPAR};    // F  -> (E)
 const int PROD1[] = {2, TERMO, EXPRL};			// (1) E  -> CE'
 const int PROD2[] = {3, AND, TERMO, EXPRL};		// (2) E' -> &CE'
 const int PROD3[] = {3, OR, TERMO, EXPRL};		// (3) E' -> |CE'
-const int PROD4[] = {3, SEENT, TERMO, EXPRL};	// (4) E' -> ->CE'
-const int PROD5[] = {3, SESOSE, TERMO, EXPRL};	// (5) E' -> <->CE'
-const int PROD6[] = {0};						// (6) E' -> vazio
+const int PROD4[] = {3, SEENT, TERMO, EXPRL};		// (4) E' -> ->CE'
+const int PROD5[] = {3, SESOSE, TERMO, EXPRL};		// (5) E' -> <->CE'
+const int PROD6[] = {0};				// (6) E' -> vazio
 const int PROD7[] = {2, NOT, TERMO};			// (7) C  -> ~C
-const int PROD8[] = {1, VALLOG};				// (8) C  -> vl
+const int PROD8[] = {1, VALLOG};			// (8) C  -> vl
 
 // vetor utilizado para mapear um numero e uma producao.
 //const int *PROD[] = {NULL, PROD1, PROD2, PROD3, PROD4, PROD5, PROD6, PROD7, PROD8, PROD9, PROD10};
@@ -84,16 +84,16 @@ const int *PROD[] = {NULL, PROD1, PROD2, PROD3, PROD4, PROD5, PROD6, PROD7, PROD
 // Tabela sintatica LL(1). Os numeros correspondem as producoes acima.
 /*
 const int STAB[5][8] = {	{ 0, 0, 0, 0, 1, 1, 0, 0},
-							{ 2, 3, 0, 0, 0, 0, 4, 4},
-							{ 0, 0, 0, 0, 5, 5, 0, 0},
-							{ 8, 8, 6, 7, 0, 0, 8, 8},
-							{ 0, 0, 0, 0, 9,10, 0, 0}
-						};
+				{ 2, 3, 0, 0, 0, 0, 4, 4},
+				{ 0, 0, 0, 0, 5, 5, 0, 0},
+				{ 8, 8, 6, 7, 0, 0, 8, 8},
+				{ 0, 0, 0, 0, 9,10, 0, 0}
+			};
 */
 const int STAB[3][7] = 	{	{ 0, 0, 0, 0, 1, 1, 0}
-							{ 2, 3, 4, 5, 0, 0, 6}
-							{ 0, 0, 0, 0, 7, 8, 0}
-						};
+				{ 2, 3, 4, 5, 0, 0, 6}
+				{ 0, 0, 0, 0, 7, 8, 0}
+			};
 
 /*****************************************************************
 * int lex (char *str, int *pos)                                  *
@@ -115,16 +115,11 @@ int lex (char *str, int *pos){
 				if ((c == 'V') || (c == 'F')){
 					(*pos)++;
 					estado = 1;
-				}
-				else
+				}else{
 					switch (c){
 						case ' ':
 							(*pos)++;
 							break;
-						/*case '.':
-								(*pos)++;
-								estado = 2;
-								break;*/
 						case '&':
 								(*pos)++;
 								return AND;
@@ -133,16 +128,11 @@ int lex (char *str, int *pos){
 								return OR;
 						case '-':
 								(*pos)++;
-								c = str[*pos];
-								if(c == '>'){
-									(*pos)++;
-									return SEENT;
-								}else{
-									(*pos)++;
-									return ERRO;
-								}
+								estado = 2;
 						case '<':
 								(*pos)++;
+								estado = 3;
+								
 								c = str[*pos];
 								if(c == '-'){
 									(*pos)++;
@@ -163,31 +153,48 @@ int lex (char *str, int *pos){
 						default:
 								(*pos)++;
 								return ERRO;
-						}
-					break;
-			case 1:
-				if((c == 'V') || (c == 'F')){
-
+					}
 				}
 				break;
-			case 2:
-				if (isdigit(c)){
-					(*pos)++;
-					estado = 3;
+			case 1:
+				if((c == 'V') || (c == 'F')){
+					do{
+						c = str[*pos];
+						(*pos)++;
+					}while(c != ' ');
+					if((c == 'V') || (c == 'F')){
+						return ERRO;
+					}else{
+						return VALLOG;
+					}
 				}
+				break;
+			case 2: // caso encontrou o traco do Se então ( -> )
+				if (c == '>'){
+					(*pos)++;
+					return SEENT;
+				}else{
+					(*pos)++;
+					return ERRO;
+				}
+				break;
+			case 3: // caso encontrou o menor que do Se somente se ( <-> )
+				if (c == '-')
+					(*pos)++;
+					estado = 4;
 				else{
 					(*pos)++;
 					return ERRO;
 				}
 				break;
-			case 3:
-				if (isdigit(c))
+			case 4: // caso encontrou o traço do  Se somente se ( <-> )
+				if (c == '>'){
 					(*pos)++;
-				else{
-					//Adicionar a constante na tabela de simbolos.
-					return CONST;
+					return SESOSE;
+				}else{
+					(*pos)++;
+					return ERRO;
 				}
-				break;
 			default:
 					printf("Lex:Estado indefinido");
 					exit(1);
