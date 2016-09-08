@@ -59,10 +59,10 @@ const int *PROD[] = {NULL, PROD1, PROD2, PROD3, PROD4, PROD5, PROD6, PROD7, PROD
 
 // Tabela sintatica LL(1). Os numeros correspondem as producoes acima.
 const int STAB[5][8] = {{0, 0, 0, 0, 1, 1, 0, 0},
-								{ 2, 3, 0, 0, 0, 0, 4, 4},
-								{ 0, 0, 0, 0, 5, 5, 0, 0},
-								{ 8, 8, 6, 7, 0, 0, 8, 8},
-								{ 0, 0, 0, 0, 9,10, 0, 0}};
+					{ 2, 3, 0, 0, 0, 0, 4, 4},
+					{ 0, 0, 0, 0, 5, 5, 0, 0},
+					{ 8, 8, 6, 7, 0, 0, 8, 8},
+					{ 0, 0, 0, 0, 9,10, 0, 0}};
 
 /*****************************************************************
 * int lex (char *str, int *pos)                                  *
