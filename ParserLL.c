@@ -261,8 +261,10 @@ int remover (struct Pilha *p)
 
 int consulta (struct Pilha *p)
 {
-	if (p->topo >= 0)
+	if (p->topo >= 0){
+		printf("topo: 0x%04x\n", p->dado[p->topo]);
 		return p->dado[p->topo];
+	}
 	printf("Pilha vazia");
 	exit(1);
 }

@@ -62,12 +62,12 @@ const int PROD11[]= {2, NOT, FATOR};			// C  -> ~C 	(11)
 const int *PROD[] = {NULL, PROD1, PROD2, PROD3, PROD4, PROD5, PROD6, PROD7, PROD8, PROD9, PROD10, PROD11};
 
 // Tabela sintatica LL(1). Os numeros correspondem as producoes acima.
-						//    &  | <-> ->  c  (  )   ~  #
-const int STAB[5][9] = {	{ 0, 0, 0, 0, 1,  1, 1,  0, 0}, // E
-							{ 0, 0, 2, 3, 0,  0, 0,  4, 4}, // E'
-							{ 0, 0, 0, 0, 5,  5, 5,  0, 0}, // T
-							{ 6, 7, 0, 0, 0,  0, 0,  8, 8}, // T'
-							{ 0, 0, 0, 0, 9, 11, 0, 11, 0}  // C
+						//    &  | <-> ->  c  ~   (   )  #
+const int STAB[5][9] = {	{ 0, 0, 0, 0, 1,  1,  1,  0, 0}, // E
+							{ 0, 0, 2, 3, 0,  0,  0,  4, 4}, // E'
+							{ 0, 0, 0, 0, 5,  5,  5,  0, 0}, // T
+							{ 6, 7, 8, 8, 0,  0,  0,  8, 8}, // T'
+							{ 0, 0, 0, 0, 9, 11, 10, 10, 0}  // C
 						};
 
 /*****************************************************************
@@ -258,6 +258,7 @@ int remover (struct Pilha *p) {
 
 int consulta (struct Pilha *p) {
 	if (p->topo >= 0) {
+		printf("topo: 0x%04x\n", p->dado[p->topo]);
 		return p->dado[p->topo];
 	}
 	printf("Pilha vazia");
@@ -320,8 +321,7 @@ void parser(char *expr) {
 	}while (x != FIM);
 }
 
-int main()
-{
+int main() {
 	char expr[150];
 
 	printf("\nDigite uma expressao: ");
