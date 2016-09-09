@@ -4,6 +4,8 @@
 * Cristiano Damiani Vasconcellos                                 *
 ******************************************************************/
 
+// gcc -Wall -o parserll ParserLL.c
+
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -58,11 +60,11 @@ const int PROD10[]= {3, APAR, EXPR, FPAR};    // F  -> (E)
 const int *PROD[] = {NULL, PROD1, PROD2, PROD3, PROD4, PROD5, PROD6, PROD7, PROD8, PROD9, PROD10};
 
 // Tabela sintatica LL(1). Os numeros correspondem as producoes acima.
-const int STAB[5][8] = {{0, 0, 0, 0, 1, 1, 0, 0},
-					{ 2, 3, 0, 0, 0, 0, 4, 4},
-					{ 0, 0, 0, 0, 5, 5, 0, 0},
-					{ 8, 8, 6, 7, 0, 0, 8, 8},
-					{ 0, 0, 0, 0, 9,10, 0, 0}};
+const int STAB[5][8] = {{ 0, 0, 0, 0, 1, 1, 0, 0},
+						{ 2, 3, 0, 0, 0, 0, 4, 4},
+						{ 0, 0, 0, 0, 5, 5, 0, 0},
+						{ 8, 8, 6, 7, 0, 0, 8, 8},
+						{ 0, 0, 0, 0, 9,10, 0, 0}};
 
 /*****************************************************************
 * int lex (char *str, int *pos)                                  *
@@ -86,6 +88,7 @@ int lex (char *str, int *pos)
 			case 0:
 				if (isdigit(c))
 				{
+					printf("Digito\n");
 					(*pos)++;
 					estado = 1;
 				}
@@ -98,26 +101,34 @@ int lex (char *str, int *pos)
 						case '.':
 								(*pos)++;
 								estado = 2;
+								printf(" .\n");
 								break;
 						case '+':
 								(*pos)++;
+								printf(" +\n");
 								return AD;
 						case '-':
 								(*pos)++;
+								printf(" -\n");
 								return SUB;
 						case '*':
 								(*pos)++;
+								printf(" *\n");
 								return MUL;
 						case '/':
 								(*pos)++;
+								printf(" /\n");
 								return DIV;
 						case '(':
 								(*pos)++;
+								printf(" )\n");
 								return APAR;
 						case ')':
 								(*pos)++;
+								printf(" (\n");
 								return FPAR;
 						case '\0':
+							printf("FIM\n");
 								return FIM;
 						default:
 								(*pos)++;
@@ -182,6 +193,7 @@ void erro (char *erro, char *expr, int pos)
 	for (i = 0; i < pos-1; i++)
 		putchar(' ');
 	putchar('^');
+	printf("\n");
 	exit(1);
 }
 
@@ -207,6 +219,7 @@ void insere (struct Pilha *p, int elemento)
 	{
 		p->topo++;
 		p->dado[p->topo] = elemento;
+		printf("Insere 0x%04x\n", elemento);
 	}
 	else
 	{
@@ -227,6 +240,7 @@ int remover (struct Pilha *p)
 
 	if (p->topo >= 0)
 	{
+		printf("Remove 0x%04x\n", p->dado[p->topo]);
 		aux = p->dado[p->topo];
 		p->topo--;
 		return aux;
@@ -270,25 +284,38 @@ void parser(char *expr)
 	inicializa(&pilha);
 	insere(&pilha, FIM);
 	insere(&pilha, EXPR);
-	if ((a = lex(expr, &pos)) == ERRO)
+	if ((a = lex(expr, &pos)) == ERRO){
+		printf("Erro 1\n");
 		erro("Erro lexico", expr, pos);
+	}
+	printf("topo 0x%04x\n", consulta(&pilha));
 	do
 	{
 		x = consulta(&pilha);
+		printf("0x%04x\t0x%04x\t0x%04x\n", x, x&NTER, !x&NTER);
 		if (!(x&NTER))
 		{
 			if (x == a)
 			{
 				remover (&pilha);
-				if ((a = lex(expr, &pos)) == ERRO)
+				if ((a = lex(expr, &pos)) == ERRO){
+					printf("Erro 2\n");
 					erro("Erro lexico", expr, pos);
+				}else{
+					printf("ok\n");
+				}
 			}
-			else
+			else{
+				printf("Erro 3 0x%04x != 0x%04x\n", x, a);
 				erro("Erro sintatico",expr, pos);
+			}
 		}
 		if (x&NTER)
 		{
 			nProd = STAB[(x&NNTER)-1][(a>>8) - 1];
+			printf("0x%04x 0x%04x\n", a, x);
+			printf("  %04i   %04i -> 0x%04x\n", x&NNTER, (a>>8)-1, nProd);
+			printf("0x%04x 0x%04x -> 0x%04x\n", x&NNTER, (a>>8)-1, nProd);
 			if (nProd)
 			{
 				remover (&pilha);
@@ -296,8 +323,10 @@ void parser(char *expr)
 				for (i = producao[0]; i > 0; i--)
 					insere (&pilha, producao[i]);
 			}
-			else
+			else{
+				printf("Erro 4\n");
 				erro ("Erro sintatico", expr, pos);
+			}
 		}
 	} while (x != FIM);
 }
@@ -309,5 +338,5 @@ void main()
 	printf("\nDigite uma expressao: ");
 	gets(expr);
 	parser(expr);
-	printf("Expressao sintaticamente correta");
+	printf("Expressao sintaticamente correta\n");
 }
