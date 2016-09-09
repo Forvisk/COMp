@@ -6,7 +6,7 @@
 * Baseado no código de Cristiano Damiani Vasconcellos			 *
 ******************************************************************/
 
-/* Compilação gcc -Wall -o exll1 exeLL1.c */
+/* Compilação gcc -Wall -o exell1 exeLL1.c */
 
 #include <stdio.h>
 #include <ctype.h>
@@ -17,9 +17,9 @@
 terminal */
 #define EXPR   0x8001	// E
 #define EXPRL  0x8002	// E'
-#define TERMO  0x8003	// C
-#define TERMOL 0x8004
-#define FATOR  0x8005
+#define TERMO  0x8003	// T
+#define TERMOL 0x8004	// T'
+#define FATOR  0x8005	// C
 
 /* Terminais */
 /*
@@ -35,12 +35,14 @@ terminal */
 */
 #define ERRO 	0x0000
 #define AND     0x0100	// e
-#define OR 	0X0200	// ou
+#define OR 		0X0200	// ou
 #define SESOSE	0x0300	// se e somente se
 #define SEENT	0x0400	// se então
 #define VALLOG  0x0500 	// V ou F
-#define NOT	0x0600	// negação
-#define FIM	0x0800
+#define NOT		0x0600	// negação
+#define LPAR	0x0700 	// (
+#define RPAR	0x0800 	// )
+#define FIM		0x0900
 
 //Mascaras
 #define NTER   0x8000
@@ -68,18 +70,22 @@ const int PROD8[] = {0};                      // T' -> vazio
 const int PROD9[] = {1, CONST};               // F  -> const
 const int PROD10[]= {3, APAR, EXPR, FPAR};    // F  -> (E)
 */
-const int PROD1[] = {2, TERMO, EXPRL};			// (1) E  -> CE'
-const int PROD2[] = {3, AND, TERMO, EXPRL};		// (2) E' -> &CE'
-const int PROD3[] = {3, OR, TERMO, EXPRL};		// (3) E' -> |CE'
-const int PROD4[] = {3, SEENT, TERMO, EXPRL};		// (4) E' -> ->CE'
-const int PROD5[] = {3, SESOSE, TERMO, EXPRL};		// (5) E' -> <->CE'
-const int PROD6[] = {0};				// (6) E' -> vazio
-const int PROD7[] = {2, NOT, TERMO};			// (7) C  -> ~C
-const int PROD8[] = {1, VALLOG};			// (8) C  -> vl
+
+const int PROD1[] = {2, TERMO, EXPRL};        // E  -> TE' 		(1)
+const int PROD2[] = {3, SEENT, TERMO, EXPRL};    // E' -> ->TE'	(2)
+const int PROD3[] = {3, SESOSE, TERMO, EXPRL};   // E' -> <->TE'	(3)
+const int PROD4[] = {0};                      // E' -> vazio	(4)
+const int PROD5[] = {2, FATOR, TERMOL};       // T  -> CT'		(5)
+const int PROD6[] = {3, AND, FATOR, TERMOL};  // T' -> &CT'		(6)
+const int PROD7[] = {3, OR, FATOR, TERMOL};  // T' -> |CT'		(7)
+const int PROD8[] = {0};                      // T' -> vazio	(8)
+const int PROD9[] = {2, NOT, FATOR};          // C  -> ~C 	(9)
+const int PROD10[]= {3, LPAR, EXPR, RPAR};	// C  -> (E)		(10)
+const int PROD11[]= {1, VALLOG};			// C  -> c (11)
 
 // vetor utilizado para mapear um numero e uma producao.
 //const int *PROD[] = {NULL, PROD1, PROD2, PROD3, PROD4, PROD5, PROD6, PROD7, PROD8, PROD9, PROD10};
-const int *PROD[] = {NULL, PROD1, PROD2, PROD3, PROD4, PROD5, PROD6, PROD7, PROD8};
+const int *PROD[] = {NULL, PROD1, PROD2, PROD3, PROD4, PROD5, PROD6, PROD7, PROD8, PROD9, PROD10, PROD11};
 
 // Tabela sintatica LL(1). Os numeros correspondem as producoes acima.
 /*
@@ -89,11 +95,13 @@ const int STAB[5][8] = {	{ 0, 0, 0, 0, 1, 1, 0, 0},
 				{ 8, 8, 6, 7, 0, 0, 8, 8},
 				{ 0, 0, 0, 0, 9,10, 0, 0}
 			};
-*/
-const int STAB[3][7] = 	{	{ 0, 0, 0, 0, 1, 1, 0}
-				{ 2, 3, 4, 5, 0, 0, 6}
-				{ 0, 0, 0, 0, 7, 8, 0}
-			};
+*/						//   -> <-> &  |  ~  c  (  )  #
+const int STAB[5][9] = {	{ 0, 0, 0, 0, 1, 1, 1, 0, 0}, // E
+							{ 2, 3, 0, 0, 0, 0, 0, 4, 4}, // E'
+							{ 0, 0, 0, 0, 5, 5, 5, 0, 0}, // T
+							{ 0, 0, 6, 7, 0, 0, 0, 8, 8}, // T'
+							{ 0, 0, 0, 0, 9, 11, 10, 0, 0}  // C
+						};
 
 /*****************************************************************
 * int lex (char *str, int *pos)                                  *
@@ -104,95 +112,91 @@ const int STAB[3][7] = 	{	{ 0, 0, 0, 0, 1, 1, 0}
 ******************************************************************/
 
 int lex (char *str, int *pos){
-	int estado = 0;
+	int estado = 0, i = 0;
 	char c;
 
-	while (1){
+	while (i < 10){
 		c =  str[*pos];
+		printf("loop: %c %i\n", c, *pos);
 
 		switch(estado){
 			case 0:
-				if ((c == 'V') || (c == 'F')){
-					(*pos)++;
-					estado = 1;
-				}else{
-					switch (c){
-						case ' ':
-							(*pos)++;
-							break;
-						case '&':
-								(*pos)++;
-								return AND;
-						case '|':
-								(*pos)++;
-								return OR;
-						case '-':
-								(*pos)++;
-								estado = 2;
-						case '<':
-								(*pos)++;
-								estado = 3;
-								
-								c = str[*pos];
-								if(c == '-'){
-									(*pos)++;
-									c = str[*pos];
-									if(c == '>'){
-										(*pos)++;
-										return SESOSE;
-									}else{
-										(*pos)++;
-										return ERRO;
-									}
-								}else{
-									(*pos)++;
-									return ERRO;
-								}
-						case '\0':
-								return FIM;
-						default:
-								(*pos)++;
-								return ERRO;
-					}
+				switch (c){
+					case 'V':
+						(*pos)++;
+						printf(" V\n");
+						return VALLOG;
+					case 'F':
+						(*pos)++;
+						printf(" F\n");
+						return VALLOG;
+					case ' ':
+						(*pos)++;
+						printf("Espaço\n");
+						break;
+					case '&':
+						(*pos)++;
+						printf("AND\n");
+						return AND;
+					case '|':
+						(*pos)++;
+						printf("OR\n");
+						return OR;
+					case '-':
+						(*pos)++;
+						printf(" -");
+						estado = 2;
+					case '<':
+						(*pos)++;
+						printf(" <");
+						estado = 3;
+					case '\0':
+						return FIM;
+					default:
+						(*pos)++;
+						return ERRO;
 				}
 				break;
 			case 1:
+				printf("estado == 1\n");
+				printf("%i\n", *pos);
 				if((c == 'V') || (c == 'F')){
-					do{
-						c = str[*pos];
-						(*pos)++;
-					}while(c != ' ');
-					if((c == 'V') || (c == 'F')){
-						return ERRO;
-					}else{
-						return VALLOG;
-					}
+					return ERRO;
+				}else{
+					return VALLOG;
 				}
 				break;
 			case 2: // caso encontrou o traco do Se então ( -> )
 				if (c == '>'){
 					(*pos)++;
+					printf(">\n");
 					return SEENT;
 				}else{
 					(*pos)++;
+					printf("erro >\n");
 					return ERRO;
 				}
 				break;
 			case 3: // caso encontrou o menor que do Se somente se ( <-> )
-				if (c == '-')
+				if (c == '-'){
 					(*pos)++;
+					printf("-");
 					estado = 4;
+				}
 				else{
 					(*pos)++;
+					printf("erro -\n");
 					return ERRO;
 				}
 				break;
 			case 4: // caso encontrou o traço do  Se somente se ( <-> )
 				if (c == '>'){
 					(*pos)++;
+					printf(">\n");
 					return SESOSE;
 				}else{
 					(*pos)++;
+					printf("erro >\n");
 					return ERRO;
 				}
 			default:
@@ -200,6 +204,7 @@ int lex (char *str, int *pos){
 					exit(1);
 
 		}
+	i++;
 	}
 }
 
@@ -239,13 +244,11 @@ void inicializa(struct Pilha *p)
 
 void insere (struct Pilha *p, int elemento)
 {
-	if (p->topo < TAMPILHA)
-	{
+	if (p->topo < TAMPILHA){
 		p->topo++;
 		p->dado[p->topo] = elemento;
-	}
-	else
-	{
+		printf("Insere 0x%04x\n\n", elemento);
+	}else{
 		printf("estouro de pilha");
 		exit (1);
 	}
@@ -261,14 +264,12 @@ int remover (struct Pilha *p)
 {
 	int aux;
 
-	if (p->topo >= 0)
-	{
+	if (p->topo >= 0){
+		printf("Remove 0x%04x\n", p->dado[p->topo]);
 		aux = p->dado[p->topo];
 		p->topo--;
 		return aux;
-	}
-	else
-	{
+	}else{
 		printf("Pilha vazia");
 		exit(1);
 	}
@@ -283,8 +284,10 @@ int remover (struct Pilha *p)
 
 int consulta (struct Pilha *p)
 {
-	if (p->topo >= 0)
+	if (p->topo >= 0){
 		return p->dado[p->topo];
+	}
+
 	printf("Pilha vazia");
 	exit(1);
 }
@@ -306,44 +309,39 @@ void parser(char *expr)
 	inicializa(&pilha);
 	insere(&pilha, FIM);
 	insere(&pilha, EXPR);
-	if ((a = lex(expr, &pos)) == ERRO)
+	if((a = lex(expr, &pos)) == ERRO)
 		erro("Erro lexico", expr, pos);
-	do
-	{
+	printf("topo 0x%04x\n", consulta(&pilha));
+	do{
 		x = consulta(&pilha);
-		if (!(x&NTER))
-		{
-			if (x == a)
-			{
+		if(!(x&NTER)){
+			if (x == a){
 				remover (&pilha);
 				if ((a = lex(expr, &pos)) == ERRO)
 					erro("Erro lexico", expr, pos);
-			}
-			else
+			}else
 				erro("Erro sintatico",expr, pos);
 		}
-		if (x&NTER)
-		{
+		if (x&NTER){
 			nProd = STAB[(x&NNTER)-1][(a>>8) - 1];
-			if (nProd)
-			{
+			if (nProd){
 				remover (&pilha);
 				producao = PROD[nProd];
 				for (i = producao[0]; i > 0; i--)
 					insere (&pilha, producao[i]);
-			}
-			else
+			}else
 				erro ("Erro sintatico", expr, pos);
 		}
-	} while (x != FIM);
+	}while (x != FIM);
 }
 
-void main()
+int main()
 {
-	char expr[100];
+	char expr[150];
 
 	printf("\nDigite uma expressao: ");
-	gets(expr);
+	scanf("%[^\n]s", expr);
 	parser(expr);
 	printf("Expressao sintaticamente correta\n");
+	return 0;
 }
