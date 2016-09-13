@@ -94,86 +94,86 @@ int lex (char *str, int *pos){
 						break;
 					case 'V':
 						(*pos)++;
-						printf(" V\n");
+						//printf(" V\n");
 						return VALLOG;
 					case 'F':
 						(*pos)++;
-						printf(" F\n");
+						//printf(" F\n");
 						return VALLOG;
 					case 'v':
 						(*pos)++;
-						printf(" v\n");
+						//printf(" v\n");
 						return VALLOG;
 					case 'f':
 						(*pos)++;
-						printf(" f\n");
+						//printf(" f\n");
 						return VALLOG;
 					case '-':
 						(*pos)++;
-						printf(" -");
+						//printf(" -");
 						estado = 1;
 						break;
 					case '<':
 						(*pos)++;
-						printf(" <");
+						//printf(" <");
 						estado = 2;
 						break;
 					case '&':
 						(*pos)++;
-						printf(" &\n");
+						//printf(" &\n");
 						return AND;
 					case '|':
 						(*pos)++;
-						printf(" |\n");
+						//printf(" |\n");
 						return OR;
 					case '~':
 						(*pos)++;
-						printf(" ~\n");
+						//printf(" ~\n");
 						return NOT;
 					case '(':
 						(*pos)++;
-						printf(" (\n");
+						//printf(" (\n");
 						return LPAR;
 					case ')':
 						(*pos)++;
-						printf(" )\n");
+						//printf(" )\n");
 						return RPAR;
 					case '\0':
-						printf("FIM\n");
+						//printf("FIM\n");
 						return FIM;
 					default:
 						(*pos)++;
-						printf("ERRO\n");
+						//printf("ERRO\n");
 						return ERRO;
 				}
 				break;
 			case 1:		// caso encontrou o traco do Se então ( -> )
 				(*pos)++;
 				if( c == '>'){
-					printf(">\n");
+					//printf(">\n");
 					return SEENT;
 				}else{
-					printf("ERRO\n");
+					//printf("ERRO\n");
 					return ERRO;
 				}
 				break;
 			case 2:		// caso encontrou o menor que do Se somente se ( <-> )(*pos)++;
 				(*pos)++;
 				if( c == '-'){
-					printf("-");
+					//printf("-");
 					estado = 3;
 				}else{
-					printf("ERRO\n");
+					//printf("ERRO\n");
 					return ERRO;
 				}
 				break;
 			case 3:		// caso encontrou o traço do  Se somente se ( <-> )(*pos)++;
 				(*pos)++;
 				if( c == '>'){
-					printf(">\n");
+					//printf(">\n");
 					return SESOSE;
 				}else{
-					printf("ERRO\n");
+					//printf("ERRO\n");
 					return ERRO;
 				}
 				break;
@@ -222,7 +222,7 @@ void insere (struct Pilha *p, int elemento) {
 	if (p->topo < TAMPILHA) {
 		p->topo++;
 		p->dado[p->topo] = elemento;
-		printf("Insere 0x%04x\n", elemento);
+		//printf("Insere 0x%04x\n", elemento);
 	}else{
 		printf("estouro de pilha");
 		exit (1);
@@ -239,7 +239,7 @@ int remover (struct Pilha *p) {
 	int aux;
 
 	if (p->topo >= 0) {
-		printf("Remove 0x%04x\n", p->dado[p->topo]);
+		//printf("Remove 0x%04x\n", p->dado[p->topo]);
 		aux = p->dado[p->topo];
 		p->topo--;
 		return aux;
@@ -258,7 +258,7 @@ int remover (struct Pilha *p) {
 
 int consulta (struct Pilha *p) {
 	if (p->topo >= 0) {
-		printf("topo: 0x%04x\n", p->dado[p->topo]);
+		//printf("topo: 0x%04x\n", p->dado[p->topo]);
 		return p->dado[p->topo];
 	}
 	printf("Pilha vazia");
@@ -285,36 +285,36 @@ void parser(char *expr) {
 		printf("Erro 1\n");
 		erro("Erro lexico", expr, pos);
 	}
-	printf("topo 0x%04x\n", consulta(&pilha));
+	//printf("topo 0x%04x\n", consulta(&pilha));
 	do{
 		x = consulta(&pilha);
-		printf("0x%04x\t0x%04x\t0x%04x\n", x, x&NTER, !x&NTER);
+		//printf("0x%04x\t0x%04x\t0x%04x\n", x, x&NTER, !x&NTER);
 		if(!(x&NTER)){
 			if (x == a){
 				remover (&pilha);
 				if ((a = lex(expr, &pos)) == ERRO){
-					printf("Erro 2\n");
+					//printf("Erro 2\n");
 					erro("Erro lexico", expr, pos);
 				}else{
-					printf("ok\n");
+					//printf("ok\n");
 				}
 			}else{
-				printf("Erro 3 0x%04x != 0x%04x\n", x, a);
+				//printf("Erro 3 0x%04x != 0x%04x\n", x, a);
 				erro("Erro sintatico",expr, pos);
 			}
 		}
 		if (x&NTER){
 			nProd = STAB[(x&NNTER)-1][(a>>8) - 1];
-			printf("0x%04x 0x%04x\n", a, x);
-			printf("  %04i   %04i -> 0x%04x\n", x&NNTER, (a>>8)-1, nProd);
-			printf("0x%04x 0x%04x -> 0x%04x\n", x&NNTER, (a>>8)-1, nProd);
+			//printf("0x%04x 0x%04x\n", a, x);
+			//printf("  %04i   %04i -> 0x%04x\n", x&NNTER, (a>>8)-1, nProd);
+			//printf("0x%04x 0x%04x -> 0x%04x\n", x&NNTER, (a>>8)-1, nProd);
 			if (nProd){
 				remover (&pilha);
 				producao = PROD[nProd];
 				for (i = producao[0]; i > 0; i--)
 					insere (&pilha, producao[i]);
 			}else{
-				printf("Erro 4\n");
+				//printf("Erro 4\n");
 				erro ("Erro sintatico", expr, pos);
 			}
 		}
