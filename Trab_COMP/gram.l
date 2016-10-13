@@ -7,13 +7,46 @@ literal \".*\"
 
 %%
 {ws}	{}
+
+"if"	{return TIF;}
+"else"	{return TELSE;}
+"while" {return TWHILE;}
+
+"int" {return TINT;}
+"String" {return TSTR;}
+
+"read" {return TREAD;}
+"print" {return TPRINT;}
+
+"return" {return TRET;}
+
+"<=" {return TIGUALME;}
+">=" {return TIGUALMA;}
+"!=" {return TDIF;}
+"<" {return TMENOR;}
+">" {return TMAIOR;}
+"==" {return IGUAL";}
+
+"&&" {return TAND;}
+"||" {return TOR;}
+"!" {return TNOT;}
+
+"=" {return TATR;}
 "+"	{return TADD;}
 "-" {return TSUB;}
 "*" {return TMUL;}
 "/" {return TDIV;}
+
 "(" {return TLPAR;}
 ")" {return TRPAR;}
 
+"{" {return TLCH;}
+"}" {return TRCH;}
+
+"," {return TVIRG;}
+";" {return TFLIN;}
+
 {literal} {return TLIT;}
 {num} {return TNUM;}
+{id} {return TID;}
 
