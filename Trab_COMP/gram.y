@@ -1,85 +1,114 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#define YYSTYPE double
+%}
 
 %token TID TINT TSTR TATR TADD TSUB TMUL TDIV TIGUAL TIGUALMA TIGUALME TMAIOR TMENOR TDIF TNOT TAND TOR TTRUE TFALSE TNUM TLIT TIF TELSE TWHILE TREAD TPRINT TRPAR TLPAR TVIRG TLCH TRCH TRET TFLIN TFIM
 
 %%
-Codigo : 	Prog TFIM
+Codigo : 	Prog TFIM		{printf("");}
 			;
-Prog : 		ListFunc BlocoP
-			| BlocoP
+			
+Prog : 		ListFunc BlocoP		{printf("");}
+			| BlocoP	{printf("");}
 			;
-ListFunc : 	ListFunc Func
-			| Func
+			
+ListFunc : 	ListFunc Func	{printf("");}
+			| Func	{printf("");}
 			;
-Func : 		TipeReturn TID TLPAR DecPar TRDIR
-			| TipeReturn TID TLPAR TRPAR
+			
+Func : 		TipeReturn TID TLPAR DecPar TRDIR	{printf("");}
+			| TipeReturn TID TLPAR TRPAR	{printf("");}
 			;
-DecPar :	DecPar TVIRG Par
-			| Par
+			
+DecPar :	DecPar TVIRG Par	{printf("");}
+			| Par	{printf("");}
 			;
+			
 Par :		Tipe TID
 			;
-BlocoP :	TLCH Decs ListCom TRCH
-			| TLCH ListCom TRCH
+			
+BlocoP :	TLCH Decs ListCom TRCH	{printf("");}
+			| TLCH ListCom TRCH	{printf("");}
 			;
-Decs :		Decs Dec
-			| Dec
+			
+Decs :		Decs Dec	{printf("");}
+			| Dec	{printf("");}
 			;
-Dec :		Tipe Listid TFLIN
+			
+Dec :		Tipe Listid TFLIN	{printf("");}
 			;
-Tipe :		TINT
-			| TSTR
+			
+Tipe :		TINT	{printf("");}
+			| TSTR	{printf("");}
 			;
-Listid :	Listid TVIRG TID
-			| TID
+			
+Listid :	Listid TVIRG TID	{printf("");}
+			| TID	{printf("");}
 			;
-Bloco :		TLCH ListCom TRCH
+			
+Bloco :		TLCH ListCom TRCH	{printf("");}
 			;
-ListCom :	ListCom Com
-			| Com
+			
+ListCom :	ListCom Com	{printf("");}
+			| Com	{printf("");}
 			;
-Com :		Cse
-			| Cenq
-			| Catr
-			| Cread
-			| Cprint
-			| Cfunc
-			| Ret
+			
+Com :			Cse	{printf("");}
+			| Cenq	{printf("");}
+			| Catr	{printf("");}
+			| Cread	{printf("");}
+			| Cprint	{printf("");}
+			| Cfunc	{printf("");}
+			| Ret	{printf("");}
 			;
-Ret :		TRET ExpAr TFLIN
+			
+Ret :			TRET ExpAr TFLIN	{printf("");}
 			;
-Cse :		TIF TLPAR ExpLog TRPAR Bloco
-			| TIF TLPAR ExpLog TRPAR Bloco TELSE Bloco
+			
+Cse :			TIF TLPAR ExpLog TRPAR Bloco	{printf("");}
+			| TIF TLPAR ExpLog TRPAR Bloco TELSE Bloco	{printf("");}
 			;
-Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco
+			
+Cenq :			TWHILE TLPAR ExpLog TRPAR Bloco	{printf("");}
 			;
-Catr :		TID TATR ExpAr TFLIN
-			| TID TATR TLIT TFLIN
+			
+Catr :			TID TATR ExpAr TFLIN	{printf("");}
+			| TID TATR TLIT TFLIN	{printf("");}
 			;
-Cread :		TREAD TLPAR TID TRPAR TFLIN
+			
+Cread :			TREAD TLPAR TID TRPAR TFLIN	{printf("");}
 			;
-Cprint :	TPRINT TLPAR ExpAr TRPAR TFLIN
-			| TPRINT TLPAR TLIT TRPAR TFLIN
+			
+Cprint :		TPRINT TLPAR ExpAr TRPAR TFLIN	{printf("");}
+			| TPRINT TLPAR TLIT TRPAR TFLIN	{printf("");}
 			;
-Cfunc :		TID TLPAR ListPar TRPAR TFLIN
-			| TID TLPAR TRPAR TFLIN
+			
+Cfunc :			TID TLPAR ListPar TRPAR TFLIN	{printf("");}
+			| TID TLPAR TRPAR TFLIN	{printf("");}
 			;
-ListPar :	ListPar TVIRG ExpAr
-			| ExpAr
+			
+ListPar :		ListPar TVIRG ExpAr	{printf("");}
+			| ExpAr	{printf("");}
 			;
-ExpLog :	TLPAR ExpLog TRPAR TAND TLPAR E TRPAR
-			| TLPAR ExpLog TRPAR TOR TLPAR E TRPAR
-			| E
+			
+ExpLog :		ExpLog TAND FLog	{printf("");}
+			| ExpLog TOR FLog	{printf("");}
+			| FLog	{printf("");}
 			;
-E :			ExpAr TIGUAL ExpAr
-			| ExpAr TDIF ExpAr
-			| ExpAr TIGUALMA ExpAr
-			| ExpAr TIGUALME ExpAr
-			| ExpAr TMAIOR ExpAr
-			| ExpAr TMENOR ExpAr
-			| TLPAR ExpLog TFPAR
-			| TNOT ExpLog
-			| TTRUE
-			| TFALSE
+			
+FLog :			TLPAR ExpLog TRPAR	{printf("");}
+			| TNOT FLog	{printf("");}
+			| ExpRela	{printf("");}
+			;
+			
+ExpRela :		ExpAr TIGUAL ExpAr	{printf("");}
+			| ExpAr TDIF ExpAr	{printf("");}
+			| ExpAr TIGUALMA ExpAr	{printf("");}
+			| ExpAr TIGUALME ExpAr	{printf("");}
+			| ExpAr TMAIOR ExpAr	{printf("");}
+			| ExpAr TMENOR ExpAr	{printf("");}
 			;
 ExpAr :		A
 			;
@@ -96,3 +125,16 @@ H :			TSUB H
 			| TID
 			| Cfunc
 			| TNUM
+			;
+
+%%
+#include "lex.yy.c"
+int yyerror (char *str)
+{
+	printf("%s - antes %s\n", str, yytext);
+	
+} 		 
+int yywrap()
+{
+	return 1;
+}
