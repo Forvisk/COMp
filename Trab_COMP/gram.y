@@ -4,67 +4,71 @@
 #define YYSTYPE double
 %}
 
-%token TID TINT TSTR TATR TADD TSUB TMUL TDIV TIGUAL TIGUALMA TIGUALME TMAIOR TMENOR TDIF TNOT TAND TOR TNUM TLIT TIF TELSE TWHILE TREAD TPRINT TATR TRPAR TLPAR TVIRG TLCH TRCH TRET TFLIN TFIM
+%token TID TINT TSTR TVOID TADD TSUB TMUL TDIV TIGUAL TIGUALMA TIGUALME TMAIOR TMENOR TDIF TNOT TAND TOR TNUM TLIT TIF TELSE TWHILE TREAD TPRINT TATR TRPAR TLPAR TVIRG TLCH TRCH TRET TFLIN TFIM
 
 %%
-Codigo : 	Prog TFIM		{printf("Programa\n");}
+Codigo : 	Prog		{printf("Programa\n");}
 			;
 			
-Prog : 		ListFunc BlocoP		{printf("");}
-			| BlocoP	{printf("");}
+Prog : 		ListFunc BlocoP {printf("Funcoes e bloco P\n");}
+			| BlocoP
 			;
 			
 ListFunc : 	ListFunc Func	
-			| Func	{printf("");}
+			| Func
 			;
 			
-Func : 		TipeReturn TID TLPAR DecPar TRPAR	{printf("");}
-			| TipeReturn TID TLPAR TRPAR	{printf("");}
+Func : 		TipeReturn TID TLPAR DecPar TRPAR {printf("Funcao(par)\n");}
+			| TipeReturn TID TLPAR TRPAR {printf("Funcao()\n");}
 			;
-			
-DecPar :	DecPar TVIRG Par	{printf("");}
-			| Par	{printf("");}
+
+TipeReturn :	Tipe {printf(" retono ");}
+			| TVOID {printf("retorno void\n");}
+			;
+
+DecPar :	DecPar TVIRG Par
+			| Par
 			;
 			
 Par :		Tipe TID
 			;
 			
-BlocoP :	TLCH Decs ListCom TRCH	{printf("");}
-			| TLCH ListCom TRCH	{printf("");}
+BlocoP :	TLCH Decs ListCom TRCH {printf("Bloco P com dec\n");}
+			| TLCH ListCom TRCH {printf("Bloco P\n");}
 			;
 			
-Decs :		Decs Dec	{printf("");}
-			| Dec	{printf("");}
+Decs :		Decs Dec
+			| Dec
 			;
 			
-Dec :		Tipe Listid TFLIN	{printf("Declaracao\n");}
+Dec :		Tipe Listid TFLIN	{printf("; Declaracao\n");}
 			;
 			
 Tipe :		TINT	{printf("Inteiro");}
 			| TSTR	{printf("Sttring");}
 			;
 			
-Listid :	Listid TVIRG TID	{printf("");}
-			| TID	{printf("");}
+Listid :	Listid TVIRG TID {printf(" ID ");}
+			| TID {printf(" ID ");}
 			;
 			
-Bloco :		TLCH ListCom TRCH	{printf("");}
+Bloco :		TLCH ListCom TRCH {printf("Bloco\n");}
 			;
 			
-ListCom :	ListCom Com	{printf("ListCom Comando\n");}
+ListCom :	ListCom Com	{printf("ListCom\n");}
 			| Com	{printf("Comando\n");}
 			;
 			
-Com :		Cse	{printf("");}
-			| Cenq	{printf("");}
-			| Catr	{printf("");}
-			| Cread	{printf("");}
-			| Cprint	{printf("");}
-			| Cfunc	{printf("");}
-			| Ret	{printf("");}
+Com :		Cse
+			| Cenq
+			| Catr
+			| Cread
+			| Cprint
+			| Cfunc
+			| Ret
 			;
 			
-Ret :		TRET ExpAr TFLIN	{printf("retorno\n");}
+Ret :		TRET ExpAr TFLIN	{printf("retorna\n");}
 			;
 			
 Cse :		TIF TLPAR ExpLog TRPAR Bloco	{printf("se\n");}
@@ -89,8 +93,8 @@ Cfunc :		TID TLPAR ListPar TRPAR TFLIN	{printf("Chamada funcao com parametros\n"
 			| TID TLPAR TRPAR TFLIN	{printf("Chamada funcao com parametros\n");}
 			;
 			
-ListPar :	ListPar TVIRG ExpAr	{printf("");}
-			| ExpAr	{printf("\n");}
+ListPar :	ListPar TVIRG ExpAr
+			| ExpAr
 			;
 			
 ExpLog :	ExpLog TAND FLog	{printf("Log AND Log\n");}
@@ -113,12 +117,12 @@ ExpRela :	ExpAr TIGUAL ExpAr	{printf("Ex == Ex\n");}
 			
 ExpAr :		ExpAr TADD Am	{printf("Soma\n");}
 			| ExpAr TSUB Am	{printf("Subtracao\n");}
-			| Am	{printf("");}
+			| Am
 			;
 			
 Am :		Am TMUL An	{printf("Multiplicacao\n");}
 			| Am TDIV An	{printf("Divisao\n");}
-			| An	{printf("");}
+			| An
 			;
 			
 An :		TSUB An	{printf("Negativo\n");}
@@ -132,7 +136,7 @@ An :		TSUB An	{printf("Negativo\n");}
 #include "lex.yy.c"
 int yyerror (char *str)
 {
-	printf("%s - antes %s\n", str, yytext);
+	printf("Erro; %s\n", str);
 	
 } 		 
 int yywrap()
