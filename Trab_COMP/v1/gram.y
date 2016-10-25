@@ -69,29 +69,29 @@ Com :		Cse
 			;
 			
 Ret :		TRET ExpAr TFLIN	{printf("retorna exp\n");}
-			| TRET TLIT TFLIN	{printf("retorna string\n");}
+			| TRET TLIT TFLIN
 			;
 			
-Cse :		TIF TLPAR ExpLog TRPAR Bloco	{printf("se\n");}
-			| TIF TLPAR ExpLog TRPAR Bloco TELSE Bloco	{printf("se senao\n");}
+Cse :		TIF TLPAR ExpLog TRPAR Bloco
+			| TIF TLPAR ExpLog TRPAR Bloco TELSE Bloco
 			;
 			
-Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco	{printf("While\n");}
+Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco
 			;
 			
-Catr :		TID TATR ExpAr TFLIN	{printf("Atribui In\nt");}
-			| TID TATR TLIT TFLIN	{printf("Atribui String\n");}
+Catr :		TID TATR ExpAr TFLIN
+			| TID TATR TLIT TFLIN
 			;
 			
-Cread :		TREAD TLPAR TID TRPAR TFLIN	{printf("Read\n");}
+Cread :		TREAD TLPAR TID TRPAR TFLIN
 			;
 			
-Cprint :	TPRINT TLPAR ExpAr TRPAR TFLIN	{printf("Print Int\n");}
-			| TPRINT TLPAR TLIT TRPAR TFLIN	{printf("Print String\n");}
+Cprint :	TPRINT TLPAR ExpAr TRPAR TFLIN
+			| TPRINT TLPAR TLIT TRPAR TFLIN
 			;
 			
-Cfunc :		TID TLPAR ListPar TRPAR TFLIN	{printf("Chamada funcao com parametros\n");}
-			| TID TLPAR TRPAR TFLIN	{printf("Chamada funcao com parametros\n");}
+Cfunc :		TID TLPAR ListPar TRPAR TFLIN
+			| TID TLPAR TRPAR TFLIN
 			;
 			
 ListPar :	ListPar TVIRG ExpAr
@@ -100,22 +100,22 @@ ListPar :	ListPar TVIRG ExpAr
 			|TLIT
 			;
 			
-ExpLog :	ExpLog TAND FLog	{printf("Log AND Log\n");}
-			| ExpLog TOR FLog	{printf("Log OR Log\n");}
-			| FLog	{printf("Log\n");}
+ExpLog :	ExpLog TAND FLog
+			| ExpLog TOR FLog
+			| FLog
 			;
 			
-FLog :		TLPAR ExpLog TRPAR	{printf("( Log )\n");}
-			| TNOT FLog	{printf(" NOT Log\n");}
-			| ExpRela	{printf("Relacional\n");}
+FLog :		TLPAR ExpLog TRPAR
+			| TNOT FLog
+			| ExpRela
 			;
 			
-ExpRela :	ExpAr TIGUAL ExpAr	{printf("Ex == Ex\n");}
-			| ExpAr TDIF ExpAr	{printf("Ex != Ex\n");}
-			| ExpAr TIGUALMA ExpAr	{printf("Ex >= Ex\n");}
-			| ExpAr TIGUALME ExpAr	{printf("Ex <= Ex\n");}
-			| ExpAr TMAIOR ExpAr	{printf("Ex > Ex\n");}
-			| ExpAr TMENOR ExpAr	{printf("Ex < Ex\n");}
+ExpRela :	ExpAr TIGUAL ExpAr
+			| ExpAr TDIF ExpAr
+			| ExpAr TIGUALMA ExpAr
+			| ExpAr TIGUALME ExpAr
+			| ExpAr TMAIOR ExpAr
+			| ExpAr TMENOR ExpAr
 			;
 			
 ExpAr :		ExpAr TADD Am	{printf("Soma\n");}
@@ -139,7 +139,7 @@ An :		TSUB An	{printf("Negativo\n");}
 #include "lex.yy.c"
 int yyerror (char *str)
 {
-	printf("Erro; %s\n", str);
+	printf("Erro %s; %s\n", yytext, str);
 	
 } 		 
 int yywrap()
