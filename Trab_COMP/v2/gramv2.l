@@ -1,4 +1,4 @@
-delim[\t \n]
+delim[\t\r]
 ws {delim}+
 digito [0-9]
 caractere [A-Za-z]
@@ -12,8 +12,8 @@ literal \".*\"
 "if"	    { return TIF;}
 "else"	  { return TELSE;}
 "while"   { return TWHILE;}
-"int"     { yyval = createList( T_INT); return TINT;}
-"String"  { yyval = createList( T_STR); return TSTR;}
+"int"     { return TINT;}
+"String"  { return TSTR;}
 "void"    { return TVOID;}
 "read"    { return TREAD;}
 "print"   { return TPRINT;}
@@ -40,5 +40,5 @@ literal \".*\"
 ";"       { return TFLIN;}
 {literal} { return TLIT;}
 {num}     { return TNUM;}
-{id}      { yyval = ;	return TID;}
+{id}      { return TID;}
 "\n"      { linha++;}

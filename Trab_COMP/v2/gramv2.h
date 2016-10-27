@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define T_GREAT_LIST 0
 #define T_INT 1
@@ -12,29 +13,31 @@
 typedef struct
 {
 	int tipo;
-	struct Atributo *listaInt;
-	struct Atributo *listaStr;
-} ListaAtributos;
+	struct Atributo* listaInt;
+	struct Atributo* listaStr;
+} ListaAtributos, *pListaAtributos;
 
 typedef struct
 {
 	char nomeId[21];
-	struct Atributo *proximo;
-} Atributo;
+	struct Atributo* proximo;
+} Atributo, *pAtributo;
 
-ListaAtributos* createGreatList();
+pListaAtributos createGreatList();
 
-ListaAtributos* createListaPeloTipo(int tipo);
-ListaAtributos* createList(ListaAtributos* tipo);
+pListaAtributos createListaPeloTipo(int tipo);
+pListaAtributos createList(pListaAtributos tipo);
 
-Atributo* createAtributo();
+pAtributo createAtributo( char* nomeId);
 
-void setTipo( ListaAtributos* lista, int tipo);
+void setTipo( pListaAtributos lista, int tipo);
 
-void addIdToList( ListaAtributos* lista, Atributo* id);
+void addIdToList( pListaAtributos lista, pAtributo id);
 
-void addToGreatList( ListaAtributos* grandelista, ListaAtributos* newlista);
+void addToGreatList( pListaAtributos newlista);
 
-int verificaExistId( ListaAtributos* lista, Atributo* id);
+int verificaExistId( pListaAtributos lista, pAtributo id);
+
+void test();
 
 #endif
