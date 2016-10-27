@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
 	fclose(yyin);*/
 
 	test();
-	printf("Sucesso\n");
+	putsListaId(greatList);
 	return 0;
 }
 
@@ -64,94 +64,108 @@ void setTipo( ListaAtributos* lista, int tipo){
 
 pAtributo createAtributo( char* nomeId){
 	pAtributo new = (Atributo*)malloc(sizeof(Atributo));
-	strncpy(nomeId, new->nomeId, 20);
+	strncpy(new->nomeId, nomeId, 20);
+	new->num = 0;
 	new->proximo = NULL;
-	
+	printf("\t%s\n", new->nomeId);
 	return new;
 }
 
-void addIdToList( ListaAtributos* lista, Atributo* id){
+void addIdToList( ListaAtributos* lista){
+	printf("%s\n", lista->nomeIdTemp);
+	pAtributo new = createAtributo(lista->nomeIdTemp);
+
 	if( lista->tipo == T_INT){
 		if(lista->listaInt == NULL){
-			lista->listaInt = id;
+			lista->listaInt = new;
+			printf("\tPrimeiro %s\n", new -> nomeId);
 		}else{
-			if(verificaExistId( lista, id)){
+			if(verificaExistId( lista, new)){
 				pAtributo aux = lista->listaInt;
-				while(aux->proximo != NULL)
-					aux = aux->proximo;
-				aux->proximo = id;
+				while( aux -> proximo != NULL)
+					aux = aux -> proximo;
+
+				aux->proximo = new;
+				aux = aux -> proximo;
+				printf("\tnovo %s\n", aux->nomeId);
 			}
 		}
 	}else if( lista->tipo == T_STR){
 		if(lista->listaStr == NULL){
-			lista->listaStr = id;
+			lista->listaStr = new;
+			printf("\tPrimeiro %s\n", new -> nomeId);
 		}else{
-			if(verificaExistId( lista, id)){
-				pAtributo aux = lista->listaStr;
-				while( aux->proximo != NULL)
-					aux = aux->proximo;
-				aux->proximo = id;
-			}
+			
 		}
 	}
+	strncpy(lista->nomeIdTemp, "", 20);
+	putsListaId( lista);
 }
 
 
 void addToGreatList( pListaAtributos newlista){
+	putsListaId( newlista);
+
 	if( newlista -> tipo == T_INT){
 		if( newlista -> listaInt == NULL){
 			printf( "Lista vazia\n");
 		}else{
+			pAtributo auxGreat;
+			if(greatList -> listaInt != NULL){
+				auxGreat = greatList -> listaInt;
+				do{
+					auxGreat = auxGreat->proximo;
+				}while(auxGreat->proximo != NULL);
+			}
 			pAtributo aux = newlista -> listaInt;
 			do{
-				if( aux != NULL){
-					if( verificaExistId( greatList, aux)){
-						printf("Atributo %s adicionado como inteiro\n", aux->nomeId);
-						if( greatList->listaInt == NULL){
-							printf("Primeio inteiro\n");
-							greatList->listaInt = aux;
-						}else{
-							pAtributo auxGreat = greatList->listaInt;
-							if( auxGreat -> proximo != NULL){
-								do{
-									auxGreat = auxGreat -> proximo;
-								}while( auxGreat -> proximo != NULL);
-								auxGreat->proximo = aux;
-							}
-						}
+				if(verificaExistId(greatList, aux)){
+					if(auxGreat != NULL){
+						auxGreat->proximo = aux;
+						auxGreat = createAtributo(aux->nomeId);
+						printf("Atributo %s adicionado como inteiro\n", auxGreat->nomeId);
 					}else{
-						printf("Atributo %s ja existente\n", aux->nomeId);
+						greatList -> listaInt = createAtributo(aux->nomeId);
+						auxGreat = greatList -> listaInt;
+						printf("Primeiro atributo %s adicionado como inteiro\n", auxGreat->nomeId);
 					}
+				}else{
+					printf("Atributo %s ja existente\n", aux->nomeId);
 				}
+				aux = aux->proximo;
 			}while( aux->proximo != NULL);
 		}
+		free(newlista);
 	}else if( newlista -> tipo == T_STR){
 		if( newlista -> listaStr == NULL){
 			printf( "Lista vazia\n");
 		}else{
+			pAtributo auxGreat;
+			if(	greatList -> listaStr != NULL){
+				auxGreat = greatList -> listaStr;
+				do{
+					auxGreat = auxGreat -> proximo;
+				}while( auxGreat -> proximo != NULL);
+			}
 			pAtributo aux = newlista -> listaInt;
 			do{
-				if( aux != NULL){
-					if( verificaExistId( greatList, aux)){
-						printf("Atributo %s adicionado como string\n", aux->nomeId);
-						if( greatList->listaStr == NULL){
-							printf("Primeio inteiro\n");
-							greatList->listaStr = aux;
-						}else{
-							pAtributo auxGreat = greatList->listaInt;
-							if( auxGreat -> proximo != NULL){
-								do{
-									auxGreat = auxGreat -> proximo;
-								}while( auxGreat -> proximo != NULL);
-								auxGreat->proximo = aux;
-							}
-						}
+				if( verificaExistId(greatList, aux)){
+					if( auxGreat != NULL){
+						auxGreat -> proximo = aux;
+						auxGreat = createAtributo( aux -> nomeId);
+						printf("Atributo %s adicionado como string\n", auxGreat->nomeId);
 					}else{
-						printf("Atributo %s ja existente\n", aux->nomeId);
+						greatList -> listaStr = createAtributo( aux->nomeId);
+						auxGreat = greatList -> listaStr;
+						printf("Primeiro atributo %s adicionado como string\n", auxGreat->nomeId);
 					}
+				}else{
+					printf("Atributo %s ja existente\n", aux -> nomeId);
 				}
+				aux = aux => proximo;
 			}while( aux->proximo != NULL);
 		}
+		free(newlista);
 	}else{
 		printf("Erro na lista a ser inserida\n");
 	}
@@ -180,8 +194,39 @@ int verificaExistId( pListaAtributos lista, pAtributo id){
 	return 1;
 }
 
+void putsListaId( pListaAtributos lista){
+	printf("lista:\n");
+	if( lista->listaInt != NULL){
+		pAtributo aux = lista->listaInt;
+		do{
+			printf("\tint\t%s\n", aux->nomeId);
+			if( aux->proximo != NULL)
+				aux = aux->proximo;
+		}while( aux->proximo != NULL);
+		printf("\tint\t%s\n", aux->nomeId);
+	}
+	if( greatList->listaStr != NULL){
+		pAtributo aux = lista->listaStr;
+		do{
+			printf("\tstr\t%s\n", aux->nomeId);
+			aux = aux->proximo;
+		}while( aux->proximo != NULL);
+
+	}
+}
+
 void test(){
 	pListaAtributos testTipo1 = createListaPeloTipo(T_INT);
 	pListaAtributos testTipo2 = createListaPeloTipo(T_STR);
 	pListaAtributos testListaInt1 = createList( testTipo1);
+
+	strncpy(testListaInt1->nomeIdTemp, "a", 20);
+	printf("%s\n", testListaInt1->nomeIdTemp);
+	addIdToList(testListaInt1);
+
+	strncpy(testListaInt1->nomeIdTemp, "b", 20);
+	printf("%s\n", testListaInt1->nomeIdTemp);
+	addIdToList(testListaInt1);
+
+	addToGreatList(testListaInt1);
 }

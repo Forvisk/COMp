@@ -1,4 +1,4 @@
-delim[\t\r]
+delim[\t \r]
 ws {delim}+
 digito [0-9]
 caractere [A-Za-z]
@@ -39,6 +39,6 @@ literal \".*\"
 ","       { return TVIRG;}
 ";"       { return TFLIN;}
 {literal} { return TLIT;}
-{num}     { return TNUM;}
-{id}      { return TID;}
+{num}     { yylval->numTemp = atoi(yytext);	return TNUM;}
+{id}      { strncpy(yylval->nomeIdTemp, yytext, 20); return TID;}
 "\n"      { linha++;}

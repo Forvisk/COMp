@@ -51,8 +51,8 @@ Tipe :		TINT		{$$ = createListaPeloTipo(T_INT); printf("\tcriando lista pelo tip
 			| TSTR	{$$ = createListaPeloTipo(T_STR); printf("\tcriando lista pelo tipo string\n");}
 			;
 			
-Listid :	Listid TVIRG TID	{	printf("\t\tadicionando um id a lista\n");}
-			| TID		{	printf("\t\tadicionando um id a lista\n");}
+Listid :	Listid TVIRG TID	{	addIdToList($$);	printf("\t\tadicionando um id a lista\n");}
+			| TID		{	addIdToList($$);	printf("\t\tadicionando um id a lista\n");}
 			;
 			
 Bloco :		TLCH ListCom TRCH

@@ -12,6 +12,9 @@
 
 typedef struct
 {
+	char nomeIdTemp[21];
+	int numTemp;
+
 	int tipo;
 	struct Atributo* listaInt;
 	struct Atributo* listaStr;
@@ -20,8 +23,19 @@ typedef struct
 typedef struct
 {
 	char nomeId[21];
+	int num;
 	struct Atributo* proximo;
 } Atributo, *pAtributo;
+
+/*
+typedef struct Atributo
+{
+	int tipo;
+	char nomeId[21];
+	lista *listaId;
+	int num;
+};
+*/
 
 pListaAtributos createGreatList();
 
@@ -32,11 +46,13 @@ pAtributo createAtributo( char* nomeId);
 
 void setTipo( pListaAtributos lista, int tipo);
 
-void addIdToList( pListaAtributos lista, pAtributo id);
+void addIdToList( pListaAtributos lista);
 
 void addToGreatList( pListaAtributos newlista);
 
 int verificaExistId( pListaAtributos lista, pAtributo id);
+
+void putsListaId(pListaAtributos lista);
 
 void test();
 
