@@ -15,6 +15,7 @@ extern FILE *yyin;
 pListaAtributos greatList;
 Instrucao listaInstrucao[200];
 
+int posValGlobal = 1;
 
 int main(int argc, char const *argv[])
 {
@@ -82,11 +83,14 @@ pAtributo createAtributo( char* nomeId){
 	strncpy(new->nomeId, nomeId, 20);
 	new->num = 0;
 	new->proximo = NULL;
+	new->posVal = posValGlobal;
+	posValGlobal++;
 	//printf("\nCriando Atributo\n\tNovo atributo: %s\n", new->nomeId);
 	return new;
 }
 
 void addIdToList( pListaAtributos lista, pListaAtributos nomeId){
+	int posAux = posValGlobal;
 	pAtributo new = createAtributo(nomeId->nomeIdTemp);
 	//printf("\nAdicionando a lista %p\n", (void*)lista);
 	if( lista->tipo == T_INT){
@@ -102,6 +106,8 @@ void addIdToList( pListaAtributos lista, pListaAtributos nomeId){
 				aux->proximo = new;
 				aux = aux -> proximo;
 				//printf("\tnovo inteiro %s\n", aux->nomeId);
+			}else{
+				posValGlobal = posAux;
 			}
 		}
 	}else if( lista->tipo == T_STR){
@@ -117,6 +123,8 @@ void addIdToList( pListaAtributos lista, pListaAtributos nomeId){
 				aux->proximo = new;
 				aux = aux -> proximo;
 				//printf("\tnova string %s\n", aux->nomeId);
+			}else{
+				posValGlobal = posAux;
 			}
 		}
 	}else{
@@ -134,6 +142,8 @@ void addIdToList( pListaAtributos lista, pListaAtributos nomeId){
 				aux->proximo = new;
 				aux = aux -> proximo;
 				//printf("\tnova not yet %s\n", aux->nomeId);
+			}else{
+				posValGlobal = posAux;
 			}
 		}
 	}
@@ -182,7 +192,12 @@ void addToGreatList( pListaAtributos newlista){
 			do{
 				if( greatList -> listaInt == NULL){
 					if( verificaExistId( greatList, aux)){
+
+						int posAux = posValGlobal;
+						posValGlobal = aux -> posVal;
 						greatList -> listaInt = createAtributo( aux -> nomeId);
+						posValGlobal = posAux;
+
 						auxGreat = greatList -> listaInt;
 						//printf("\tprimeiro inteiro notyet da greatList: %s\n", auxGreat->nomeId);
 					}
@@ -192,7 +207,12 @@ void addToGreatList( pListaAtributos newlista){
 						auxGreat = auxGreat -> proximo;
 					}
 					if( verificaExistId( greatList, aux)){
+
+						int posAux = posValGlobal;
+						posValGlobal = aux -> posVal;
 						auxGreat -> proximo = createAtributo( aux -> nomeId);
+						posValGlobal = posAux;
+
 						auxGreat = auxGreat -> proximo;
 						//printf("\tnovo inteiro notyet na greatList: %s\n", auxGreat->nomeId);
 					}
@@ -200,6 +220,7 @@ void addToGreatList( pListaAtributos newlista){
 				auxDel = aux;
 				aux = aux -> proximo;
 				free( auxDel);
+
 			}while( aux != NULL);
 			newlista -> listaNotYet = NULL;
 		}
@@ -214,7 +235,12 @@ void addToGreatList( pListaAtributos newlista){
 			do{
 				if( greatList -> listaStr == NULL){
 					if( verificaExistId( greatList, aux)){
+
+						int posAux = posValGlobal;
+						posValGlobal = aux -> posVal;
 						greatList -> listaStr = createAtributo( aux -> nomeId);
+						posValGlobal = posAux;
+
 						auxGreat = greatList -> listaStr;
 						//printf("\tprimeiro string da greatList: %s\n", auxGreat->nomeId);
 					}
@@ -224,7 +250,12 @@ void addToGreatList( pListaAtributos newlista){
 						auxGreat = auxGreat -> proximo;
 					}
 					if( verificaExistId( greatList, aux)){
+
+						int posAux = posValGlobal;
+						posValGlobal = aux -> posVal;
 						auxGreat -> proximo = createAtributo( aux -> nomeId);
+						posValGlobal = posAux;
+
 						auxGreat = auxGreat -> proximo;
 						//printf("\tnovo string na greatList: %s\n", auxGreat->nomeId);
 					}
@@ -243,7 +274,12 @@ void addToGreatList( pListaAtributos newlista){
 			do{
 				if( greatList -> listaStr == NULL){
 					if( verificaExistId( greatList, aux)){
+
+						int posAux = posValGlobal;
+						posValGlobal = aux -> posVal;
 						greatList -> listaStr = createAtributo( aux -> nomeId);
+						posValGlobal = posAux;
+
 						auxGreat = greatList -> listaStr;
 						//printf("\tprimeiro string notyet da greatList: %s\n", auxGreat->nomeId);
 					}
@@ -253,7 +289,12 @@ void addToGreatList( pListaAtributos newlista){
 						auxGreat = auxGreat -> proximo;
 					}
 					if( verificaExistId( greatList, aux)){
+
+						int posAux = posValGlobal;
+						posValGlobal = aux -> posVal;
 						auxGreat -> proximo = createAtributo( aux -> nomeId);
+						posValGlobal = posAux;
+
 						auxGreat = auxGreat -> proximo;
 						//printf("\tnovo string notyet na greatList: %s\n", auxGreat->nomeId);
 					}
@@ -272,7 +313,12 @@ void addToGreatList( pListaAtributos newlista){
 			do{
 				if( greatList -> listaStr == NULL){
 					if( verificaExistId( greatList, aux)){
+
+						int posAux = posValGlobal;
+						posValGlobal = aux -> posVal;
 						greatList -> listaStr = createAtributo( aux -> nomeId);
+						posValGlobal = posAux;
+
 						auxGreat = greatList -> listaNotYet;
 						//printf("\tprimeiro string da greatList: %s\n", auxGreat->nomeId);
 					}
@@ -282,7 +328,12 @@ void addToGreatList( pListaAtributos newlista){
 						auxGreat = auxGreat -> proximo;
 					}
 					if( verificaExistId( greatList, aux)){
+
+						int posAux = posValGlobal;
+						posValGlobal = aux -> posVal;
 						auxGreat -> proximo = createAtributo( aux -> nomeId);
+						posValGlobal = posAux;
+
 						auxGreat = auxGreat -> proximo;
 						//printf("\tnovo string na greatList: %s\n", auxGreat->nomeId);
 					}
@@ -339,21 +390,21 @@ void putsListId( pListaAtributos lista){
 	if( lista->listaInt != NULL){
 		pAtributo aux = lista->listaInt;
 		do{
-			printf("\tinteiro\t%s\n", aux->nomeId);
+			printf("\tinteiro\t%s\t%i\n", aux->nomeId, aux->posVal);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
 	if( lista->listaStr != NULL){
 		pAtributo aux = lista->listaStr;
 		do{
-			printf("\tstring\t%s\n", aux->nomeId);
+			printf("\tstring\t%s\t%i\n", aux->nomeId, aux->posVal);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
 	if( lista->listaNotYet != NULL){
 		pAtributo aux = lista->listaNotYet;
 		do{
-			printf("\tnot yet\t%s\n", aux->nomeId);
+			printf("\tnot yet\t%s\t%i\n", aux->nomeId, aux->posVal);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}

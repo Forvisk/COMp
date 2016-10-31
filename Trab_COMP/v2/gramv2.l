@@ -13,7 +13,7 @@ literal \".*\"
 "else"	  { return TELSE;}
 "while"   { return TWHILE;}
 "int"     { /*printf("criando inteiros\n");*/ yylval = createListTipo(T_INT);return TINT;}
-"String"  { /*printf("criando inteiros\n");*/ yylval = createListTipo(T_STR); return TSTR;}
+"String"  { /*printf("criando string\n");*/ yylval = createListTipo(T_STR); return TSTR;}
 "void"    { return TVOID;}
 "read"    { return TREAD;}
 "print"   { return TPRINT;}
@@ -39,6 +39,6 @@ literal \".*\"
 ","       { return TVIRG;}
 ";"       { return TFLIN;}
 {literal} { return TLIT;}
-{num}     { return TNUM;}
+{num}     { /*printf("Criando num %s : %i", yytext, linha);*/ return TNUM;}
 {id}      { /*printf("Criando id %s : %i\n", yytext, linha);*/ yylval = createAtributoList( yytext); return TID;}
 "\n"	  { linha++;}

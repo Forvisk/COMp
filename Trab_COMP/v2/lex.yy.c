@@ -815,7 +815,7 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 16 "gramv2.l"
-{ /*printf("criando inteiros\n");*/ yylval = createListTipo(T_STR); return TSTR;}
+{ /*printf("criando string\n");*/ yylval = createListTipo(T_STR); return TSTR;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
@@ -945,7 +945,7 @@ YY_RULE_SETUP
 case 32:
 YY_RULE_SETUP
 #line 42 "gramv2.l"
-{ return TNUM;}
+{ printf("Criando num %s : %i", yytext, linha); return TNUM;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP

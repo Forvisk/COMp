@@ -7,6 +7,27 @@
 #define T_STR 2
 #define T_TODEF -1
 
+#define IADD 0x60
+#define ISUB 0x64
+#define IMUL 0x68
+#define IDIV 0x6C
+
+#define ISTORE 0x36
+#define ILOAD 0x15
+
+#define BIPUSH 0x10
+#define ldc 0x12
+
+#define ICONST_0 0x03
+#define ICONST_1 0x04
+#define ICONST_2 0x05
+#define ICONST_3 0x06
+#define ICONST_4 0x07
+#define ICONST_5 0x08
+
+
+
+
 #ifndef __gramv2__
 #define __gramv2__
 
@@ -25,6 +46,7 @@ typedef struct
 typedef struct
 {
 	char nomeId[21];
+	int posVal;
 	int num;
 	struct Atributo* proximo;
 } Atributo, *pAtributo;
@@ -51,7 +73,7 @@ void addIdToList( pListaAtributos lista, pListaAtributos nomeId);
 int verificaExistId( pListaAtributos lista, pAtributo id);
 void putsListId( pListaAtributos lista);
 
-
+pListaAtributos createAtributoNum( char* num);
 
 void test();
 
