@@ -40,19 +40,19 @@ BlocoP :	TLCH Decs ListCom TRCH
 			| TLCH ListCom TRCH
 			;
 			
-Decs :		Decs Dec	{addToGreatList( $2);	printf("\tadiciona lista a grande lista\n");}
-			| Dec	{addToGreatList( $1);	printf("\tadiciona lista a grande lista\n");}
+Decs :		Decs Dec 	{ /*printf("t1 Adicionando na greatList");*/ addToGreatList( $2);}
+			| Dec 		{ /*printf("t2 Adicionando na greatList");*/ addToGreatList( $1);}
 			;
 			
-Dec :		Tipe Listid TFLIN		{$2 = createList( $1); printf("\tcriando lista de atributos\n");}
+Dec :		Tipe Listid TFLIN 	{ /*printf("criando lista");*/ setTipo($2, $1->tipo); /*putsListId($2);*/ $$ = $2;}
 			;
 			
-Tipe :		TINT		{$$ = createListaPeloTipo(T_INT); printf("\tcriando lista pelo tipo inteiro\n");}
-			| TSTR	{$$ = createListaPeloTipo(T_STR); printf("\tcriando lista pelo tipo string\n");}
+Tipe :		TINT 		{ /*printf("Inteiro\n");*/}
+			| TSTR 		{ /*printf("String\n");*/}
 			;
 			
-Listid :	Listid TVIRG TID	{	addIdToList($$);	printf("\t\tadicionando um id a lista\n");}
-			| TID		{	addIdToList($$);	printf("\t\tadicionando um id a lista\n");}
+Listid :	Listid TVIRG TID 	{ addIdToList($1, $3); /*printf("t1 Adicionando id na lista\n");*/}
+			| TID 				{ addIdToList($$, $1); /*printf("t2 Adicionando id na lista\n");*/}
 			;
 			
 Bloco :		TLCH ListCom TRCH

@@ -18,7 +18,9 @@ typedef struct
 	int tipo;
 	struct Atributo* listaInt;
 	struct Atributo* listaStr;
+	struct Atributo* listaNotYet;
 } ListaAtributos, *pListaAtributos;
+
 
 typedef struct
 {
@@ -27,35 +29,29 @@ typedef struct
 	struct Atributo* proximo;
 } Atributo, *pAtributo;
 
-/*
-typedef struct Atributo
+
+typedef struct
 {
-	int tipo;
-	char nomeId[21];
-	lista *listaId;
-	int num;
-};
-*/
+	int label;
+	int byte_code;
+	int parametro_1;
+	int parametro_2;
+} Instrucao, *pInstrucao;
 
 pListaAtributos createGreatList();
 void addToGreatList( pListaAtributos newlista);
 
 
-pListaAtributos createListaPeloTipo(int tipo);
-pListaAtributos createList(pListaAtributos tipo);
-
-
+pListaAtributos createListTipo(int tipo);
+pListaAtributos createList( pListaAtributos tipo);
+pListaAtributos createAtributoList( char *nomeId);
 pAtributo createAtributo( char* nomeId);
-
-
 void setTipo( pListaAtributos lista, int tipo);
-
-
-void addIdToList( pListaAtributos lista);
-
+void addIdToList( pListaAtributos lista, pListaAtributos nomeId);
 int verificaExistId( pListaAtributos lista, pAtributo id);
+void putsListId( pListaAtributos lista);
 
-void putsListaId(pListaAtributos lista);
+
 
 void test();
 

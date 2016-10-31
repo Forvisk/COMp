@@ -1335,43 +1335,43 @@ yyreduce:
     {
         case 16:
 #line 43 "gramv2.y" /* yacc.c:1646  */
-    {addToGreatList( (yyvsp[0]));	printf("\tadiciona lista a grande lista\n");}
+    { /*printf("t1 Adicionando na greatList");*/ addToGreatList( (yyvsp[0]));}
 #line 1340 "gramv2.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 44 "gramv2.y" /* yacc.c:1646  */
-    {addToGreatList( (yyvsp[0]));	printf("\tadiciona lista a grande lista\n");}
+    { /*printf("t2 Adicionando na greatList");*/ addToGreatList( (yyvsp[0]));}
 #line 1346 "gramv2.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 47 "gramv2.y" /* yacc.c:1646  */
-    {(yyvsp[-1]) = createList( (yyvsp[-2])); printf("\tcriando lista de atributos\n");}
+    { /*printf("criando lista");*/ setTipo((yyvsp[-1]), (yyvsp[-2])->tipo); /*putsListId($2);*/ (yyval) = (yyvsp[-1]);}
 #line 1352 "gramv2.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 50 "gramv2.y" /* yacc.c:1646  */
-    {(yyval) = createListaPeloTipo(T_INT); printf("\tcriando lista pelo tipo inteiro\n");}
+    { /*printf("Inteiro\n");*/}
 #line 1358 "gramv2.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 51 "gramv2.y" /* yacc.c:1646  */
-    {(yyval) = createListaPeloTipo(T_STR); printf("\tcriando lista pelo tipo string\n");}
+    { /*printf("String\n");*/}
 #line 1364 "gramv2.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 54 "gramv2.y" /* yacc.c:1646  */
-    {	addIdToList((yyval));	printf("\t\tadicionando um id a lista\n");}
+    { addIdToList((yyvsp[-2]), (yyvsp[0])); /*printf("t1 Adicionando id na lista\n");*/}
 #line 1370 "gramv2.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 55 "gramv2.y" /* yacc.c:1646  */
-    {	addIdToList((yyval));	printf("\t\tadicionando um id a lista\n");}
+    { addIdToList((yyval), (yyvsp[0])); /*printf("t2 Adicionando id na lista\n");*/}
 #line 1376 "gramv2.tab.c" /* yacc.c:1646  */
     break;
 

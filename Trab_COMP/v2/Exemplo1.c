@@ -1,5 +1,5 @@
 {
-	int a, b;
+	int a, b, c;
 	
 	print("Valor de A:");
 	read(a);

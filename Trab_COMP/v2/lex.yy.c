@@ -397,7 +397,7 @@ static yyconst flex_int16_t yy_accept[74] =
 static yyconst YY_CHAR yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
-        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    4,    5,    1,    1,    1,    6,    1,    7,
         8,    9,   10,   11,   12,    1,   13,   14,   14,   14,
@@ -509,7 +509,8 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "gramv2.l"
-#line 513 "lex.yy.c"
+/*"*/
+#line 514 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -729,7 +730,7 @@ YY_DECL
 	{
 #line 10 "gramv2.l"
 
-#line 733 "lex.yy.c"
+#line 734 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -809,12 +810,12 @@ YY_RULE_SETUP
 case 5:
 YY_RULE_SETUP
 #line 15 "gramv2.l"
-{ return TINT;}
+{ /*printf("criando inteiros\n");*/ yylval = createListTipo(T_INT);return TINT;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 16 "gramv2.l"
-{ return TSTR;}
+{ /*printf("criando inteiros\n");*/ yylval = createListTipo(T_STR); return TSTR;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
@@ -944,12 +945,12 @@ YY_RULE_SETUP
 case 32:
 YY_RULE_SETUP
 #line 42 "gramv2.l"
-{ yylval->numTemp = atoi(yytext);	return TNUM;}
+{ return TNUM;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 43 "gramv2.l"
-{ strncpy(yylval->nomeIdTemp, yytext, 20); return TID;}
+{ /*printf("Criando id %s : %i\n", yytext, linha);*/ yylval = createAtributoList( yytext); return TID;}
 	YY_BREAK
 case 34:
 /* rule 34 can match eol */
@@ -962,7 +963,7 @@ YY_RULE_SETUP
 #line 45 "gramv2.l"
 ECHO;
 	YY_BREAK
-#line 966 "lex.yy.c"
+#line 967 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

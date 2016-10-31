@@ -1,19 +1,19 @@
-delim[\t \r]
+delim[\t ]
 ws {delim}+
 digito [0-9]
 caractere [A-Za-z]
 num {digito}+
 id {caractere}+
 literal \".*\"
-
+/*"*/
 
 %%
 {ws}	{}
 "if"	    { return TIF;}
 "else"	  { return TELSE;}
 "while"   { return TWHILE;}
-"int"     { return TINT;}
-"String"  { return TSTR;}
+"int"     { /*printf("criando inteiros\n");*/ yylval = createListTipo(T_INT);return TINT;}
+"String"  { /*printf("criando inteiros\n");*/ yylval = createListTipo(T_STR); return TSTR;}
 "void"    { return TVOID;}
 "read"    { return TREAD;}
 "print"   { return TPRINT;}
@@ -39,6 +39,6 @@ literal \".*\"
 ","       { return TVIRG;}
 ";"       { return TFLIN;}
 {literal} { return TLIT;}
-{num}     { yylval->numTemp = atoi(yytext);	return TNUM;}
-{id}      { strncpy(yylval->nomeIdTemp, yytext, 20); return TID;}
-"\n"      { linha++;}
+{num}     { return TNUM;}
+{id}      { /*printf("Criando id %s : %i\n", yytext, linha);*/ yylval = createAtributoList( yytext); return TID;}
+"\n"	  { linha++;}
