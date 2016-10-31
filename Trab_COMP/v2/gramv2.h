@@ -38,17 +38,20 @@ typedef struct Atributo
 */
 
 pListaAtributos createGreatList();
+void addToGreatList( pListaAtributos newlista);
+
 
 pListaAtributos createListaPeloTipo(int tipo);
 pListaAtributos createList(pListaAtributos tipo);
 
+
 pAtributo createAtributo( char* nomeId);
+
 
 void setTipo( pListaAtributos lista, int tipo);
 
-void addIdToList( pListaAtributos lista);
 
-void addToGreatList( pListaAtributos newlista);
+void addIdToList( pListaAtributos lista);
 
 int verificaExistId( pListaAtributos lista, pAtributo id);
 
