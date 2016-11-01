@@ -7,7 +7,6 @@
 #define T_STR 2
 #define T_TODEF -1
 
-/*
 #define IADD 0x60
 #define ISUB 0x64
 #define IMUL 0x68
@@ -17,7 +16,7 @@
 #define ILOAD 0x15
 
 #define BIPUSH 0x10
-#define LDC 0x12
+#define ldc 0x12
 
 #define ICONST_0 0x03
 #define ICONST_1 0x04
@@ -25,7 +24,6 @@
 #define ICONST_3 0x06
 #define ICONST_4 0x07
 #define ICONST_5 0x08
-*/
 
 
 
@@ -54,13 +52,13 @@ typedef struct
 } Atributo, *pAtributo;
 
 
-/*typedef struct
+typedef struct
 {
 	int label;
 	int byte_code;
 	int parametro_1;
 	int parametro_2;
-} Instrucao, *pInstrucao;*/
+} Instrucao, *pInstrucao;
 
 pListaAtributos createGreatList();
 void addToGreatList( pListaAtributos newlista);

@@ -13,8 +13,7 @@ extern FILE *yyin;
 */
 
 pListaAtributos greatList;
-
-//Instrucao listaInstrucao[200];
+Instrucao listaInstrucao[200];
 
 int posValGlobal = 1;
 
