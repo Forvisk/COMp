@@ -86,7 +86,7 @@ int getPosVal( pAtributo atributo);
 
 pListaAtributos createAtributoNum( int num);
 
-int addIntrucaoLista( int byte_code, int parametro_1, int parametro_2);
+int addInstrucaoLista( int byte_code, int parametro_1, int parametro_2);
 int addNumLista( int num);
 
 void testIdList();
