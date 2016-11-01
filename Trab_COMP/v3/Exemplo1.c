@@ -16,6 +16,7 @@
 			b = b - a;
 		}
 	}
+	b = 4;
 	print("\nRes=");
 	print(a);
 }

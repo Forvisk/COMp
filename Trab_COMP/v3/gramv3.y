@@ -1,7 +1,5 @@
 %{
-#include <stdio.h>
-#include <stdlib.h>
-#include "gramv2.h"
+#include "gramv3.h"
 #define YYSTYPE pListaAtributos
 
 int linha = 0;
@@ -121,21 +119,21 @@ ExpRela :	ExpAr TIGUAL ExpAr
 			| ExpAr TMENOR ExpAr
 			;
 			
-ExpAr :		ExpAr TADD Am
-			| ExpAr TSUB Am
+ExpAr :		ExpAr TADD Am		{printf("\nadiciona IADD"); addInstrucaoLista( IADD, INVAL, INVAL);}
+			| ExpAr TSUB Am		{printf("\nadiciona ISUB"); addInstrucaoLista( ISUB, INVAL, INVAL);}
 			| Am
 			;
 			
-Am :		Am TMUL An
-			| Am TDIV An
+Am :		Am TMUL An 			{printf("\nadiciona IMUL"); addInstrucaoLista( IMUL, INVAL, INVAL);}
+			| Am TDIV An 		{printf("\nadiciona IDIV"); addInstrucaoLista( IDIV, INVAL, INVAL);}
 			| An
 			;
 			
-An :		TSUB An
+An :		TSUB An 			{printf("\nadiciona INEG"); addInstrucaoLista( INEG, INVAL, INVAL);}
 			| TLPAR ExpAr TRPAR
-			| TID
+			| TID 					{printf("\nID %s", $1 -> nomeIdTemp);}
 			| Cfunc
-			| TNUM
+			| TNUM					{printf("\nNUM %i", $1 -> numTemp);}
 			;
 
 %%

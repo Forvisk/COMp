@@ -7,29 +7,36 @@
 #define T_STR 2
 #define T_TODEF -1
 
-#define IADD 0x60
-#define ISUB 0x64
-#define IMUL 0x68
-#define IDIV 0x6C
+#define INVAL -1
 
-#define ISTORE 0x36
-#define ILOAD 0x15
+#define IADD 0x60 	//adicao
+#define ISUB 0x64	//subtracao
+#define IMUL 0x68	//multiplicacao
+#define IDIV 0x6C	//divisao
 
-#define BIPUSH 0x10
-#define ldc 0x12
+#define INEG 0x74	//multiplicar por -1
 
-#define ICONST_0 0x03
-#define ICONST_1 0x04
-#define ICONST_2 0x05
-#define ICONST_3 0x06
-#define ICONST_4 0x07
-#define ICONST_5 0x08
+#define ISTORE 0x36	//armazena em memoria (ISTORE PAR1)
+#define ILOAD 0x15	//carrega da memoria (ILOAD PAR1)
+
+#define BIPUSH 0x10	//adiciona valor na pilha (BIPUSH PAR1) (6 =< PAR1 =< 127)
+#define LDC 0x12	//adiciona valor na pilha (LDC PAR1) ( 127 < PAR1)
+
+#define ICONST_0 0x03	//adiciona 0 na pilha
+#define ICONST_1 0x04	//adiciona 1 na pilha
+#define ICONST_2 0x05	//adiciona 2 na pilha
+#define ICONST_3 0x06 	//adiciona 3 na pilha
+#define ICONST_4 0x07	//adiciona 4 na pilha
+#define ICONST_5 0x08	//adiciona 5 na pilha
+
+#define IAND	0x7E	//and
+#define IOR 	0x80 	//or
 
 
 
 
-#ifndef __gramv2__
-#define __gramv2__
+#ifndef __gramv3__
+#define __gramv3__
 
 typedef struct
 {
@@ -68,13 +75,21 @@ pListaAtributos createListTipo(int tipo);
 pListaAtributos createList( pListaAtributos tipo);
 pListaAtributos createAtributoList( char *nomeId);
 pAtributo createAtributo( char* nomeId);
+
 void setTipo( pListaAtributos lista, int tipo);
 void addIdToList( pListaAtributos lista, pListaAtributos nomeId);
 int verificaExistId( pListaAtributos lista, pAtributo id);
 void putsListId( pListaAtributos lista);
 
-pListaAtributos createAtributoNum( char* num);
+pAtributo buscaAtributo( char* nomeId);
+int getPosVal( pAtributo atributo);
 
-void test();
+pListaAtributos createAtributoNum( int num);
+
+int addIntrucaoLista( int byte_code, int parametro_1, int parametro_2);
+int addNumLista( int num);
+
+void testIdList();
+void testInstrucoes();
 
 #endif
