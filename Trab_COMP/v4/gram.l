@@ -39,6 +39,6 @@ literal \".*\"
 ","       { return TVIRG;}
 ";"       { return TFLIN;}
 {literal} { return TLIT;}
-{num}     { /*printf("Criando num %s : %i\n", yytext, linha);*/ yylval = createNum( atoi(yytext)); return TNUM;}
-{id}      { /*printf("Criando id %s : %i\n", yytext, linha);*/ yylval = createId( yytext); return TID;}
+{num}     { yylval = createNum( atoi(yytext)); return TNUM;}
+{id}      { yylval = createId( yytext); return TID;}
 "\n"	  { linha++;}

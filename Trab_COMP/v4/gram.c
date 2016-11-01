@@ -33,14 +33,14 @@ int main(int argc, char const *argv[])
 	fclose(yyin);
 
 	putsListId(greatList);
-	//putsListaInstrucao();
+	putsListaInstrucao();
 	return 0;
 }
 
 /*________________________________________________________________________________________*/
 void putsListId( pListaAtributos lista){
 	printf("\nTabela de simbolos %p:\n", (void*)lista);
-	printf("\tsimbolo\n");
+	printf("\tsimbolo\n\n");
 	if( lista->lista != NULL){
 		pAtributo aux = lista->lista;
 		do{
@@ -48,7 +48,7 @@ void putsListId( pListaAtributos lista){
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
-	printf("\t__\n");
+	printf("\n");
 }
 
 void putsListaInstrucao(){

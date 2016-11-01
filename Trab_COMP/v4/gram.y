@@ -15,23 +15,23 @@ Prog : 		ListFunc BlocoP
 			| BlocoP
 			;
 			
-ListFunc : 	ListFunc Func	{ printf("t1"); addToGreatList( $2);}
-			| Func 			{ printf("t2"); addToGreatList( $1);}
+ListFunc : 	ListFunc Func	{ addToGreatList( $2);}
+			| Func 			{ addToGreatList( $1);}
 			;
 			
-Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{ printf("t3"); addIdToList( $$, $2);}
-			| TipeReturn TID TLPAR TRPAR		{ printf("t4"); addIdToList( $$, $2);}
+Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{ $$ = createList(); addIdToList( $$, $2); addToGreatList($4);}
+			| TipeReturn TID TLPAR TRPAR		{ $$ = createList(); addIdToList( $$, $2);}
 			;
 
 TipeReturn :	Tipe
 			| TVOID
 			;
 
-DecPar :	DecPar TVIRG Par 	{ printf("t5"); addToGreatList( $3);}
-			| Par 				{ printf("t6"); addToGreatList( $1);}
+DecPar :	DecPar TVIRG Par 	{ addIdToList( $1, $3);}
+			| Par 				{ addIdToList( $$, $1);}
 			;
 			
-Par :		Tipe TID 	{ printf("t7"); addIdToList( $$, $2);}
+Par :		Tipe TID 	{ addIdToList( $$, $2);}
 			;
 			
 BlocoP :	TLCH Decs ListCom TRCH
@@ -49,8 +49,8 @@ Tipe :		TINT
 			| TSTR 
 			;
 			
-Listid :	Listid TVIRG TID 	{ /*printf("add %p : %s\n", $1, $3 -> nomeIdTemp);*/ addIdToList($1, $3);}
-			| TID 				{ /*printf("add %p : %s\n", $$, $1 -> nomeIdTemp);*/ addIdToList($$, $1);}
+Listid :	Listid TVIRG TID 	{ addIdToList($1, $3);}
+			| TID 				{ addIdToList($$, $1);}
 			;
 			
 Bloco :		TLCH ListCom TRCH
