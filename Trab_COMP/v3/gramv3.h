@@ -32,6 +32,8 @@
 #define IAND	0x7E	//and
 #define IOR 	0x80 	//or
 
+//#define 
+
 
 
 
@@ -79,6 +81,7 @@ pAtributo createAtributo( char* nomeId);
 void setTipo( pListaAtributos lista, int tipo);
 void addIdToList( pListaAtributos lista, pListaAtributos nomeId);
 int verificaExistId( pListaAtributos lista, pAtributo id);
+
 void putsListId( pListaAtributos lista);
 
 pAtributo buscaAtributo( char* nomeId);
@@ -86,8 +89,11 @@ int getPosVal( pAtributo atributo);
 
 pListaAtributos createAtributoNum( int num);
 
+int addInstrucaoListaAtributo( int byte_code, char* nomeId);
 int addInstrucaoLista( int byte_code, int parametro_1, int parametro_2);
 int addNumLista( int num);
+
+void putsListaInstrucao();
 
 void testIdList();
 void testInstrucoes();

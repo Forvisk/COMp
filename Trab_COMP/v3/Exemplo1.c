@@ -16,7 +16,12 @@
 			b = b - a;
 		}
 	}
-	b = 4;
+	b = 4 + a;
+	a = b / 1;
+	b = a * 3;
+	b = -b;
+	b = 120;
+	b = 130;
 	print("\nRes=");
 	print(a);
 }

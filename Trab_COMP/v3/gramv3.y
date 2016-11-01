@@ -80,7 +80,7 @@ Cse :		TIF TLPAR ExpLog TRPAR Bloco
 Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco
 			;
 			
-Catr :		TID TATR ExpAr TFLIN
+Catr :		TID TATR ExpAr TFLIN		{printf("\natribuindo algo a %i", $1 -> nomeIdTemp ); int aux = addParametroPosVal($1 -> nomeIdTemp); if( aux != INVAL) addInstrucaoLista( ISTORE, aux, INVAL);}
 			| TID TATR TLIT TFLIN
 			;
 			
@@ -121,19 +121,19 @@ ExpRela :	ExpAr TIGUAL ExpAr
 			
 ExpAr :		ExpAr TADD Am		{printf("\nadiciona IADD"); addInstrucaoLista( IADD, INVAL, INVAL);}
 			| ExpAr TSUB Am		{printf("\nadiciona ISUB"); addInstrucaoLista( ISUB, INVAL, INVAL);}
-			| Am
+			| Am				{printf("\nExpAr -> Am"); $$ = $1;}
 			;
 			
 Am :		Am TMUL An 			{printf("\nadiciona IMUL"); addInstrucaoLista( IMUL, INVAL, INVAL);}
 			| Am TDIV An 		{printf("\nadiciona IDIV"); addInstrucaoLista( IDIV, INVAL, INVAL);}
-			| An
+			| An 				{printf("\nAm -> An"); $$ = $1;}
 			;
 			
 An :		TSUB An 			{printf("\nadiciona INEG"); addInstrucaoLista( INEG, INVAL, INVAL);}
 			| TLPAR ExpAr TRPAR
-			| TID 					{printf("\nID %s", $1 -> nomeIdTemp);}
+			| TID 					{printf("\nID %s", $1 -> nomeIdTemp); int aux = addParametroPosVal($1 -> nomeIdTemp); if( aux != INVAL) addInstrucaoLista( ILOAD, aux, INVAL);}
 			| Cfunc
-			| TNUM					{printf("\nNUM %i", $1 -> numTemp);}
+			| TNUM					{printf("\nNUM %i", $1 -> numTemp); addNumLista( $1 -> numTemp);}
 			;
 
 %%

@@ -32,8 +32,8 @@ int main(int argc, char const *argv[])
 	}
 	fclose(yyin);
 
-	//test();
 	putsListId(greatList);
+	putsListaInstrucao();
 	return 0;
 }
 
@@ -456,11 +456,14 @@ pAtributo buscaAtributo( char* nomeId){
 	return NULL;
 }
 
-int getPosVal( pAtributo atributo){
-	if( atributo != NULL)
+int addParametroPosVal( char* nomeId){
+	pAtributo atributo = buscaAtributo( nomeId);
+	if( atributo != NULL){
 		return atributo -> posVal;
-	else
-		return -1;
+	}else{
+		printf("Atributo não existe\n");
+		return INVAL;
+	}
 }
 
 int addInstrucaoLista( int byte_code, int parametro_1, int parametro_2){
@@ -552,6 +555,20 @@ int addNumLista(int num){
 
 	}
 	return 0;
+}
+
+void putsListaInstrucao(){
+	int numIntrucoes = 0;
+	printf("\nLista de instruções:\n");
+	while( listaInstrucao[ numIntrucoes] != NULL){
+		printf("Intrucao: %p\n\tPar1 %i Par2 %i\n\tlabel: %i\n",
+												 listaInstrucao[ numIntrucoes]->byte_code,
+												 listaInstrucao[ numIntrucoes]->parametro_1,
+												 listaInstrucao[ numIntrucoes]->parametro_2,
+												 listaInstrucao[ numIntrucoes]-> label
+												 );
+		numIntrucoes++;
+	}
 }
 
 void testIdList(){
