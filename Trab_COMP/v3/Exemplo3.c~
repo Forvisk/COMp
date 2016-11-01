@@ -9,7 +9,7 @@ int fat(int n)
 		a = b - 1;
 	}
 }
-void test(){
+{
 	int n, x;
 	
 	print("Valor:");

@@ -1,4 +1,4 @@
-void main(int k, String h){
+void main(){
 	int a, b, c, d;
 	String e, f, g;
 	printf("");

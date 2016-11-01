@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
 	fclose(yyin);
 
 	putsListId(greatList);
-	putsListaInstrucao();
+	//putsListaInstrucao();
 	return 0;
 }
 
@@ -130,7 +130,7 @@ void addToGreatList( pListaAtributos newlista){
 	}else if( newlista -> tipo == T_STR){
 		/*	da lista de strings	*/
 		if( newlista -> listaStr == NULL){
-			//printf("Lista Not Yet vazia\n");
+			//printf("Lista string vazia\n");
 		}else{
 			pAtributo aux = newlista -> listaStr;
 			pAtributo auxGreat = greatList -> listaStr;
@@ -172,6 +172,7 @@ void addToGreatList( pListaAtributos newlista){
 		}
 		/*	da lista não definida	*/
 		if( newlista -> listaNotYet != NULL){
+			//printf("lista not yet\n");
 			pAtributo aux = newlista -> listaNotYet;
 			pAtributo auxGreat = greatList -> listaStr;
 			pAtributo auxDel;
@@ -220,16 +221,16 @@ void addToGreatList( pListaAtributos newlista){
 			pAtributo auxGreat = greatList -> listaNotYet;
 			pAtributo auxDel;
 			do{
-				if( greatList -> listaStr == NULL){
+				if( greatList -> listaNotYet == NULL){
 					if( verificaExistId( greatList, aux)){
 
 						int posAux = posValGlobal;
 						posValGlobal = aux -> posVal;
-						greatList -> listaStr = createAtributo( aux -> nomeId);
+						greatList -> listaNotYet = createAtributo( aux -> nomeId);
 						posValGlobal = posAux;
 
 						auxGreat = greatList -> listaNotYet;
-						//printf("\tprimeiro string da greatList: %s\n", auxGreat->nomeId);
+						//printf("\tprimeiro void da greatList: %s\n", auxGreat->nomeId);
 					}
 				}else{
 					while( auxGreat -> proximo != NULL){
@@ -244,7 +245,7 @@ void addToGreatList( pListaAtributos newlista){
 						posValGlobal = posAux;
 
 						auxGreat = auxGreat -> proximo;
-						//printf("\tnovo string na greatList: %s\n", auxGreat->nomeId);
+						//printf("\tnovo void na greatList: %s\n", auxGreat->nomeId);
 					}
 				}
 
@@ -262,31 +263,37 @@ void addToGreatList( pListaAtributos newlista){
 
 /*________________________________________________________________________________________*/
 void putsListId( pListaAtributos lista){
-	printf("\nLista %p:\n", (void*)lista);
+	printf("\nTabela de simbolos %p:\n", (void*)lista);
+	printf("\ttipo\t\tsimbolo\tposVal\tnum\n\n");
 	if( lista->tipo == T_TODEF){
-		printf("\tLista sem tipo\n");
+		//printf("\tLista void\n");
+	}else if( lista->tipo == T_INT){
+		//printf("\tLista int\n");
+	}else if( lista->tipo == T_STR){
+		//printf("\tLista string\n");
 	}
 	if( lista->listaInt != NULL){
 		pAtributo aux = lista->listaInt;
 		do{
-			printf("\tinteiro\t%s\t%i\tnum = %i\n", aux->nomeId, aux->posVal, aux->num);
+			printf("\tinteiro\t\t%s\t%i\tnum = %i\n", aux->nomeId, aux->posVal, aux->num);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
 	if( lista->listaStr != NULL){
 		pAtributo aux = lista->listaStr;
 		do{
-			printf("\tstring\t%s\t%i\n", aux->nomeId, aux->posVal);
+			printf("\tstring\t\t%s\t%i\n", aux->nomeId, aux->posVal);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
 	if( lista->listaNotYet != NULL){
 		pAtributo aux = lista->listaNotYet;
 		do{
-			printf("\tnot yet\t%s\t%i\n", aux->nomeId, aux->posVal);
+			printf("\tvoid\t\t%s\t%i\n", aux->nomeId, aux->posVal);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
+	printf("\n");
 }
 
 void putsListaInstrucao(){
@@ -329,7 +336,7 @@ pAtributo buscaAtributo( char* nomeId){
 		aux = greatList -> listaInt;
 		do{
 			if( strncmp( aux -> nomeId, nomeId, 20) == 0){
-				printf("\tverificando se %s == %s:", aux->nomeId, nomeId);
+				//printf("\tverificando se %s == %s:", aux->nomeId, nomeId);
 				return aux;
 			}
 			aux = aux -> proximo;
@@ -340,7 +347,7 @@ pAtributo buscaAtributo( char* nomeId){
 		aux = greatList -> listaStr;
 		do{
 			if( strncmp( aux -> nomeId, nomeId, 20) == 0){
-				printf("\tverificando se %s == %s:", aux->nomeId, nomeId);
+				//printf("\tverificando se %s == %s:", aux->nomeId, nomeId);
 				return aux;
 			}
 			aux = aux -> proximo;

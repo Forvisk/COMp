@@ -14,7 +14,7 @@ literal \".*\"
 "while"   { return TWHILE;}
 "int"     { /*printf("criando inteiros\n");*/ yylval = createListTipo(T_INT);return TINT;}
 "String"  { /*printf("criando string\n");*/ yylval = createListTipo(T_STR); return TSTR;}
-"void"    { return TVOID;}
+"void"    { yylval = createListTipo(T_TODEF); return TVOID;}
 "read"    { return TREAD;}
 "print"   { return TPRINT;}
 "return"  { return TRET;}
@@ -39,6 +39,6 @@ literal \".*\"
 ","       { return TVIRG;}
 ";"       { return TFLIN;}
 {literal} { return TLIT;}
-{num}     { printf("Criando num %s : %i", yytext, linha); yylval = createAtributoNum( atoi(yytext)); return TNUM;}
+{num}     { /*printf("Criando num %s : %i\n", yytext, linha);*/ yylval = createAtributoNum( atoi(yytext)); return TNUM;}
 {id}      { /*printf("Criando id %s : %i\n", yytext, linha);*/ yylval = createAtributoList( yytext); return TID;}
 "\n"	  { linha++;}

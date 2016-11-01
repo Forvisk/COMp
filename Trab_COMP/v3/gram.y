@@ -15,23 +15,23 @@ Prog : 		ListFunc BlocoP
 			| BlocoP
 			;
 			
-ListFunc : 	ListFunc Func	
-			| Func
+ListFunc : 	ListFunc Func	{ /*printf("t1 Adicionando na greatList");*//*putsListId($2);*/ addToGreatList( $2);}
+			| Func 			{ /*printf("t2 Adicionando na greatList");*//*putsListId($1);*/ addToGreatList( $1);}
 			;
 			
-Func : 		TipeReturn TID TLPAR DecPar TRPAR
-			| TipeReturn TID TLPAR TRPAR
+Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{setTipo( $$, $1 -> tipo); addIdToList( $$, $2);}
+			| TipeReturn TID TLPAR TRPAR		{setTipo( $$, $1 -> tipo); addIdToList( $$, $2);}
 			;
 
 TipeReturn :	Tipe
 			| TVOID
 			;
 
-DecPar :	DecPar TVIRG Par
-			| Par
+DecPar :	DecPar TVIRG Par 	{ /*printf("t2 Adicionando na greatList");*//*putsListId($3);*/ addToGreatList( $3);}
+			| Par 				{ /*printf("t2 Adicionando na greatList");*//*putsListId($1);*/ addToGreatList( $1);}
 			;
 			
-Par :		Tipe TID
+Par :		Tipe TID 	{setTipo( $$, $1 -> tipo); addIdToList( $$, $2);}
 			;
 			
 BlocoP :	TLCH Decs ListCom TRCH
@@ -42,7 +42,7 @@ Decs :		Decs Dec 	{ /*printf("t1 Adicionando na greatList");*/ addToGreatList( $
 			| Dec 		{ /*printf("t2 Adicionando na greatList");*/ addToGreatList( $1);}
 			;
 			
-Dec :		Tipe Listid TFLIN 	{ /*printf("criando lista");*/ setTipo($2, $1->tipo); /*putsListId($2);*/ $$ = $2;}
+Dec :		Tipe Listid TFLIN 	{/* printf("criando lista tipo %i\n", $1->tipo);*/ setTipo($2, $1->tipo);/* putsListId($2);*/ $$ = $2;}
 			;
 			
 Tipe :		TINT 		{ /*printf("Inteiro\n");*/}
@@ -80,7 +80,7 @@ Cse :		TIF TLPAR ExpLog TRPAR Bloco
 Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco
 			;
 			
-Catr :		TID TATR ExpAr TFLIN		{	printf("\natribuindo algo a %s", $1 -> nomeIdTemp );
+Catr :		TID TATR ExpAr TFLIN		{	/*printf("\natribuindo algo a %s", $1 -> nomeIdTemp );*/
 										 	int posVal = getPosValId($1 -> nomeIdTemp);
 										 	if( posVal != INVAL){ 
 										 		addInstrucaoLista( ISTORE, posVal, INVAL);
@@ -125,21 +125,21 @@ ExpRela :	ExpAr TIGUAL ExpAr
 			| ExpAr TMENOR ExpAr
 			;
 			
-ExpAr :		ExpAr TADD Am		{printf("\nadiciona IADD"); addInstrucaoLista( IADD, INVAL, INVAL);}
-			| ExpAr TSUB Am		{printf("\nadiciona ISUB"); addInstrucaoLista( ISUB, INVAL, INVAL);}
-			| Am				{printf("\nExpAr -> Am"); $$ = $1;}
+ExpAr :		ExpAr TADD Am		{/*printf("\nadiciona IADD");*/ addInstrucaoLista( IADD, INVAL, INVAL);}
+			| ExpAr TSUB Am		{/*printf("\nadiciona ISUB");*/ addInstrucaoLista( ISUB, INVAL, INVAL);}
+			| Am				{/*printf("\nExpAr -> Am");*/ $$ = $1;}
 			;
 			
-Am :		Am TMUL An 			{printf("\nadiciona IMUL"); addInstrucaoLista( IMUL, INVAL, INVAL);}
-			| Am TDIV An 		{printf("\nadiciona IDIV"); addInstrucaoLista( IDIV, INVAL, INVAL);}
-			| An 				{printf("\nAm -> An"); $$ = $1;}
+Am :		Am TMUL An 			{/*printf("\nadiciona IMUL");*/ addInstrucaoLista( IMUL, INVAL, INVAL);}
+			| Am TDIV An 		{/*printf("\nadiciona IDIV");*/ addInstrucaoLista( IDIV, INVAL, INVAL);}
+			| An 				{/*printf("\nAm -> An");*/ $$ = $1;}
 			;
 			
-An :		TSUB An 			{printf("\nadiciona INEG"); addInstrucaoLista( INEG, INVAL, INVAL);}
+An :		TSUB An 			{/*printf("\nadiciona INEG");*/ addInstrucaoLista( INEG, INVAL, INVAL);}
 			| TLPAR ExpAr TRPAR
-			| TID 					{printf("\nID %s", $1 -> nomeIdTemp); int aux = getPosValId($1 -> nomeIdTemp); if( aux != INVAL) addInstrucaoLista( ILOAD, aux, INVAL);}
+			| TID 					{/*printf("\nID %s", $1 -> nomeIdTemp);*/ int aux = getPosValId($1 -> nomeIdTemp); if( aux != INVAL) addInstrucaoLista( ILOAD, aux, INVAL);}
 			| Cfunc
-			| TNUM					{printf("\nNUM %i", $1 -> numTemp); addNumLista( $1 -> numTemp);}
+			| TNUM					{/*printf("\nNUM %i", $1 -> numTemp);*/ addNumLista( $1 -> numTemp);}
 			;
 
 %%
