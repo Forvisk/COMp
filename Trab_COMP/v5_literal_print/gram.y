@@ -104,10 +104,9 @@ Catr :		TID TATR ExpAr TFLIN		{	int posVal = 1;/*posicao temporaria*/
 Cread :		TREAD TLPAR TID TRPAR TFLIN
 			;
 			
-Cprint :	TPRINT Cnprint TLPAR ExpAr TRPAR TFLIN		{	printf("\nArrumar print( INT )\n"); 
-															addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL);
+Cprint :	TPRINT Cnprint TLPAR ExpAr TRPAR TFLIN		{	addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL);
 														}
-			| TPRINT Cnprint TLPAR TLIT TRPAR TFLIN 	{ 	addInstrucaoLista( LDC, $4->literal, INVAL);
+			| TPRINT Cnprint TLPAR TLIT TRPAR TFLIN 	{ 	addInstrucaoLista( LDC, addLiteralLista( $4), INVAL);
 															addInstrucaoLista( INVOKEVIRTUAL, PRINT_STR, INVAL);
 														}
 			;
@@ -121,9 +120,11 @@ Cfunc :		TID TLPAR ListPar TRPAR TFLIN
 			;
 			
 ListPar :	ListPar TVIRG ExpAr
-			| ListPar TVIRG TLIT
+			| ListPar TVIRG TLIT 	{	addLiteralLista($3);
+									}
 			| ExpAr
-			| TLIT
+			| TLIT 					{	addLiteralLista($1);
+									}
 			;
 			
 ExpLog :	ExpLog TAND FLog

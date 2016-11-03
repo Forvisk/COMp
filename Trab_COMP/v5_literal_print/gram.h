@@ -73,11 +73,11 @@ typedef struct
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
-/*typedef struct
+typedef struct
 {
 	char* literal;
 	struct listaLiteral* proximo;
-} listaLiteral, *pListaLiteral;*/
+} ListaLiteral, *pListaLiteral;
 
    /*____________________________*/
   /*			gram.c 			*/
@@ -89,6 +89,7 @@ void putsListaInstrucao();
 
 pListaAtributos getGreatList();
 pInstrucao* getListaInstrucao();
+pListaLiteral getListaLiteral();
 
    /*____________________________*/
   /*		gramListId.c 		*/
