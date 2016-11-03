@@ -135,3 +135,24 @@ int existeId( pListaAtributos lista, char* nomeId){
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
+
+char* buscaId( char* nomeId){
+	pListaAtributos lista = getGreatList();
+	if( lista -> lista == NULL){
+		return INVAL;
+	}else{
+		pAtributo aux = lista -> lista;
+		while( aux -> proximo != NULL){
+			//printf("Verificando se %s == %s\n", aux -> nomeId, nomeId);
+			if( strncmp( aux -> nomeId, nomeId, 20) == 0)
+				return 0;
+			aux = aux -> proximo;
+		}
+		char* ret = (char*)malloc( sizeof( strlen( aux->nomeId) + 1));
+		strcpy( ret, aux->nomeId);
+		return ret;
+	}
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/

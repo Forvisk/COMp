@@ -55,7 +55,7 @@ void putsListId( pListaAtributos lista){
 	if( lista->lista != NULL){
 		pAtributo aux = lista->lista;
 		do{
-			printf("\t%s\n", aux->nomeId);
+			printf("\t%s\t%i\n", aux->nomeId, aux->nomeId);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}

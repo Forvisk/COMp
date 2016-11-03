@@ -15,17 +15,6 @@ pListaAtributos createLit( char* literal){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-pListaLiteral createPrimeiroLiteral( pListaAtributos literal){
-	pListaLiteral primeiro = ( ListaLiteral*)malloc( sizeof( ListaLiteral));
-	primeiro -> literal = ( char*)malloc( sizeof(strlen(literal -> literal)+1));
-	strcpy( primeiro -> literal, literal -> literal);
-	primeiro -> proximo = NULL;
-	return primeiro;
-}
-
- /*_________________________________________________________________________________________*/
-/*_________________________________________________________________________________________*/
-
 char* addLiteralLista( pListaAtributos literal){
 	pListaLiteral new = ( ListaLiteral*)malloc( sizeof( ListaLiteral));
 	new -> literal = ( char*)malloc( sizeof( strlen( literal -> literal) + 1));
@@ -44,6 +33,7 @@ char* addLiteralLista( pListaAtributos literal){
 		aux = aux -> proximo;
 	}
 	//printf("%s\n", aux -> literal);
+	free(literal);
 	return aux -> literal;
 }
 

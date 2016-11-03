@@ -106,6 +106,7 @@ void addToGreatList( pListaAtributos newlista);
 
 void addIdToList( pListaAtributos listaFinal, pListaAtributos lista);
 int existeId( pListaAtributos lista, char* nomeId);
+char* buscaId( char* nomeId);
 
    /*____________________________*/
   /*	gramListInstrucoes.c 	*/
@@ -122,6 +123,6 @@ int addNumLista( int num);
 /*____________________________*/
 
 pListaAtributos createLit( char* literal);
-//int addLiteralListaLit( char* literal);
+char* addLiteralLista( pListaAtributos literal);
 
 #endif

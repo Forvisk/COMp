@@ -94,9 +94,7 @@ Cse :		TIF TLPAR ExpLog TRPAR Bloco
 Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco
 			;
 			
-Catr :		TID TATR ExpAr TFLIN		{	int posVal = 1;/*posicao temporaria*/
-										 	if( posVal != INVAL)
-										 		addInstrucaoLista( ISTORE, posVal, INVAL);
+Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoLista( ISTORE, buscaId($1 -> nomeIdTemp), INVAL);
 										}
 			| TID TATR TLIT TFLIN
 			;
@@ -164,9 +162,8 @@ Am :		Am TMUL An 				{	addInstrucaoLista( IMUL, INVAL, INVAL);
 An :		TSUB An 				{	addInstrucaoLista( INEG, INVAL, INVAL);
 									}
 			| TLPAR ExpAr TRPAR
-			| TID 					{ 	int aux = 1;/*valor temporario*/
-										if( aux != INVAL) 
-											addInstrucaoLista( ILOAD, aux, INVAL);
+			| TID 					{ 	/*char* aux = buscaId( $1 -> nomeIdTemp);valor temporario*/
+										addInstrucaoLista( ILOAD, buscaId( $1 -> nomeIdTemp), INVAL);
 									}
 			| Cfunc
 			| TNUM					{	addNumLista( $1 -> numTemp);
