@@ -131,6 +131,16 @@ void putsListaInstrucao(){
 				strncpy(instrucao, "IOR", 10);
 			break;
 
+			case GETSTATIC:
+				strncpy(instrucao, "GETSTATIC", 10);
+			break;
+
+			case INVOKEVIRTUAL:
+				strncpy(instrucao, "INVOKEVIRTUAL", 10);
+			break;
+
+
+
 			default:
 				strncpy(instrucao, "NOT YET", 10);
 

@@ -32,6 +32,11 @@
 #define IAND	0x7E	//and
 #define IOR 	0x80 	//or
 
+#define GETSTATIC 0xB2
+#define INVOKEVIRTUAL 0xB6
+#define SYSTEM_OUT "java/lang/System/out"
+#define PRINT_STR "java/io/PrintStream/println(Ljava/lang/String;)V"
+#define PRINT_INT "java/io/PrintStream/println(Ljava/lang/integer)V"
 //#define 
 
 #ifndef __gramv3__
@@ -43,6 +48,7 @@ typedef struct
 {
 	char nomeIdTemp[21];
 	int numTemp;
+	char* literal;
 	
 	struct Atributo* lista
 } ListaAtributos, *pListaAtributos;
@@ -114,6 +120,7 @@ int addNumLista( int num);
  /*____________________________*/
 /*____________________________*/
 
+pListaAtributos createLit( char* literal);
 //int addLiteralListaLit( char* literal);
 
 #endif

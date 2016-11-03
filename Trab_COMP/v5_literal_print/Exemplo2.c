@@ -2,6 +2,7 @@
 	String nome;
 	print("Qual o seu nome?");
 	read(nome);
-	print("Ola ");
+	print("Ola oi");
 	print(nome);
+	printf( 1 + 2);
 }
