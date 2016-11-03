@@ -1,4 +1,4 @@
-
+	
 #include "gram.h"
 
 extern FILE *yyin;
@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 
 	putsListId(greatList);
 	putsListaInstrucao();
-	putsListaLiteral();
+	//putsListaLiteral();
 	return 0;
 }
 
@@ -55,7 +55,7 @@ void putsListId( pListaAtributos lista){
 	if( lista->lista != NULL){
 		pAtributo aux = lista->lista;
 		do{
-			printf("\t%s\t%i\n", aux->nomeId, aux->nomeId);
+			printf("\t%s\n", aux->nomeId);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
@@ -67,98 +67,19 @@ void putsListId( pListaAtributos lista){
 
 void putsListaInstrucao(){
 	int numIntrucoes = 0;
-	char instrucao[21];
+	//char instrucao[21];
 	printf("\nLista de instruções:\n");
 	while( listaInstrucao[ numIntrucoes] != NULL){
+		printf("Intrucao:\n\t%s", listaInstrucao[ numIntrucoes]->byte_code);
 
-		switch (listaInstrucao[ numIntrucoes] -> byte_code){
-			case IADD:
-				strncpy(instrucao, "IADD", 10);
-			break;
+		if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_1, INVAL, 2000) != 0){
+			printf("\t%s", listaInstrucao[ numIntrucoes] -> parametro_1);
 
-			case ISUB:
-				strncpy(instrucao, "ISUB", 10);
-			break;
-
-			case IMUL:
-				strncpy(instrucao, "IMUL", 10);
-			break;
-
-			case IDIV:
-				strncpy(instrucao, "IDIV", 10);
-			break;
-
-			case INEG:
-				strncpy(instrucao, "INEG", 10);
-			break;
-
-			case ISTORE:
-				strncpy(instrucao, "ISTORE", 10);
-			break;
-
-			case ILOAD:
-				strncpy(instrucao, "ILOAD", 10);
-			break;
-
-			case BIPUSH:
-				strncpy(instrucao, "BIPUSH", 10);
-			break;
-
-			case LDC:
-				strncpy(instrucao, "LDC", 10);
-			break;
-
-			case ICONST_0:
-				strncpy(instrucao, "ICONST_0", 20);
-			break;
-
-			case ICONST_1:
-				strncpy(instrucao, "ICONST_1", 20);
-			break;
-
-			case ICONST_2:
-				strncpy(instrucao, "ICONST_2", 20);
-			break;
-
-			case ICONST_3:
-				strncpy(instrucao, "ICONST_3", 10);
-			break;
-
-			case ICONST_4:
-				strncpy(instrucao, "ICONST_4", 10);
-			break;
-
-			case ICONST_5:
-				strncpy(instrucao, "ICONST_5", 10);
-			break;
-
-			case IAND:
-				strncpy(instrucao, "IAND", 10);
-			break;
-
-			case IOR:
-				strncpy(instrucao, "IOR", 20);
-			break;
-
-			case GETSTATIC:
-				strncpy(instrucao, "GETSTATIC", 20);
-			break;
-
-			case INVOKEVIRTUAL:
-				strncpy(instrucao, "INVOKEVIRTUAL", 20);
-			break;
-
-			default:
-				strncpy(instrucao, "NOT YET", 10);
-
+			if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL, 2000) != 0)
+				printf("\t%s", listaInstrucao[ numIntrucoes] -> parametro_2);
+			
 		}
-		printf("Intrucao: %p\t%s\n\tPar1 %i Par2 %i\n\tlabel: %i\n",
-												 listaInstrucao[ numIntrucoes]->byte_code,
-												 instrucao,
-												 listaInstrucao[ numIntrucoes]->parametro_1,
-												 listaInstrucao[ numIntrucoes]->parametro_2,
-												 listaInstrucao[ numIntrucoes]-> label
-												 );
+		printf("\n\t%i\n", listaInstrucao[ numIntrucoes] -> label);
 		numIntrucoes++;
 	}
 }

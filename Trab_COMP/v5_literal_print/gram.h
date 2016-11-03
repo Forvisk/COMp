@@ -7,36 +7,36 @@
 #define T_STR 2
 #define T_TODEF -1
 
-#define INVAL -1
+#define INVAL "-1"
 
-#define IADD 0x60 	//adicao
-#define ISUB 0x64	//subtracao
-#define IMUL 0x68	//multiplicacao
-#define IDIV 0x6C	//divisao
+#define IADD "iadd"//0x60 	//adicao
+#define ISUB "isub"//0x64	//subtracao
+#define IMUL "imul"//0x68	//multiplicacao
+#define IDIV "idiv"//0x6C	//divisao
 
-#define INEG 0x74	//multiplicar por -1
+#define INEG "ineg"//0x74	//multiplicar por -1
 
-#define ISTORE 0x36	//armazena em memoria (ISTORE PAR1)
-#define ILOAD 0x15	//carrega da memoria (ILOAD PAR1)
+#define ISTORE "istore"//0x36	//armazena em memoria (ISTORE PAR1)
+#define ILOAD "iload"//0x15	//carrega da memoria (ILOAD PAR1)
 
-#define BIPUSH 0x10	//adiciona valor na pilha (BIPUSH PAR1) (6 =< PAR1 =< 127)
-#define LDC 0x12	//adiciona valor na pilha (LDC PAR1) ( 127 < PAR1)
+#define BIPUSH "bipush"//0x10	//adiciona valor na pilha (BIPUSH PAR1) (6 =< PAR1 =< 127)
+#define LDC "ldc"//0x12	//adiciona valor na pilha (LDC PAR1) ( 127 < PAR1)
 
-#define ICONST_0 0x03	//adiciona 0 na pilha
-#define ICONST_1 0x04	//adiciona 1 na pilha
-#define ICONST_2 0x05	//adiciona 2 na pilha
-#define ICONST_3 0x06 	//adiciona 3 na pilha
-#define ICONST_4 0x07	//adiciona 4 na pilha
-#define ICONST_5 0x08	//adiciona 5 na pilha
+#define ICONST_0 "iconst_0"//0x03	//adiciona 0 na pilha
+#define ICONST_1 "iconst_1"//0x04	//adiciona 1 na pilha
+#define ICONST_2 "iconst_2"//0x05	//adiciona 2 na pilha
+#define ICONST_3 "iconst_3"//0x06 	//adiciona 3 na pilha
+#define ICONST_4 "iconst_4"//0x07	//adiciona 4 na pilha
+#define ICONST_5 "iconst_5"//0x08	//adiciona 5 na pilha
 
-#define IAND	0x7E	//and
-#define IOR 	0x80 	//or
+#define IAND	"iand"//0x7E	//and
+#define IOR 	"ior"//0x80 	//or
 
-#define GETSTATIC 0xB2
-#define INVOKEVIRTUAL 0xB6
+#define GETSTATIC "getstatic"//0xB2
+#define INVOKEVIRTUAL "invokevirtual"//0xB6
 #define SYSTEM_OUT "java/lang/System/out"
 #define PRINT_STR "java/io/PrintStream/println(Ljava/lang/String;)V"
-#define PRINT_INT "java/io/PrintStream/println(Ljava/lang/integer)V"
+#define PRINT_INT "java/io/PrintStream/println(I)V"
 //#define 
 
 #ifndef __gramv3__
@@ -58,6 +58,7 @@ typedef struct
 typedef struct
 {
 	char nomeId[21];
+	int posVal;
 	struct Atributo* proximo;
 } Atributo, *pAtributo;
 
@@ -66,9 +67,9 @@ typedef struct
 typedef struct
 {
 	int label;
-	int byte_code;
-	int parametro_1;
-	int parametro_2;
+	char byte_code[21];
+	char* parametro_1;
+	char* parametro_2;
 } Instrucao, *pInstrucao;
 
  /*_________________________________________________________________________________________*/
@@ -113,7 +114,7 @@ char* buscaId( char* nomeId);
  /*____________________________*/
 /*____________________________*/
 
-int addInstrucaoLista( int byte_code, int parametro_1, int parametro_2);
+int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2);
 
 int addNumLista( int num);
 
