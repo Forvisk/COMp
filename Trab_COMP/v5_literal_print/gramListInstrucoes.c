@@ -16,7 +16,7 @@ int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2)
 		printf("\nLista de instruções cheia\n");
 		return 0;
 	}
-
+	printf("%s %s %s", byte_code, parametro_1, parametro_2);
 	listaInstrucao[ numIntrucoes] = (Instrucao*)malloc(sizeof(Instrucao));
 	listaInstrucao[ numIntrucoes] -> parametro_1 = ( char*)malloc( sizeof( strlen( parametro_1) + 1));
 	listaInstrucao[ numIntrucoes] -> parametro_2 = ( char*)malloc( sizeof( strlen( parametro_2) + 1));

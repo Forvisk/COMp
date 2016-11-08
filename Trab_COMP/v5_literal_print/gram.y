@@ -94,7 +94,8 @@ Cse :		TIF TLPAR ExpLog TRPAR Bloco
 Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco
 			;
 			
-Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoLista( ISTORE, $1 -> nomeIdTemp, INVAL);
+Catr :		TID TATR ExpAr TFLIN		{	/*addInstrucaoLista( ISTORE, getPosVal($1 -> nomeIdTemp), INVAL);*/
+											addInstrucaoLista( ISTORE, $1 -> nomeIdTemp, INVAL);
 										}
 			| TID TATR TLIT TFLIN
 			;
@@ -163,7 +164,8 @@ An :		TSUB An 				{	addInstrucaoLista( INEG, INVAL, INVAL);
 									}
 			| TLPAR ExpAr TRPAR
 			| TID 					{ 	/*printf("\nlinha: %i _ ", linha);
-										printf("Existe id: %i, %s\n", existeId(getGreatList(), $1->nomeIdTemp), $1 -> nomeIdTemp);*/
+										printf("Existe id: %i, %s\n", existeId(getGreatList(), getPosVal($1->nomeIdTemp), $1 -> nomeIdTemp);*/
+										/*addInstrucaoLista( ILOAD, getPosVal($1->nomeIdTemp), INVAL);*/
 										addInstrucaoLista( ILOAD, $1->nomeIdTemp, INVAL);
 									}
 			| Cfunc

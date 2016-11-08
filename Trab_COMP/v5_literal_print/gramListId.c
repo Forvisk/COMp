@@ -1,3 +1,5 @@
+
+#include <stdlib.h>
 #include "gram.h"
 
  /*_________________________________________________________________________________________*/
@@ -159,7 +161,7 @@ char* buscaId( char* nomeId){
 		while( aux -> proximo != NULL){
 			//printf("Verificando se %s == %s\n", aux -> nomeId, nomeId);
 			if( strncmp( aux -> nomeId, nomeId, 20) == 0)
-				return 0;
+				return INVAL;
 			aux = aux -> proximo;
 		}
 		char* ret = (char*)malloc( sizeof( strlen( aux->nomeId) + 1));
@@ -170,3 +172,24 @@ char* buscaId( char* nomeId){
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
+
+
+char* getPosVal( char* nomeId){
+	pListaAtributos lista = getGreatList();
+	if( lista -> lista == NULL){
+		return INVAL;
+	}else{
+		pAtributo aux = lista -> lista;
+		while( aux -> proximo != NULL){
+			//printf("Verificando se %s == %s\n", aux -> nomeId, nomeId);
+			if( strncmp( aux -> nomeId, nomeId, 20) == 0){
+				char ret[10];
+				sprintf( ret, "%i\0", aux -> posVal);
+				//printf("%s %i\n", ret, strlen( ret));
+				return ret;
+			}
+			aux = aux -> proximo;
+		}
+		return INVAL;
+	}
+}

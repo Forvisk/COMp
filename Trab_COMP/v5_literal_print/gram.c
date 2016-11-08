@@ -36,16 +36,16 @@ int main(int argc, char const *argv[])
 	if( yyin != NULL){
 		i = 1;
 		yyparse();
+		fclose(yyin);
 	}else{
 		i = 0;
 		printf("Arquivo nao encontrado!");
 	}
-	fclose(yyin);
 
 
 	if( i == 1){
 		putsListId(greatList);
-		putsListaLiteral();
+		//putsListaLiteral();
 
 		createCabecalho( argv[ 1]);
 		createMethodMain();
@@ -54,6 +54,9 @@ int main(int argc, char const *argv[])
 
 		endMethodMain();
 	}
+	/*
+		char test = getPos
+	*/
 	printf("\n");
 	return 0;
 }
@@ -106,7 +109,6 @@ void createMethodMain(){
 		}while( aux != NULL);
 	}
 	printf(".limit local %i\n", numVariaveisLocais);
-	printf("\n");
 }
 
 
@@ -114,7 +116,7 @@ void createMethodMain(){
 /*_________________________________________________________________________________________*/
 
 void endMethodMain(){
-	printf("\n.end method");
+	printf("\n  .return\n.end method");
 }
 
 

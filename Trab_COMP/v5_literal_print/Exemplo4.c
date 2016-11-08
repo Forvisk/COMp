@@ -9,6 +9,6 @@ int main(){
 		a = a - b;
 	}
 	print(a);
-	print("kakaka==\nhabsdkjj[]{{}{}[[!@#$$áa~a~~~ºasdñ");
+	print("Wahaha!");
 	return 0;
 }
