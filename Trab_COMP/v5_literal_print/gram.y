@@ -15,15 +15,15 @@ Prog : 		ListFunc BlocoP
 			| BlocoP
 			;
 			
-ListFunc : 	ListFunc Func	{	addToGreatList( $2);
+ListFunc : 	ListFunc Func	{	addToGreatList( $2, 0);
 							}
-			| Func 			{	addToGreatList( $1);
+			| Func 			{	addToGreatList( $1, 0);
 							}
 			;
 			
 Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{	$$ = createList();
 													addIdToList( $$, $2);
-													addToGreatList($4);
+													addToGreatList($4, 0);
 												}
 			| TipeReturn TID TLPAR TRPAR		{	$$ = createList();
 													addIdToList( $$, $2);
@@ -48,9 +48,9 @@ BlocoP :	TLCH Decs ListCom TRCH
 			| TLCH ListCom TRCH
 			;
 			
-Decs :		Decs Dec 	{	addToGreatList( $2);
+Decs :		Decs Dec 	{	addToGreatList( $2, 1);
 						}
-			| Dec 		{	addToGreatList( $1);
+			| Dec 		{	addToGreatList( $1, 1);
 						}
 			;
 			
@@ -162,7 +162,8 @@ Am :		Am TMUL An 				{	addInstrucaoLista( IMUL, INVAL, INVAL);
 An :		TSUB An 				{	addInstrucaoLista( INEG, INVAL, INVAL);
 									}
 			| TLPAR ExpAr TRPAR
-			| TID 					{ 	/*printf("%s\t", $1->nomeIdTemp); char* aux = buscaId( $1 -> nomeIdTemp);valor temporario*/
+			| TID 					{ 	/*printf("\nlinha: %i _ ", linha);
+										printf("Existe id: %i, %s\n", existeId(getGreatList(), $1->nomeIdTemp), $1 -> nomeIdTemp);*/
 										addInstrucaoLista( ILOAD, $1->nomeIdTemp, INVAL);
 									}
 			| Cfunc

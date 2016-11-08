@@ -28,9 +28,9 @@ char* addLiteralLista( pListaAtributos literal){
 		aux = getListaLiteral();
 	} else{
 		while( aux -> proximo != NULL)
-			aux = aux -> proximo;
+			aux = (pListaLiteral) aux -> proximo;
 		aux -> proximo = new;
-		aux = aux -> proximo;
+		aux = (pListaLiteral) aux -> proximo;
 	}
 	//printf("%s\n", aux -> literal);
 	free(literal);

@@ -41,4 +41,4 @@ literal \".*\"
 {literal} { yylval = createLit( yytext); return TLIT;}
 {num}     { yylval = createNum( atoi(yytext)); return TNUM;}
 {id}      { yylval = createId( yytext); return TID;}
-"\n"	  { linha++;}
+"\n"	  { linha++; /*printf("%i", linha);*/}

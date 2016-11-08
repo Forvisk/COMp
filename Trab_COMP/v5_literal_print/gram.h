@@ -46,21 +46,23 @@
 /*_________________________________________________________________________________________*/
 typedef struct
 {
-	char nomeIdTemp[21];
-	int numTemp;
-	char* literal;
-	
-	struct Atributo* lista
-} ListaAtributos, *pListaAtributos;
+	char nomeId[21];
+	int posVal;
+	struct Atributo* proximo;
+} Atributo, *pAtributo;
+
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 typedef struct
 {
-	char nomeId[21];
-	int posVal;
-	struct Atributo* proximo;
-} Atributo, *pAtributo;
+	char nomeIdTemp[21];
+	int numTemp;
+	char* literal;
+	
+	pAtributo lista
+} ListaAtributos, *pListaAtributos;
+
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
@@ -92,18 +94,23 @@ pListaAtributos getGreatList();
 pInstrucao* getListaInstrucao();
 pListaLiteral getListaLiteral();
 
+void createCabecalho(char* nomeArquivo);
+void createMethodMain();
+void endMethodMain();
+
    /*____________________________*/
   /*		gramListId.c 		*/
  /*____________________________*/
 /*____________________________*/
 
 pListaAtributos createGreatList();
-pAtributo createAtributo( char* nomeId);
+pAtributo createAtributo( char* nomeId, int posVal);
+pListaAtributos createList();
 
 pListaAtributos createId( char* nomeId);
 pListaAtributos createNum( int num);
 
-void addToGreatList( pListaAtributos newlista);
+void addToGreatList( pListaAtributos newlista, int sePosVal);
 
 void addIdToList( pListaAtributos listaFinal, pListaAtributos lista);
 int existeId( pListaAtributos lista, char* nomeId);

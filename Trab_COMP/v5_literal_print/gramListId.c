@@ -12,11 +12,12 @@ pListaAtributos createGreatList(){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-void addToGreatList( pListaAtributos newlista){
+void addToGreatList( pListaAtributos newlista, int sePosVal){
 	//printf("\nAdicionando a greatList:\n");
 	//putsListId( newlista);
 
 	pListaAtributos greatList = getGreatList();
+
 
 	if( newlista -> lista == NULL){
 		//printf("Lista vazia\n");
@@ -25,24 +26,33 @@ void addToGreatList( pListaAtributos newlista){
 		pAtributo aux = newlista -> lista;
 		pAtributo auxGreat = greatList -> lista;
 		pAtributo auxDel;
-		
+		int posVal = 0;
+
 		do{
 			if( greatList -> lista == NULL){
 				if( existeId( greatList, aux)){
-					greatList -> lista = createAtributo( aux -> nomeId);
+					if(sePosVal != 1)
+						posVal = -1;
+					greatList -> lista = createAtributo( aux -> nomeId, posVal);
 					auxGreat = greatList -> lista;
 					auxGreat -> proximo = NULL;
-					//printf("\tprimeiro simbolo da greatList: %s\n", auxGreat->nomeId);
+					posVal++;
+					//printf("\tprimeiro simbolo da greatList: %s %i\n", auxGreat->nomeId, auxGreat -> posVal);
 				}
 			}else{
 				while( auxGreat -> proximo != NULL){
 					//printf("\tGreatList : %s\n", auxGreat->nomeId);
+					if( auxGreat -> posVal != -1)
+						posVal++;
 					auxGreat = auxGreat -> proximo;
 				}
 				if( existeId( greatList, aux)){
-					auxGreat -> proximo = createAtributo( aux -> nomeId);
+					if(sePosVal != 1)
+						posVal = -1;
+					auxGreat -> proximo = createAtributo( aux -> nomeId, posVal);
 					auxGreat = auxGreat -> proximo;
-					//printf("\tnovo simbolo na greatList: %s\n", auxGreat->nomeId);
+					//printf("\tnovo simbolo na greatList: %s %i\n", auxGreat->nomeId, auxGreat->posVal);
+					posVal++;
 				}
 			}
 
@@ -58,11 +68,12 @@ void addToGreatList( pListaAtributos newlista){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-pAtributo createAtributo( char* nomeId){
+pAtributo createAtributo( char* nomeId, int posVal){
 	pAtributo new = (Atributo*)malloc(sizeof(Atributo));
 	strncpy(new->nomeId, nomeId, 20);
 	//printf("\n\tNovo atributo: %s\n", new->nomeId);
 	new -> proximo = NULL;
+	new -> posVal = posVal;
 	return new;
 }
 
@@ -89,7 +100,7 @@ pListaAtributos createId( char *nomeId){
 /*_________________________________________________________________________________________*/
 
 void addIdToList( pListaAtributos listaFinal, pListaAtributos lista){
-	pAtributo new = createAtributo( lista -> nomeIdTemp);
+	pAtributo new = createAtributo( lista -> nomeIdTemp, 0);
 	//printf(" %s\n", lista -> nomeIdTemp);
 	if( listaFinal -> lista == NULL){
 		//printf("Lista %p vazia primeiro simbolo %s\n", listaFinal, new -> nomeId);
@@ -97,9 +108,9 @@ void addIdToList( pListaAtributos listaFinal, pListaAtributos lista){
 	}else{
 		pAtributo aux = listaFinal -> lista;
 		while( aux -> proximo != NULL)
-			aux = aux -> proximo;
+			aux = (pAtributo) aux -> proximo;
 		aux -> proximo = new;
-		aux = aux -> proximo;
+		aux = (pAtributo) aux -> proximo;
 		//printf("Adicionando em %p o simbolo %s\n", listaFinal, aux -> nomeId);
 	}
 }
@@ -124,9 +135,12 @@ int existeId( pListaAtributos lista, char* nomeId){
 	}else{
 		pAtributo aux = lista -> lista;
 		do{
-			//printf("Verificando se %s == %s\n", aux -> nomeId, nomeId);
-			if( strncmp( aux -> nomeId, nomeId, 20) == 0)
+			//printf("\nVerificando se %s == %s\n", aux -> nomeId, nomeId);
+			if( strncmp( aux -> nomeId, nomeId, 20) == 0){
+				//printf("aqui\n");
 				return 0;
+			}
+			//printf("aqui2\n");
 			aux = aux -> proximo;
 		}while( aux != NULL);
 	}

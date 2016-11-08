@@ -34,28 +34,100 @@ int main(int argc, char const *argv[])
 
 	yyin = fopen( argv[ 1], "r");
 	if( yyin != NULL){
+		i = 1;
 		yyparse();
 	}else{
+		i = 0;
 		printf("Arquivo nao encontrado!");
 	}
 	fclose(yyin);
 
-	putsListId(greatList);
-	putsListaInstrucao();
-	//putsListaLiteral();
+
+	if( i == 1){
+		putsListId(greatList);
+		putsListaLiteral();
+
+		createCabecalho( argv[ 1]);
+		createMethodMain();
+
+		putsListaInstrucao();
+
+		endMethodMain();
+	}
+	printf("\n");
 	return 0;
 }
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
+void createCabecalho(char* nomeArquivo){
+	printf(".class public %s\n", nomeArquivo);
+	printf(".super java/lang/Object\n\n");
+	printf(".method public <init>()V\n");
+	printf("  aload_0\n\n");
+	printf("  invokevirtual java/lang/Object/<init>()V\n");
+	printf("  return\n");
+	printf(".end method\n\n");
+	/*printf(".limit stack 10\n");
+
+	int numVariaveisLocais = 0;
+	pAtributo aux;
+	if( greatList -> lista != NULL){
+		pAtributo aux = greatList -> lista;
+		do{
+			//printf("\t%s\t%i\n", aux->nomeId, aux->posVal);
+			if( aux -> posVal != -1)
+				numVariaveisLocais++;
+			aux = aux->proximo;
+		}while( aux != NULL);
+	}
+	printf(".limit local %i\n", numVariaveisLocais);
+	printf("\n");*/
+}
+
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+void createMethodMain(){
+	printf(".method public static main([Ljava/lang/String;)V\n");
+	printf(".limit stack 10\n");
+
+	int numVariaveisLocais = 0;
+	pAtributo aux;
+	if( greatList -> lista != NULL){
+		pAtributo aux = greatList -> lista;
+		do{
+			//printf("\t%s\t%i\n", aux->nomeId, aux->posVal);
+			if( aux -> posVal != -1)
+				numVariaveisLocais++;
+			aux = aux->proximo;
+		}while( aux != NULL);
+	}
+	printf(".limit local %i\n", numVariaveisLocais);
+	printf("\n");
+}
+
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+void endMethodMain(){
+	printf("\n.end method");
+}
+
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
 void putsListId( pListaAtributos lista){
 	printf("\nTabela de simbolos %p:\n", (void*)lista);
-	printf("\tsimbolo\n\n");
+	printf("\tsimbolo\tposVal\n\n");
 	if( lista->lista != NULL){
 		pAtributo aux = lista->lista;
 		do{
-			printf("\t%s\n", aux->nomeId);
+			printf("\t%s\t%i\n", aux->nomeId, aux->posVal);
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
@@ -68,18 +140,18 @@ void putsListId( pListaAtributos lista){
 void putsListaInstrucao(){
 	int numIntrucoes = 0;
 	//char instrucao[21];
-	printf("\nLista de instruções:\n");
+	//printf("\nLista de instruções:\n");
 	while( listaInstrucao[ numIntrucoes] != NULL){
-		printf("Intrucao:\n\t%s", listaInstrucao[ numIntrucoes]->byte_code);
+		printf("\n  %s", listaInstrucao[ numIntrucoes]->byte_code);
 
 		if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_1, INVAL, 2000) != 0){
-			printf("\t%s", listaInstrucao[ numIntrucoes] -> parametro_1);
+			printf(" %s", listaInstrucao[ numIntrucoes] -> parametro_1);
 
 			if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL, 2000) != 0)
-				printf("\t%s", listaInstrucao[ numIntrucoes] -> parametro_2);
+				printf(" %s", listaInstrucao[ numIntrucoes] -> parametro_2);
 			
 		}
-		printf("\n\t%i\n", listaInstrucao[ numIntrucoes] -> label);
+		//printf("\n\t%i", listaInstrucao[ numIntrucoes] -> label);
 		numIntrucoes++;
 	}
 }
@@ -94,6 +166,7 @@ void putsListaLiteral(){
 		printf("\t%s\n", aux -> literal);
 		aux = aux -> proximo;
 	}
+	printf("\n");
 }
 
  /*_________________________________________________________________________________________*/
