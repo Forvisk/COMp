@@ -7,7 +7,7 @@
 	read(b);
 	while (a != b)
 	{
-		if (a > b)
+		if (a > b || a == b)
 		{
 			a = a - b;
 		}

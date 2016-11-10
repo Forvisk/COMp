@@ -3,6 +3,7 @@
 #define YYSTYPE pListaAtributos
 
 int linha = 0;
+int nlabel = 0, labelAtual = 0;
 %}
 
 %token TID TINT TSTR TVOID TADD TSUB TMUL TDIV TIGUAL TIGUALMA TIGUALME TMAIOR TMENOR TDIF TNOT TAND TOR TNUM TLIT TIF TELSE TWHILE TREAD TPRINT TATR TRPAR TLPAR TVIRG TLCH TRCH TRET TFLIN TFIM
@@ -87,18 +88,29 @@ Ret :		TRET ExpAr TFLIN
 			| TRET TLIT TFLIN
 			;
 			
-Cse :		TIF TLPAR ExpLog TRPAR M Bloco M
-			| TIF TLPAR ExpLog TRPAR M Bloco TELSE M Bloco
+Cse :		TIF TLPAR ExpLog TRPAR M Bloco Fm
+			| TIF TLPAR ExpLog TRPAR M Bloco TELSE M Bloco Fm
 			;
 
-M :			{	addLabel( 0);/*teste*/
+M :			{	nlabel++;
+				labelAtual = nlabel;
+				addLabel( labelAtual);/*teste*/
+				printf("%i %i\n", nlabel, labelAtual);
+			}
+			;
+
+Fm :		{	nlabel++;
+				labelAtual = nlabel;
+				addLabel( labelAtual);/*teste*/
+				labelAtual = 0;
+				printf("%i %i\n", nlabel, labelAtual);
 			}
 			;
 			
 Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco
 			;
 			
-Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoListaPosVal( ISTORE, getPosVal( $1 -> nomeIdTemp), -1);
+Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoListaPosVal( ISTORE, getPosVal( $1 -> nomeIdTemp), -1, labelAtual);
 										}
 			| TID TATR TLIT TFLIN
 			;
@@ -106,14 +118,15 @@ Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoListaPosVal( ISTORE, getPosVal( $1 -
 Cread :		TREAD TLPAR TID TRPAR TFLIN
 			;
 			
-Cprint :	TPRINT Cnprint TLPAR ExpAr TRPAR TFLIN		{	addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL);
+Cprint :	TPRINT Cnprint TLPAR ExpAr TRPAR TFLIN		{	addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL, labelAtual);
 														}
-			| TPRINT Cnprint TLPAR TLIT TRPAR TFLIN 	{ 	addInstrucaoLista( LDC, addLiteralLista( $4), INVAL);
-															addInstrucaoLista( INVOKEVIRTUAL, PRINT_STR, INVAL);
+			| TPRINT Cnprint TLPAR TLIT TRPAR TFLIN 	{ 	addInstrucaoLista( LDC, addLiteralLista( $4), INVAL, labelAtual);
+															addInstrucaoLista( INVOKEVIRTUAL, PRINT_STR, INVAL, labelAtual);
+
 														}
 			;
 
-Cnprint :		{ 	addInstrucaoLista( GETSTATIC, SYSTEM_OUT, INVAL);
+Cnprint :		{ 	addInstrucaoLista( GETSTATIC, SYSTEM_OUT, INVAL, labelAtual);
 				}
 			;
 			
@@ -129,7 +142,7 @@ ListPar :	ListPar TVIRG ExpAr
 									}
 			;
 			
-ExpLog :	ExpLog TAND M FLog		{/* configura o label*/}
+ExpLog :	ExpLog TAND M FLog		{/* configura o labelAtual*/}
 			| ExpLog TOR M FLog		{}
 			| FLog					{}
 			;
@@ -139,7 +152,8 @@ FLog :		TLPAR ExpLog TRPAR
 			| ExpRela 				{/*adiciona a lista de operacoes*/}
 			;
 			
-ExpRela :	ExpAr TIGUAL ExpAr			{/*Adicionar o tipo de comparacao*/}
+ExpRela :	ExpAr TIGUAL ExpAr			{/*Adicionar o tipo de comparacao*/
+										}
 			| ExpAr TDIF ExpAr			{}
 			| ExpAr TIGUALMA ExpAr		{}
 			| ExpAr TIGUALME ExpAr		{}
@@ -147,31 +161,31 @@ ExpRela :	ExpAr TIGUAL ExpAr			{/*Adicionar o tipo de comparacao*/}
 			| ExpAr TMENOR ExpAr		{}
 			;
 			
-ExpAr :		ExpAr TADD Am		{	addInstrucaoLista( IADD, INVAL, INVAL);
+ExpAr :		ExpAr TADD Am		{	addInstrucaoLista( IADD, INVAL, INVAL, labelAtual);
 								}
-			| ExpAr TSUB Am		{	addInstrucaoLista( ISUB, INVAL, INVAL);
+			| ExpAr TSUB Am		{	addInstrucaoLista( ISUB, INVAL, INVAL, labelAtual);
 								}
 			| Am				{	$$ = $1;
 								}
 			;
 			
-Am :		Am TMUL An 				{	addInstrucaoLista( IMUL, INVAL, INVAL);
+Am :		Am TMUL An 				{	addInstrucaoLista( IMUL, INVAL, INVAL, labelAtual);
 									}
-			| Am TDIV An 			{	addInstrucaoLista( IDIV, INVAL, INVAL);
+			| Am TDIV An 			{	addInstrucaoLista( IDIV, INVAL, INVAL, labelAtual);
 									}
 			| An 					{	$$ = $1;
 									}
 			;
 			
-An :		TSUB An 				{	addInstrucaoLista( INEG, INVAL, INVAL);
+An :		TSUB An 				{	addInstrucaoLista( INEG, INVAL, INVAL, labelAtual);
 									}
 			| TLPAR ExpAr TRPAR
 			| TID 					{ 	/*printf("\nlinha: %i _ ", linha);
 										printf("Existe id: %i, %s\n", existeId(getGreatList(), getPosVal($1->nomeIdTemp), $1 -> nomeIdTemp);*/
-										addInstrucaoListaPosVal( ILOAD, getPosVal($1->nomeIdTemp), -1);
+										addInstrucaoListaPosVal( ILOAD, getPosVal($1->nomeIdTemp), -1, labelAtual);
 									}
 			| Cfunc
-			| TNUM					{	addNumLista( $1 -> numTemp);
+			| TNUM					{	addNumLista( $1 -> numTemp, labelAtual);
 									}
 			;
 

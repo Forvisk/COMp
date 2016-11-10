@@ -53,6 +53,8 @@ int main(int argc, char const *argv[])
 		putsListaInstrucao();
 
 		endMethodMain();
+		
+		//createJar( argv[ 1]);
 	}
 	/*
 		char test = getPos
@@ -89,6 +91,33 @@ void createCabecalho(char* nomeArquivo){
 	printf("\n");*/
 }
 
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+void writeCabecalho(char* nomeArquivo, FILE *arq){
+	fprintf( arq, ".class public %s\n", nomeArquivo);
+	fprintf( arq, ".super java/lang/Object\n\n");
+	fprintf( arq, ".method public <init>()V\n");
+	fprintf( arq, "  aload_0\n\n");
+	fprintf( arq, "  invokevirtual java/lang/Object/<init>()V\n");
+	fprintf( arq, "  return\n");
+	fprintf( arq, ".end method\n\n");
+	/*printf(".limit stack 10\n");
+
+	int numVariaveisLocais = 0;
+	pAtributo aux;
+	if( greatList -> lista != NULL){
+		pAtributo aux = greatList -> lista;
+		do{
+			//printf("\t%s\t%i\n", aux->nomeId, aux->posVal);
+			if( aux -> posVal != -1)
+				numVariaveisLocais++;
+			aux = aux->proximo;
+		}while( aux != NULL);
+	}
+	printf(".limit local %i\n", numVariaveisLocais);
+	printf("\n");*/
+}
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
@@ -115,10 +144,38 @@ void createMethodMain(){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
+void writeMethodMain( FILE *arq){
+	fprintf( arq, ".method public static main([Ljava/lang/String;)V\n");
+	fprintf( arq, ".limit stack 10\n");
+
+	int numVariaveisLocais = 0;
+	pAtributo aux;
+	if( greatList -> lista != NULL){
+		pAtributo aux = greatList -> lista;
+		do{
+			//printf("\t%s\t%i\n", aux->nomeId, aux->posVal);
+			if( aux -> posVal != -1)
+				numVariaveisLocais++;
+			aux = aux->proximo;
+		}while( aux != NULL);
+	}
+	fprintf( arq, ".limit local %i\n", numVariaveisLocais);
+}
+
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
 void endMethodMain(){
 	printf("\n  .return\n.end method");
 }
 
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+void writeEndMethodMain( FILE *arq){
+	fprintf( arq, "\n  .return\n.end method");
+}
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
@@ -144,7 +201,10 @@ void putsListaInstrucao(){
 	//char instrucao[21];
 	//printf("\nLista de instruções:\n");
 	while( listaInstrucao[ numIntrucoes] != NULL){
-		printf("\n  %s", listaInstrucao[ numIntrucoes]->byte_code);
+		printf("\n");
+		if( listaInstrucao[ numIntrucoes] -> label != 0)
+			printf("  ");
+		printf("  %s", listaInstrucao[ numIntrucoes]->byte_code);
 
 		if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_1, INVAL, 2000) != 0){
 			printf(" %s", listaInstrucao[ numIntrucoes] -> parametro_1);
@@ -161,6 +221,28 @@ void putsListaInstrucao(){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
+void writeListaInstrucao( FILE *arq){
+	int numIntrucoes = 0;
+	//char instrucao[21];
+	//printf("\nLista de instruções:\n");
+	while( listaInstrucao[ numIntrucoes] != NULL){
+		if( listaInstrucao[ numIntrucoes] -> label != 0)
+			fprintf( arq, "\t");
+		fprintf( arq, "\n  %s", listaInstrucao[ numIntrucoes]->byte_code);
+		if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_1, INVAL, 2000) != 0){
+			fprintf( arq, " %s", listaInstrucao[ numIntrucoes] -> parametro_1);
+
+			if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL, 2000) != 0)
+				fprintf( arq, " %s", listaInstrucao[ numIntrucoes] -> parametro_2);
+			
+		}
+		//printf("\n\t%i", listaInstrucao[ numIntrucoes] -> label);
+		numIntrucoes++;
+	}
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
 void putsListaLiteral(){
 	printf("\nLista literais\n");
 	pListaLiteral aux = primeiroLiteral;
@@ -198,4 +280,35 @@ pListaLiteral getListaLiteral(){
 void setPrimeiroListaLiteral( pListaLiteral primeiro){
 	primeiroLiteral = primeiro;
 	//printf("primeiro lit : %s\n", primeiroLiteral -> literal);
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+int createJar( char* argc){
+	FILE *newArquivo;
+	char nomeNew[strlen(argc) + 3];
+	int i = 0;
+	while( argc[ i] != '.' && argc[ i] != '\0' && i < strlen(argc)){
+		nomeNew[ i] = argc[ i];
+		i++;
+	}
+	nomeNew[ i++] = '.';
+	nomeNew[ i++] = 'j';
+	nomeNew[ i++] = '\0';
+	printf("\n%s\n", nomeNew);
+
+	newArquivo = fopen( nomeNew, "w");
+	if( newArquivo == NULL){
+		printf("Erro ao criar o novo arquivo\nEncerrando...\n");
+		return 0;
+	}
+	writeCabecalho( nomeNew, newArquivo);
+	writeMethodMain( newArquivo);
+	writeListaInstrucao( newArquivo);
+	writeEndMethodMain( newArquivo);
+
+	fclose(newArquivo);
+
+	return 1;
 }

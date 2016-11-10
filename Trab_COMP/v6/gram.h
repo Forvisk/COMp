@@ -65,6 +65,11 @@ typedef struct
 	char nomeIdTemp[21];
 	int numTemp;
 	char* literal;
+
+	int listV;
+	int listF;
+
+	char byte_codeTemp[21];
 	
 	pAtributo lista
 } ListaAtributos, *pListaAtributos;
@@ -93,16 +98,26 @@ typedef struct
  /*____________________________*/
 /*____________________________*/
 
-void putsListId( pListaAtributos lista);
-void putsListaInstrucao();
-
-pListaAtributos getGreatList();
-pInstrucao* getListaInstrucao();
-pListaLiteral getListaLiteral();
 
 void createCabecalho(char* nomeArquivo);
 void createMethodMain();
 void endMethodMain();
+
+void putsListId( pListaAtributos lista);
+void putsListaInstrucao();
+void putsListaLiteral();
+
+void setPrimeiroListaLiteral( pListaLiteral primeiro);
+
+void writeCabecalho( char* nomeArquivo, FILE *arq);
+void writeMethodMain( FILE *arq);
+void writeEndMethodMain( FILE *arq);
+void writeListaInstrucao( FILE *arq);
+int createJar( char* argc);
+
+pListaAtributos getGreatList();
+pInstrucao* getListaInstrucao();
+pListaLiteral getListaLiteral();
 
    /*____________________________*/
   /*		gramListId.c 		*/
@@ -121,17 +136,18 @@ void addToGreatList( pListaAtributos newlista, int sePosVal);
 void addIdToList( pListaAtributos listaFinal, pListaAtributos lista);
 int existeId( pListaAtributos lista, char* nomeId);
 char* buscaId( char* nomeId);
-char* getPosVal( char* nomeId);
+int getPosVal( char* nomeId);
 
    /*____________________________*/
   /*	gramListInstrucoes.c 	*/
  /*____________________________*/
 /*____________________________*/
 
-int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2);
-int addInstrucaoListaPosVal( char byte_code[21], int posVal_1, int posVal_2);
+int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2, int label);
+int addInstrucaoListaPosVal( char byte_code[21], int posVal_1, int posVal_2, int label);
 
-int addNumLista( int num);
+int addNumLista(int num, int label);
+
 int addLabel( int label);
 int addIf( char byte_code[21], int label_1, int label_2);
 
