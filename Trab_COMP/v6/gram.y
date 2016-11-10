@@ -88,14 +88,13 @@ Ret :		TRET ExpAr TFLIN
 			| TRET TLIT TFLIN
 			;
 			
-Cse :		TIF TLPAR ExpLog TRPAR M Bloco Fm
+Cse :		TIF TLPAR ExpLog TRPAR M Bloco 	Fm					
 			| TIF TLPAR ExpLog TRPAR M Bloco TELSE M Bloco Fm
 			;
 
 M :			{	nlabel++;
 				labelAtual = nlabel;
 				addLabel( labelAtual);/*teste*/
-				printf("%i %i\n", nlabel, labelAtual);
 			}
 			;
 
@@ -103,11 +102,17 @@ Fm :		{	nlabel++;
 				labelAtual = nlabel;
 				addLabel( labelAtual);/*teste*/
 				labelAtual = 0;
-				printf("%i %i\n", nlabel, labelAtual);
 			}
 			;
 			
-Cenq :		TWHILE TLPAR ExpLog TRPAR Bloco
+Cenq :		TWHILE M TLPAR ExpLog TRPAR M Bloco N
+			;
+
+N :			{   
+				addGoto(labelAtual);
+				labelAtual = 0;
+			
+			}
 			;
 			
 Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoListaPosVal( ISTORE, getPosVal( $1 -> nomeIdTemp), -1, labelAtual);
@@ -142,23 +147,49 @@ ListPar :	ListPar TVIRG ExpAr
 									}
 			;
 			
-ExpLog :	ExpLog TAND M FLog		{/* configura o labelAtual*/}
-			| ExpLog TOR M FLog		{}
-			| FLog					{}
+ExpLog :	ExpLog TAND M FLog		{	/*merge( $1, $4, AND);*/
+										/**/
+									}
+			| ExpLog TOR M FLog		{	corrigirLabel( $1 -> listF, labelAtual);
+			printf("label atual = l%i\n", labelAtual);
+										/*merge( $1, $4, OR);*/
+									}
+			| FLog					{	$$ = $1;
+									}
 			;
 			
-FLog :		TLPAR ExpLog TRPAR
-			| TNOT FLog
-			| ExpRela 				{/*adiciona a lista de operacoes*/}
+FLog :		TLPAR ExpLog TRPAR		{	$$ = $2;
+									}
+			| TNOT FLog				{	$$ = not( $2);
+									}
+			| ExpRela 				{	$$ = $1;
+									}
 			;
 			
-ExpRela :	ExpAr TIGUAL ExpAr			{/*Adicionar o tipo de comparacao*/
+ExpRela :	ExpAr TIGUAL ExpAr			{	int linha = getTamListInstrucoes();
+											$$ = createListVeF( IFEQ, linha);
+											addIf( IFEQ, -1, -1, labelAtual);
 										}
-			| ExpAr TDIF ExpAr			{}
-			| ExpAr TIGUALMA ExpAr		{}
-			| ExpAr TIGUALME ExpAr		{}
-			| ExpAr TMAIOR ExpAr		{}
-			| ExpAr TMENOR ExpAr		{}
+			| ExpAr TDIF ExpAr			{	int linha = getTamListInstrucoes();
+											$$ = createListVeF( IFDIF, linha);
+											addIf( IFDIF, -1, -1, labelAtual);
+										}
+			| ExpAr TIGUALMA ExpAr		{	int linha = getTamListInstrucoes();
+											$$ = createListVeF( IFMAEQ, linha);
+											addIf( IFMAEQ, -1, -1, labelAtual);
+										}
+			| ExpAr TIGUALME ExpAr		{	int linha = getTamListInstrucoes();
+											$$ = createListVeF( IFMEEQ, linha);
+											addIf( IFMEEQ, -1, -1, labelAtual);
+										}
+			| ExpAr TMAIOR ExpAr		{	int linha = getTamListInstrucoes();
+											$$ = createListVeF( IFMA, linha);
+											addIf( IFMA, -1, -1, labelAtual);
+										}
+			| ExpAr TMENOR ExpAr		{	int linha = getTamListInstrucoes();
+											$$ = createListVeF( IFME, linha);
+											addIf( IFME, -1, -1, labelAtual);
+										}
 			;
 			
 ExpAr :		ExpAr TADD Am		{	addInstrucaoLista( IADD, INVAL, INVAL, labelAtual);

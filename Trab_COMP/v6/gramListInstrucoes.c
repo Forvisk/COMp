@@ -165,7 +165,7 @@ int addLabel( int label){
 	listaInstrucao[ numIntrucoes] -> parametro_1 = ( char*)malloc( sizeof( 3));
 	listaInstrucao[ numIntrucoes] -> parametro_2 = ( char*)malloc( sizeof( 3));
 
-	sprintf( listaInstrucao[ numIntrucoes] -> byte_code, "l%i", label);
+	sprintf( listaInstrucao[ numIntrucoes] -> byte_code, "l%i:", label);
 
 	strcpy( listaInstrucao[ numIntrucoes] -> parametro_1, INVAL);
 	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL);
@@ -183,7 +183,7 @@ int addLabel( int label){
 /*_________________________________________________________________________________________*/
 
 
-int addIf( char byte_code[21], int label_1, int label_2){
+int addIf( char byte_code[21], int label_1, int label_2, int labelAtual){
 	int numIntrucoes = 0;
 
 	pInstrucao* listaInstrucao = getListaInstrucao();
@@ -205,6 +205,8 @@ int addIf( char byte_code[21], int label_1, int label_2){
 	sprintf( listaInstrucao[ numIntrucoes] -> parametro_1, "l%i", label_1);
 	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL);
 
+	listaInstrucao[ numIntrucoes] -> label = labelAtual;
+
 	numIntrucoes++;
 	if( numIntrucoes == 200){
 		printf("\nLista de instrucoes cheia\n");
@@ -219,6 +221,8 @@ int addIf( char byte_code[21], int label_1, int label_2){
 	sprintf( listaInstrucao[ numIntrucoes] -> parametro_1, "l%i", label_2);
 	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL);
 
+	listaInstrucao[ numIntrucoes] -> label = labelAtual;
+
 	return 1;
 }
 
@@ -231,25 +235,28 @@ int getTamListInstrucoes(){
 	pInstrucao* listaInstrucao = getListaInstrucao();
 
 	while( (listaInstrucao[numIntrucoes] != NULL) && (numIntrucoes < 200)){
+		printf("%i %s\n", numIntrucoes, listaInstrucao[ numIntrucoes] -> byte_code);
 		numIntrucoes++;
 	}
-
+	//printf(" num = %i\n", numIntrucoes);
 	if( numIntrucoes == 200){
 		printf("\nLista de instrucoes cheia\n");
 		return -1;
 	}
 
+	//printf(" num = %i\n", numIntrucoes);
 	return numIntrucoes;
 }
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-pListaAtributos createListVeF( char byte_code[21], int linhaV, int linhaF){
+pListaAtributos createListVeF( char byte_code[21], int linha){
+	printf(" linha %i\n", linha);
 	pListaAtributos new = (ListaAtributos*)malloc(sizeof(ListaAtributos));
 	new->lista = NULL;
-	new-> listV = linhaV;
-	new-> listF = linhaF;
+	new-> listV = linha;
+	new-> listF = linha + 1;
 	strcpy( new -> byte_codeTemp, byte_code);
 
 	return new;
@@ -258,7 +265,17 @@ pListaAtributos createListVeF( char byte_code[21], int linhaV, int linhaF){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-int addCompListInstrucoes( pListaAtributos lista){
+pListaAtributos not(pListaAtributos lista){
+	int aux = lista -> listF;
+	lista -> listF = lista -> listV;
+	lista -> listV = aux;
+	return lista;
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+int addGoto(int label){
 	int numIntrucoes = 0;
 
 	pInstrucao* listaInstrucao = getListaInstrucao();
@@ -276,9 +293,35 @@ int addCompListInstrucoes( pListaAtributos lista){
 	listaInstrucao[ numIntrucoes] -> parametro_1 = ( char*)malloc( sizeof( 5));
 	listaInstrucao[ numIntrucoes] -> parametro_2 = ( char*)malloc( sizeof( 5));
 
-	strcpy( listaInstrucao[ numIntrucoes] -> byte_code, lista -> byte_codeTemp);
-	strcpy( listaInstrucao[ numIntrucoes] -> parametro_1, INVAL);
+	strcpy( listaInstrucao[ numIntrucoes] -> byte_code, GOTO);
+	sprintf( listaInstrucao[ numIntrucoes] -> parametro_1, "l%i", label);
 	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL);
 
-	listaInstrucao[ numIntrucoes] -> label = 0;
+	return 1;
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+pListaAtributos merge( pListaAtributos listaC, pListaAtributos listaB, int qualLista){
+	if( qualLista == AND){
+
+	}else if( qualLista == OR){
+
+	}
+	free( listaC);
+	return listaB;
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+int corrigirLabel( int linhaInstrucao, int label){
+	pInstrucao* listaInstrucao = getListaInstrucao();
+
+	if( listaInstrucao[ linhaInstrucao] != NULL)
+		sprintf( listaInstrucao[ linhaInstrucao] -> parametro_1, "l%i", label);
+	else
+		return 0;
+	return 1;
 }

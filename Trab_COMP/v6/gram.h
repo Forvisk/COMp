@@ -7,6 +7,9 @@
 #define T_STR 2
 #define T_TODEF -1
 
+#define AND 1
+#define OR 2
+
 #define INVAL "-1"
 
 #define IADD "iadd"//0x60 	//adicao
@@ -68,6 +71,9 @@ typedef struct
 
 	int listV;
 	int listF;
+
+	int labelV;
+	int labelF;
 
 	char byte_codeTemp[21];
 	
@@ -149,7 +155,15 @@ int addInstrucaoListaPosVal( char byte_code[21], int posVal_1, int posVal_2, int
 int addNumLista(int num, int label);
 
 int addLabel( int label);
-int addIf( char byte_code[21], int label_1, int label_2);
+int addIf( char byte_code[21], int label_1, int label_2, int labelAtual);
+pListaAtributos createListVeF( char byte_code[21], int linha);
+
+pListaAtributos not(pListaAtributos lista);
+pListaAtributos merge( pListaAtributos listaC, pListaAtributos listaB, int qualLista);
+
+int corrigirLabel( int linhaInstrucao, int label);
+
+int getTamListInstrucoes();
 
    /*____________________________*/
   /*	gramListLiteral.c 		*/
