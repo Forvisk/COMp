@@ -69,11 +69,10 @@ typedef struct
 	int numTemp;
 	char* literal;
 
-	int listV;
-	int listF;
+	int seVerdadeiro;
+	int seFalso;
 
-	int labelV;
-	int labelF;
+	int label;
 
 	char byte_codeTemp[21];
 	
@@ -154,7 +153,7 @@ int addInstrucaoListaPosVal( char byte_code[21], int posVal_1, int posVal_2, int
 
 int addNumLista(int num, int label);
 
-int addLabel( int label);
+pListaAtributos addLabel( int label);
 int addIf( char byte_code[21], int label_1, int label_2, int labelAtual);
 pListaAtributos createListVeF( char byte_code[21], int linha);
 

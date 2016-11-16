@@ -201,7 +201,7 @@ void putsListaInstrucao(){
 	//char instrucao[21];
 	//printf("\nLista de instruções:\n");
 	while( listaInstrucao[ numIntrucoes] != NULL){
-		printf("\n");
+		printf("\n%i", numIntrucoes);
 		if( listaInstrucao[ numIntrucoes] -> label != 0)
 			printf("  ");
 		printf("  %s", listaInstrucao[ numIntrucoes]->byte_code);

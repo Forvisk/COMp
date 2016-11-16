@@ -88,31 +88,41 @@ Ret :		TRET ExpAr TFLIN
 			| TRET TLIT TFLIN
 			;
 			
-Cse :		TIF TLPAR ExpLog TRPAR M Bloco 	Fm					
-			| TIF TLPAR ExpLog TRPAR M Bloco TELSE M Bloco Fm
+Cse :		TIF TLPAR ExpLog TRPAR M Bloco						{	corrigirLabel( $3 -> seVerdadeiro, $5 -> label);
+																	printf("corrige %i label l%i\n", $3 -> seVerdadeiro, $5 -> label);
+
+																	nlabel++;
+																	labelAtual = nlabel;
+																	addLabel( labelAtual);
+
+																	corrigirLabel( $3 -> seFalso, labelAtual);
+																	printf("corrige %i label l%i\n", $3 -> seVerdadeiro, labelAtual);
+																	free($3);
+																	free($5);
+																}			
+			| TIF TLPAR ExpLog TRPAR M Bloco TELSE M Bloco
 			;
 
 M :			{	nlabel++;
 				labelAtual = nlabel;
-				addLabel( labelAtual);/*teste*/
-			}
-			;
-
-Fm :		{	nlabel++;
-				labelAtual = nlabel;
-				addLabel( labelAtual);/*teste*/
-				labelAtual = 0;
+				$$ = addLabel( labelAtual);
 			}
 			;
 			
-Cenq :		TWHILE M TLPAR ExpLog TRPAR M Bloco N
-			;
+Cenq :		TWHILE M TLPAR ExpLog TRPAR M Bloco		{   corrigirLabel( $4 -> seVerdadeiro, $6 -> label);
+														printf("corrige %i label l%i\n", $4 -> seVerdadeiro, $2 -> label);
+														addGoto($2 -> label);
 
-N :			{   
-				addGoto(labelAtual);
-				labelAtual = 0;
-			
-			}
+														nlabel++;
+														labelAtual = nlabel;
+														addLabel( labelAtual);
+
+														corrigirLabel( $4 -> seFalso, labelAtual);
+
+														free($2);
+														free($4);
+														free($6);
+													}
 			;
 			
 Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoListaPosVal( ISTORE, getPosVal( $1 -> nomeIdTemp), -1, labelAtual);
@@ -147,12 +157,13 @@ ListPar :	ListPar TVIRG ExpAr
 									}
 			;
 			
-ExpLog :	ExpLog TAND M FLog		{	/*merge( $1, $4, AND);*/
-										/**/
+ExpLog :	ExpLog TAND M FLog		{	corrigirLabel( $1 -> seVerdadeiro, $3 -> label);
+										$$ = merge( $1, $4, AND);
+										printf("corrige %i label %i\n", $$ -> seVerdadeiro, $3 -> label);
 									}
-			| ExpLog TOR M FLog		{	corrigirLabel( $1 -> listF, labelAtual);
-			printf("label atual = l%i\n", labelAtual);
-										/*merge( $1, $4, OR);*/
+			| ExpLog TOR M FLog		{	corrigirLabel( $1 -> seFalso, $3 -> label);
+										$$ = merge( $1, $4, OR);
+										printf("corrige %i label %i\n", $$ -> seFalso, $3 -> label);
 									}
 			| FLog					{	$$ = $1;
 									}
