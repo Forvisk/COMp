@@ -6,7 +6,7 @@ int linha = 0;
 int nlabel = 0, labelAtual = 0;
 %}
 
-%token TID TINT TSTR TVOID TADD TSUB TMUL TDIV TIGUAL TIGUALMA TIGUALME TMAIOR TMENOR TDIF TNOT TAND TOR TNUM TLIT TIF TELSE TWHILE TREAD TPRINT TATR TRPAR TLPAR TVIRG TLCH TRCH TRET TFLIN TFIM
+%token TID TINT TSTR TVOID TADD TINC TSUB TDEC TMUL TDIV TIGUAL TIGUALMA TIGUALME TMAIOR TMENOR TDIF TNOT TAND TOR TNUM TLIT TIF TELSE TWHILE TREAD TPRINT TATR TRPAR TLPAR TVIRG TLCH TRCH TRET TFLIN TFIM
 
 %%
 Codigo : 	Prog
@@ -93,6 +93,7 @@ Cse :		TIF TLPAR ExpLog TRPAR M Bloco						{
 																	
 
 																	nlabel++;
+																	/*printf("n_labl %i\n", nlabel);*/
 																	labelAtual = nlabel;
 																	addLabel( labelAtual);
 
@@ -103,22 +104,32 @@ Cse :		TIF TLPAR ExpLog TRPAR M Bloco						{
 			| TIF TLPAR ExpLog TRPAR M Bloco N TELSE M Bloco 	{	
 																	corrigirLabel( $3 -> seVerdadeiro, $5 -> label);
 																	corrigirLabel( $3 -> seFalso, $9 -> label);	
-																		
-																	addLabel( $7 -> label);
-																	corrigirLabel( $7 -> seVerdadeiro, $7 -> label); 
+
+																	nlabel++;
+																	/*printf("n_labl %i\n", nlabel);*/
+																	labelAtual = nlabel;
+																	addLabel( labelAtual);
+
+																	corrigirLabel( $7 -> seVerdadeiro, labelAtual);
+
+																	free($3);
+																	free($5);
+																	free($7);
+																	free($9);
 																}
 			;
 
 M :			{	nlabel++;
+				/*printf("n_labl %i\n", nlabel);*/
 				labelAtual = nlabel;
 				$$ = addLabel( labelAtual);
 			}
 			;
 
-N :			{
-				nlabel++;
-				labelAtual = nlabel;
+N :			{	
+				int linha = getTamListInstrucoes(); 
 				addGoto( labelAtual);
+				/*printf("%i ifelse GOTO", linha);*/
 				$$ = createListVeF( GOTO, linha);
 				$$ -> label = labelAtual;
 			}
@@ -129,6 +140,7 @@ Cenq :		TWHILE M TLPAR ExpLog TRPAR M Bloco		{
 														addGoto($2 -> label);
 
 														nlabel++;
+														/*printf("n_labl %i\n", nlabel);*/
 														labelAtual = nlabel;
 														addLabel( labelAtual);
 
@@ -252,7 +264,7 @@ An :		TSUB An 				{	addInstrucaoLista( INEG, INVAL, INVAL, labelAtual);
 #include "lex.yy.c"
 int yyerror (char *str){
 	printf("Erro em %i - %s; %s\n", linha, yytext, str);
-	
+	setPossuiErro();
 } 		 
 int yywrap(){
 	return 1;

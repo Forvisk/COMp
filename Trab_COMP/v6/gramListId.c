@@ -41,15 +41,22 @@ void addToGreatList( pListaAtributos newlista, int sePosVal){
 					//printf("\tprimeiro simbolo da greatList: %s %i\n", auxGreat->nomeId, auxGreat -> posVal);
 				}
 			}else{
+
 				while( auxGreat -> proximo != NULL){
 					//printf("\tGreatList : %s\n", auxGreat->nomeId);
-					if( auxGreat -> posVal != -1)
+					if( auxGreat -> posVal != -1){
 						posVal++;
+					}
 					auxGreat = auxGreat -> proximo;
 				}
 				if( existeId( greatList, aux)){
 					if(sePosVal != 1)
 						posVal = -1;
+					/*else
+						posVal++;*/
+					if( auxGreat -> posVal != -1){
+						posVal = auxGreat -> posVal +1;
+					}
 					auxGreat -> proximo = createAtributo( aux -> nomeId, posVal);
 					auxGreat = auxGreat -> proximo;
 					//printf("\tnovo simbolo na greatList: %s %i\n", auxGreat->nomeId, auxGreat->posVal);

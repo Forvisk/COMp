@@ -20,6 +20,7 @@ pInstrucao listaInstrucao[200];
 pListaLiteral primeiroLiteral;
 
 int posValGlobal = 1;
+int possuiErro = 0;
 
 int main(int argc, char const *argv[])
 {
@@ -53,8 +54,8 @@ int main(int argc, char const *argv[])
 		putsListaInstrucao();
 
 		endMethodMain();
-		
-		createJar( argv[ 1]);
+		if(!possuiErro)
+			createJar( argv[ 1]);
 	}
 	/*
 		char test = getPos
@@ -67,6 +68,7 @@ int main(int argc, char const *argv[])
 /*_________________________________________________________________________________________*/
 
 void createCabecalho(char* nomeArquivo){
+	printf(" criando versão .j de %s\n\n\n", nomeArquivo);
 	printf(".class public %s\n", nomeArquivo);
 	printf(".super java/lang/Object\n\n");
 	printf(".method public <init>()V\n");
@@ -311,4 +313,11 @@ int createJar( char* argc){
 	fclose(newArquivo);
 
 	return 1;
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+void setPossuiErro(){
+	possuiErro = 1;
 }

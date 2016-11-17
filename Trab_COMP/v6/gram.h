@@ -135,6 +135,8 @@ pListaAtributos getGreatList();
 pInstrucao* getListaInstrucao();
 pListaLiteral getListaLiteral();
 
+void setPossuiErro();
+
    /*____________________________*/
   /*		gramListId.c 		*/
  /*____________________________*/
