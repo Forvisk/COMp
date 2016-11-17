@@ -213,6 +213,8 @@ int addIf( char byte_code[21], int label_1, int label_2, int labelAtual){
 
 	listaInstrucao[ numIntrucoes] -> label = labelAtual;
 
+	printf("%s com label %i\n", listaInstrucao[ numIntrucoes] -> byte_code, labelAtual	);
+
 	numIntrucoes++;
 	if( numIntrucoes == 200){
 		printf("\nLista de instrucoes cheia\n");
@@ -228,6 +230,8 @@ int addIf( char byte_code[21], int label_1, int label_2, int labelAtual){
 	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL);
 
 	listaInstrucao[ numIntrucoes] -> label = labelAtual;
+
+	printf("%s com label %i\n", listaInstrucao[ numIntrucoes] -> byte_code, listaInstrucao[ numIntrucoes] -> label);
 
 	return 1;
 }
@@ -312,16 +316,22 @@ int addGoto( int label){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-pListaAtributos merge( pListaAtributos listaC, pListaAtributos listaB, int qualLista){
-	if( qualLista == AND){
-		listaB -> seFalso = listaC -> seFalso; //goto
-	}else if( qualLista == OR){
-		listaB -> seVerdadeiro = listaC -> seVerdadeiro; // comp
-	}
+pListaAtributos mergeAnd( pListaAtributos listaC, pListaAtributos listaB){
+	printf("    V   F \nC: %3i %3i\nB: %3i %3i\n", listaB->seVerdadeiro, listaB->seFalso, listaC->seVerdadeiro, listaC->seFalso);
+	listaB -> seFalso = listaC -> seFalso; //goto
 	free( listaC);
 	return listaB;
 }
 
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+pListaAtributos mergeOr( pListaAtributos listaC, pListaAtributos listaB){
+	printf("    V   F \nB: %3i %3i\nC: %3i %3i\n", listaB->seVerdadeiro, listaB->seFalso, listaC->seVerdadeiro, listaC->seFalso);
+	listaB -> seVerdadeiro = listaC -> seVerdadeiro; // comp
+	free( listaC);
+	return listaB;
+}
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
@@ -333,6 +343,6 @@ int corrigirLabel( int linhaInstrucao, int label){
 	else
 		return 0;
 
-	//printf("corrigiu %i label %i\n", linhaInstrucao, label);
+	printf("corrigiu %i label %i\n", linhaInstrucao, label);
 	return 1;
 }

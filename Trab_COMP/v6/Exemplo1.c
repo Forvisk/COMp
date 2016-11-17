@@ -14,6 +14,8 @@
 		if (b > a)
 		{
 			b = b - a;
+		} else{
+			b = b + a;		
 		}
 	}
 	b = 20 + a;

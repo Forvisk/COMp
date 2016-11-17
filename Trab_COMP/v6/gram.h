@@ -158,7 +158,8 @@ int addIf( char byte_code[21], int label_1, int label_2, int labelAtual);
 pListaAtributos createListVeF( char byte_code[21], int linha);
 
 pListaAtributos not(pListaAtributos lista);
-pListaAtributos merge( pListaAtributos listaC, pListaAtributos listaB, int qualLista);
+pListaAtributos mergeAnd( pListaAtributos listaC, pListaAtributos listaB);
+pListaAtributos mergeOr( pListaAtributos listaC, pListaAtributos listaB);
 
 int corrigirLabel( int linhaInstrucao, int label);
 

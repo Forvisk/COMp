@@ -88,19 +88,25 @@ Ret :		TRET ExpAr TFLIN
 			| TRET TLIT TFLIN
 			;
 			
-Cse :		TIF TLPAR ExpLog TRPAR M Bloco						{	corrigirLabel( $3 -> seVerdadeiro, $5 -> label);
-																	printf("corrige %i label l%i\n", $3 -> seVerdadeiro, $5 -> label);
+Cse :		TIF TLPAR ExpLog TRPAR M Bloco						{	printf("    V   F \nE: %3i %3i\n", $3->seVerdadeiro, $3->seFalso);
+																	corrigirLabel( $3 -> seVerdadeiro, $5 -> label);
+																	/*printf("corrige %i label l%i\n", $3 -> seVerdadeiro, $5 -> label);*/
 
 																	nlabel++;
 																	labelAtual = nlabel;
 																	addLabel( labelAtual);
 
 																	corrigirLabel( $3 -> seFalso, labelAtual);
-																	printf("corrige %i label l%i\n", $3 -> seVerdadeiro, labelAtual);
+																	/*printf("corrige %i label l%i\n", $3 -> seVerdadeiro, labelAtual);*/
 																	free($3);
 																	free($5);
 																}			
-			| TIF TLPAR ExpLog TRPAR M Bloco TELSE M Bloco
+			| TIF TLPAR ExpLog TRPAR M Bloco N TELSE M Bloco 		{	printf("    V   F \nE: %3i %3i\n", $3->seVerdadeiro, $3->seFalso);
+																	corrigirLabel( $3 -> seVerdadeiro, $5 -> label);
+																	corrigirLabel( $3 -> seFalso, $9 -> label);	
+																		
+																	addLabel( $7 -> label);
+																}
 			;
 
 M :			{	nlabel++;
@@ -108,9 +114,18 @@ M :			{	nlabel++;
 				$$ = addLabel( labelAtual);
 			}
 			;
+
+N :			{
+				nlabel++;
+				labelAtual = nlabel;
+				addGoto( labelAtual);
+				$$ -> label = labelAtual;
+			}
+			;
 			
-Cenq :		TWHILE M TLPAR ExpLog TRPAR M Bloco		{   corrigirLabel( $4 -> seVerdadeiro, $6 -> label);
-														printf("corrige %i label l%i\n", $4 -> seVerdadeiro, $2 -> label);
+Cenq :		TWHILE M TLPAR ExpLog TRPAR M Bloco		{   printf("    V   F \nE: %3i %3i\n", $4->seVerdadeiro, $4->seFalso);
+														corrigirLabel( $4 -> seVerdadeiro, $6 -> label);
+														/*printf("corrige %i label l%i\n", $4 -> seVerdadeiro, $6 -> label);*/
 														addGoto($2 -> label);
 
 														nlabel++;
@@ -118,6 +133,7 @@ Cenq :		TWHILE M TLPAR ExpLog TRPAR M Bloco		{   corrigirLabel( $4 -> seVerdadei
 														addLabel( labelAtual);
 
 														corrigirLabel( $4 -> seFalso, labelAtual);
+														/*printf("corrige %i label l%i\n", $4 -> seFalso, labelAtual);*/
 
 														free($2);
 														free($4);
@@ -158,12 +174,12 @@ ListPar :	ListPar TVIRG ExpAr
 			;
 			
 ExpLog :	ExpLog TAND M FLog		{	corrigirLabel( $1 -> seVerdadeiro, $3 -> label);
-										$$ = merge( $1, $4, AND);
-										printf("corrige %i label %i\n", $$ -> seVerdadeiro, $3 -> label);
+										$$ = mergeAnd( $1, $4);
+										/*printf("corrige %i label %i\n", $$ -> seVerdadeiro, $3 -> label);*/
 									}
 			| ExpLog TOR M FLog		{	corrigirLabel( $1 -> seFalso, $3 -> label);
-										$$ = merge( $1, $4, OR);
-										printf("corrige %i label %i\n", $$ -> seFalso, $3 -> label);
+										$$ = mergeOr( $1, $4);
+										/*printf("corrige %i label %i\n", $$ -> seFalso, $3 -> label);*/
 									}
 			| FLog					{	$$ = $1;
 									}
@@ -179,26 +195,32 @@ FLog :		TLPAR ExpLog TRPAR		{	$$ = $2;
 			
 ExpRela :	ExpAr TIGUAL ExpAr			{	int linha = getTamListInstrucoes();
 											$$ = createListVeF( IFEQ, linha);
+											printf("%i  ", linha);
 											addIf( IFEQ, -1, -1, labelAtual);
 										}
 			| ExpAr TDIF ExpAr			{	int linha = getTamListInstrucoes();
 											$$ = createListVeF( IFDIF, linha);
+											printf("%i  ", linha);
 											addIf( IFDIF, -1, -1, labelAtual);
 										}
 			| ExpAr TIGUALMA ExpAr		{	int linha = getTamListInstrucoes();
 											$$ = createListVeF( IFMAEQ, linha);
+											printf("%i  ", linha);
 											addIf( IFMAEQ, -1, -1, labelAtual);
 										}
 			| ExpAr TIGUALME ExpAr		{	int linha = getTamListInstrucoes();
 											$$ = createListVeF( IFMEEQ, linha);
+											printf("%i  ", linha);
 											addIf( IFMEEQ, -1, -1, labelAtual);
 										}
 			| ExpAr TMAIOR ExpAr		{	int linha = getTamListInstrucoes();
 											$$ = createListVeF( IFMA, linha);
+											printf("%i  ", linha);
 											addIf( IFMA, -1, -1, labelAtual);
 										}
 			| ExpAr TMENOR ExpAr		{	int linha = getTamListInstrucoes();
 											$$ = createListVeF( IFME, linha);
+											printf("%i  ", linha);
 											addIf( IFME, -1, -1, labelAtual);
 										}
 			;
