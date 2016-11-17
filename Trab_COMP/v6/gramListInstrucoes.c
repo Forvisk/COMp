@@ -180,7 +180,7 @@ pListaAtributos addLabel( int label){
 	listaInstrucao[ numIntrucoes] -> label = 0;
 	//printf("\n");
 
-	printf("%s label %i\n", listaInstrucao[ numIntrucoes] -> byte_code, new -> label);
+	//printf("%s label %i\n", listaInstrucao[ numIntrucoes] -> byte_code, new -> label);
 	return new;
 }
 
@@ -213,7 +213,7 @@ int addIf( char byte_code[21], int label_1, int label_2, int labelAtual){
 
 	listaInstrucao[ numIntrucoes] -> label = labelAtual;
 
-	printf("%s com label %i\n", listaInstrucao[ numIntrucoes] -> byte_code, labelAtual	);
+	//printf("%s com label %i\n", listaInstrucao[ numIntrucoes] -> byte_code, labelAtual	);
 
 	numIntrucoes++;
 	if( numIntrucoes == 200){
@@ -231,7 +231,7 @@ int addIf( char byte_code[21], int label_1, int label_2, int labelAtual){
 
 	listaInstrucao[ numIntrucoes] -> label = labelAtual;
 
-	printf("%s com label %i\n", listaInstrucao[ numIntrucoes] -> byte_code, listaInstrucao[ numIntrucoes] -> label);
+	//printf("%s com label %i\n", listaInstrucao[ numIntrucoes] -> byte_code, listaInstrucao[ numIntrucoes] -> label);
 
 	return 1;
 }
@@ -262,14 +262,25 @@ int getTamListInstrucoes(){
 /*_________________________________________________________________________________________*/
 
 pListaAtributos createListVeF( char byte_code[21], int linha){
-	//printf(" linha %i\n", linha);
+	//printf("%s linha %i\n", byte_code, linha);
+	pLinhaInst aux, aux1;
+
 	pListaAtributos new = (ListaAtributos*)malloc(sizeof(ListaAtributos));
 	new->lista = NULL;
-	new-> seVerdadeiro = linha;
-	new-> seFalso = linha + 1;
+	new -> seVerdadeiro = (LinhaInst*)malloc(sizeof(LinhaInst));
+	aux = new -> seVerdadeiro;
+	aux -> proximo = NULL;
+	aux -> linha = linha;
+	aux1 = aux;
+
+	new -> seFalso = (LinhaInst*)malloc(sizeof(LinhaInst));
+	aux = new -> seFalso;
+	aux -> proximo = NULL;
+	aux-> linha = linha + 1;
+
 	strcpy( new -> byte_codeTemp, byte_code);
 
-	printf("\t%s %i %i\n", new -> byte_codeTemp, new-> seVerdadeiro ,new-> seFalso);
+	//printf("%s %i %i\n", new -> byte_codeTemp, aux1 -> linha, aux -> linha);
 	return new;
 }
 
@@ -277,7 +288,7 @@ pListaAtributos createListVeF( char byte_code[21], int linha){
 /*_________________________________________________________________________________________*/
 
 pListaAtributos not(pListaAtributos lista){
-	int aux = lista -> seFalso;
+	pLinhaInst aux = lista -> seFalso;
 	lista -> seFalso = lista -> seVerdadeiro;
 	lista -> seVerdadeiro = aux;
 	return lista;
@@ -285,6 +296,7 @@ pListaAtributos not(pListaAtributos lista){
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
+
 
 int addGoto( int label){
 	int numIntrucoes = 0;
@@ -317,8 +329,24 @@ int addGoto( int label){
 /*_________________________________________________________________________________________*/
 
 pListaAtributos mergeAnd( pListaAtributos listaC, pListaAtributos listaB){
-	printf("    V   F \nC: %3i %3i\nB: %3i %3i\n", listaB->seVerdadeiro, listaB->seFalso, listaC->seVerdadeiro, listaC->seFalso);
-	listaB -> seFalso = listaC -> seFalso; //goto
+	pLinhaInst auxF, auxV, auxDel;
+
+	auxV = listaB -> seVerdadeiro;
+	while( auxF -> proximo != NULL){
+		auxDel = auxV;
+		auxV -> proximo;
+		free(auxDel);
+	}
+	free(auxV);
+
+	listaB -> seVerdadeiro = listaC -> seVerdadeiro;
+
+	auxF = listaB -> seFalso;
+	while( auxF -> proximo != NULL){
+		auxF = auxF -> proximo;
+	}
+	auxF -> proximo = listaC -> seFalso;
+
 	free( listaC);
 	return listaB;
 }
@@ -327,22 +355,47 @@ pListaAtributos mergeAnd( pListaAtributos listaC, pListaAtributos listaB){
 /*_________________________________________________________________________________________*/
 
 pListaAtributos mergeOr( pListaAtributos listaC, pListaAtributos listaB){
-	printf("    V   F \nB: %3i %3i\nC: %3i %3i\n", listaB->seVerdadeiro, listaB->seFalso, listaC->seVerdadeiro, listaC->seFalso);
-	listaB -> seVerdadeiro = listaC -> seVerdadeiro; // comp
+	pLinhaInst auxV, auxF, auxDel;
+
+	auxF = listaB -> seFalso;
+	while( auxF -> proximo != NULL){
+		auxDel = auxF;
+		auxF -> proximo;
+		free(auxDel);
+	}
+	free(auxF);
+
+	listaB -> seFalso = listaC -> seFalso;
+
+	auxV = listaB -> seVerdadeiro;
+	while( auxV -> proximo != NULL){
+		auxV = auxV -> proximo;
+	}
+	auxV -> proximo = listaC -> seVerdadeiro;
+
 	free( listaC);
 	return listaB;
 }
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-int corrigirLabel( int linhaInstrucao, int label){
+int corrigirLabel( pLinhaInst linhaInstrucao, int label){
 	pInstrucao* listaInstrucao = getListaInstrucao();
 	//printf("corrigiu %i label %i\n");
-	if( listaInstrucao[ linhaInstrucao] != NULL)
-		sprintf( listaInstrucao[ linhaInstrucao] -> parametro_1, "l%i", label);
+	if( linhaInstrucao != NULL){
+		pLinhaInst aux = linhaInstrucao;
+
+		do{
+			//printf("linha %i\n", aux->linha);
+			if( listaInstrucao[ aux -> linha] != NULL){
+				sprintf( listaInstrucao[ aux -> linha] -> parametro_1, "l%i", label);
+				//printf("corrigiu %i label %i\n", linhaInstrucao -> linha, label);
+			}else
+				return 0;
+			aux = aux -> proximo;
+		}while(aux != NULL);
+	}
 	else
 		return 0;
-
-	printf("corrigiu %i label %i\n", linhaInstrucao, label);
 	return 1;
 }

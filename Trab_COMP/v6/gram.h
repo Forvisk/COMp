@@ -60,6 +60,13 @@ typedef struct
 	struct Atributo* proximo;
 } Atributo, *pAtributo;
 
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+typedef struct
+{
+	int linha;
+	struct LinhaInst* proximo;
+} LinhaInst, *pLinhaInst;
 
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
@@ -69,8 +76,8 @@ typedef struct
 	int numTemp;
 	char* literal;
 
-	int seVerdadeiro;
-	int seFalso;
+	pLinhaInst seVerdadeiro;
+	pLinhaInst seFalso;
 
 	int label;
 
@@ -97,6 +104,10 @@ typedef struct
 	char* literal;
 	struct listaLiteral* proximo;
 } ListaLiteral, *pListaLiteral;
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
 
    /*____________________________*/
   /*			gram.c 			*/
@@ -161,7 +172,7 @@ pListaAtributos not(pListaAtributos lista);
 pListaAtributos mergeAnd( pListaAtributos listaC, pListaAtributos listaB);
 pListaAtributos mergeOr( pListaAtributos listaC, pListaAtributos listaB);
 
-int corrigirLabel( int linhaInstrucao, int label);
+int corrigirLabel( pLinhaInst linhaInstrucao, int label);
 
 int getTamListInstrucoes();
 

@@ -54,7 +54,7 @@ int main(int argc, char const *argv[])
 
 		endMethodMain();
 		
-		//createJar( argv[ 1]);
+		createJar( argv[ 1]);
 	}
 	/*
 		char test = getPos
