@@ -178,6 +178,11 @@ int corrigirLabel( pLinhaInst linhaInstrucao, int label);
 
 int getTamListInstrucoes();
 
+int addPrintStr( int label);
+int addPrintInt( int label);
+int addGetstaticSout( int label);
+
+
    /*____________________________*/
   /*	gramListLiteral.c 		*/
  /*____________________________*/
@@ -185,5 +190,11 @@ int getTamListInstrucoes();
 
 pListaAtributos createLit( char* literal);
 char* addLiteralLista( pListaAtributos literal);
+
+   /*____________________________*/
+  /*		gramFuncoes.c 		*/
+ /*____________________________*/
+/*____________________________*/
+
 
 #endif

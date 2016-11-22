@@ -79,6 +79,100 @@ int addInstrucaoListaPosVal( char byte_code[21], int posVal_1, int posVal_2, int
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
+int addPrintStr( int label){
+	int numIntrucoes = 0;
+
+	pInstrucao* listaInstrucao = getListaInstrucao();
+
+	while( (listaInstrucao[numIntrucoes] != NULL) && (numIntrucoes < 200)){
+		numIntrucoes++;
+	}
+
+	if( numIntrucoes == 200){
+		printf("\nLista de instrucoes cheia\n");
+		return 0;
+	}
+
+	listaInstrucao[ numIntrucoes] = (Instrucao*)malloc(sizeof(Instrucao));
+
+	strcpy( listaInstrucao[ numIntrucoes] -> byte_code, INVOKEVIRTUAL);
+
+	listaInstrucao[ numIntrucoes] -> parametro_1 = (char*)malloc( strlen(PRINT_STR) + 1);
+	strncpy( listaInstrucao[ numIntrucoes] -> parametro_1, PRINT_STR, strlen(PRINT_STR));
+
+	listaInstrucao[ numIntrucoes] -> parametro_2 = (char*)malloc( 4);
+	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2 ,INVAL);
+
+	listaInstrucao[ numIntrucoes] -> label = label;
+
+	return 1;
+
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+int addPrintInt( int label){
+	int numIntrucoes = 0;
+
+	pInstrucao* listaInstrucao = getListaInstrucao();
+
+	while( (listaInstrucao[numIntrucoes] != NULL) && (numIntrucoes < 200)){
+		numIntrucoes++;
+	}
+
+	if( numIntrucoes == 200){
+		printf("\nLista de instrucoes cheia\n");
+		return 0;
+	}
+
+	listaInstrucao[ numIntrucoes] = (Instrucao*)malloc(sizeof(Instrucao));
+
+	strcpy( listaInstrucao[ numIntrucoes] -> byte_code, INVOKEVIRTUAL);
+
+	listaInstrucao[ numIntrucoes] -> parametro_1 = (char*)malloc( strlen(PRINT_INT) + 1);
+	strncpy( listaInstrucao[ numIntrucoes] -> parametro_1, PRINT_INT, strlen(PRINT_INT));
+
+	listaInstrucao[ numIntrucoes] -> parametro_2 = (char*)malloc( 4);
+	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2 ,INVAL);
+
+	listaInstrucao[ numIntrucoes] -> label = label;
+
+	return 1;
+}
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+int addGetstaticSout( int label){
+	int numIntrucoes = 0;
+
+	pInstrucao* listaInstrucao = getListaInstrucao();
+
+	while( (listaInstrucao[numIntrucoes] != NULL) && (numIntrucoes < 200)){
+		numIntrucoes++;
+	}
+
+	if( numIntrucoes == 200){
+		printf("\nLista de instrucoes cheia\n");
+		return 0;
+	}
+
+	listaInstrucao[ numIntrucoes] = (Instrucao*)malloc(sizeof(Instrucao));
+
+	strcpy( listaInstrucao[ numIntrucoes] -> byte_code, GETSTATIC);
+
+	listaInstrucao[ numIntrucoes] -> parametro_1 = (char*)malloc( strlen(SYSTEM_OUT) + 1);
+	strncpy( listaInstrucao[ numIntrucoes] -> parametro_1, SYSTEM_OUT, strlen(SYSTEM_OUT));
+
+	listaInstrucao[ numIntrucoes] -> parametro_2 = (char*)malloc( 4);
+	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2 ,INVAL);
+
+	listaInstrucao[ numIntrucoes] -> label = label;
+
+	return 1;
+}
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
 int addNumLista(int num, int label){
 	char str[20];
 	switch (num){

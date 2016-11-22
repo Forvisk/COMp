@@ -157,18 +157,22 @@ Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoListaPosVal( ISTORE, getPosVal( $1 -
 			| TID TATR TLIT TFLIN
 			;
 			
-Cread :		TREAD TLPAR TID TRPAR TFLIN
+Cread :		TREAD TLPAR TID TRPAR TFLIN					{	addNumLista( 3, labelAtual);
+															addInstrucaoListaPosVal( ISTORE, getPosVal($1->nomeIdTemp), -1, labelAtual);
+														}
 			;
 			
-Cprint :	TPRINT Cnprint TLPAR ExpAr TRPAR TFLIN		{	addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL, labelAtual);
+Cprint :	TPRINT Cnprint TLPAR ExpAr TRPAR TFLIN		{	/*addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL, labelAtual);*/
+															addPrintInt( labelAtual);
 														}
 			| TPRINT Cnprint TLPAR TLIT TRPAR TFLIN 	{ 	addInstrucaoLista( LDC, addLiteralLista( $4), INVAL, labelAtual);
-															addInstrucaoLista( INVOKEVIRTUAL, PRINT_STR, INVAL, labelAtual);
+															/*addInstrucaoLista( INVOKEVIRTUAL, PRINT_STR, INVAL, labelAtual);*/
+															addPrintStr( labelAtual);
 
 														}
 			;
 
-Cnprint :		{ 	addInstrucaoLista( GETSTATIC, SYSTEM_OUT, INVAL, labelAtual);
+Cnprint :		{ 	addGetstaticSout( labelAtual);
 				}
 			;
 			
