@@ -1,4 +1,4 @@
-int main( int k){
+int main( int k, String n){
 	int a, b;
 	String nome;
 	int s;

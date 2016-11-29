@@ -127,11 +127,15 @@ pVariavel criarVariavel( char* nomeId);
 int addNewId_Variaveis( pModulo lista, pModulo novoId);
 int addNewId_Parametros( pModulo lista, pModulo novoPar);
 
-void putsListaVariaveis( pModulo lista);
 
 pModulo setTipoListaVariaveis( pModulo lista, pModulo tipo);
 pModulo setTipoListaParametros( pModulo lista, pModulo tipo);
 
+int addListaVariaveis_ListaSuperior( pModulo superior, pModulo novaLista);
+int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista);
+
 int existeId( pModulo lista, char* nomeId);
+
+void putsListaVariaveis( pModulo lista);
 
 #endif

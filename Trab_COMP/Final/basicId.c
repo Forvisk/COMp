@@ -158,6 +158,51 @@ pModulo setTipoListaParametros( pModulo lista, pModulo tipo){
 	return lista;
 }
 
+int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista){
+
+	printf("%p %p\n", (void*)superior, (void*)novaLista);
+	if( superior == NULL){
+		printf("Criando sup\n");
+		superior = ( pModulo)malloc( sizeof( Modulo));
+	}
+	if( novaLista -> listaParametros == NULL)
+		return 1;
+	if( superior -> listaParametros == NULL){
+		pVariavel auxNew = novaLista -> listaParametros;
+		do{
+			//printf("nomeId: %s\n", auxNew -> nomeId);
+			if( existeId( superior, auxNew -> nomeId) == 0)
+				return 0;
+			auxNew = auxNew -> proximo;
+		}while( auxNew != NULL);
+		printf("Primeira entrada\n");
+		superior -> listaParametros = novaLista -> listaParametros;
+	} else {
+		printf("Adicionando variaveis\n");
+		pVariavel auxSup = superior -> listaParametros;
+		pVariavel auxNew = novaLista -> listaParametros;
+		
+		while( auxSup -> proximo != NULL){
+			auxSup = auxSup -> proximo;
+			//printf("nomeId: %s\n", auxSup -> nomeId);
+		}
+		do{
+			//printf("nomeId: %s\n", auxNew -> nomeId);
+			if( existeId( superior, auxNew -> nomeId) == 0)
+				return 0;
+			auxNew = auxNew -> proximo;
+		}while( auxNew != NULL);
+
+		auxNew = novaLista -> listaParametros;
+		auxSup -> proximo = auxNew;
+		auxNew -> anterior = auxSup;
+
+	}
+
+	free( novaLista);
+	return 1;
+}
+
 int existeId( pModulo lista, char* nomeId){
 
 	if( lista -> listaVariaveis != NULL){
@@ -182,12 +227,11 @@ int existeId( pModulo lista, char* nomeId){
 }
 
 void putsListaVariaveis( pModulo lista){
-	printf("aui\n");
-	/*if( lista == NULL){
-		printf("here\n");
-	} else {*/
+	if( lista == NULL){
+		printf("Lista inexistente\n");
+	} else {
 		if( lista -> listaVariaveis == NULL){
-			printf("lista vazia\n");
+			printf("lista de variaveis vazia\n");
 		}else{
 			printf("\nTabela de simbolos %p:\n", (void*)lista);
 			printf("Variavel\n");
@@ -209,9 +253,9 @@ void putsListaVariaveis( pModulo lista){
 		}
 
 		if( lista -> listaParametros == NULL){
-			printf("lista vazia\n");
+			printf("lista de parametros vazia\n");
 		}else{
-			printf("\nTabela de simbolos %p:\n", (void*)lista);
+			//printf("\nTabela de simbolos %p:\n", (void*)lista);
 			printf("Parametro\n");
 			printf("\tsimbolo\tposVal\n\n");
 			pVariavel aux = lista -> listaParametros;
@@ -230,6 +274,6 @@ void putsListaVariaveis( pModulo lista){
 			}while( aux != NULL);
 		}
 		printf("\n");
-	//}
+	}
 }
 

@@ -14,27 +14,35 @@ Codigo : 	Prog
 			
 Prog : 		ListFunc BlocoP 	{	/*
 									*/
-									/*printf("Prog -> ListFunc BlocoP\n");
-									putsListaVariaveis($$);*/
+									printf("Prog -> ListFunc BlocoP\n");
+									printf("$$ : %p;  $1 : %p; $2 : %p;\n", (void*)$$, (void*)$1, (void*)$2);
+									/*$$ = $2;*/
+									addListaVariaveis_ListaSuperior( $$, $2);
+									putsListaVariaveis($$);
 								}
 			| BlocoP 			{	/*
 									*/
-									/*printf("Prog -> BlocoP\n");
-									putsListaVariaveis($$);*/
+									printf("Prog -> BlocoP\n");
+									putsListaVariaveis($$);
 								}
 			;
 			
 ListFunc : 	ListFunc Func		{	/*
 									*/
+									printf("ListFunc -> ListFunc Func\n");
+									putsListaVariaveis($$);
 								}
 			| Func 				{	/*
 									*/
+									printf("ListFunc -> Func\n");
+									putsListaVariaveis($1);
 								}
 			;
 			
 Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{	/*
 													*/
-													putsListaVariaveis($4);
+													$$ = $4;
+													putsListaVariaveis($$);
 												}
 			| TipeReturn TID TLPAR TRPAR		{	/*
 													*/
@@ -66,8 +74,13 @@ Par :		Tipe TID 			{	/*
 			
 BlocoP :	TLCH Decs ListCom TRCH 		{	/*
 											*/
+											printf("BlocoP -> TLCH Decs ListCom TRCH\n");
+											$$ = $2;
+											putsListaVariaveis($$);
 										}	
-			| TLCH ListCom TRCH 		
+			| TLCH ListCom TRCH 		{	/*
+											*/
+										}	
 			;
 			
 Decs :		Decs Dec 			{	/*
