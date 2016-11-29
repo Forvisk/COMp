@@ -56,9 +56,11 @@ BlocoP :	TLCH Decs ListCom TRCH
 			;
 			
 Decs :		Decs Dec 	{	
+								printf("Decs -> Decs Dec %p %p\n", (void*)$$, (void*)$2);
 							addToGreatList( $2, 1, $2 -> tipe_temp);
 						}
 			| Dec 		{	
+								printf("Decs -> Dec %p %p\n", (void*)$$, (void*)$1);
 							addToGreatList( $1, 1, $1 -> tipe_temp);
 						}
 			;

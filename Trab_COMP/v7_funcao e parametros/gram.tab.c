@@ -458,13 +458,13 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    12,    12,    15,    16,    19,    22,    27,    32,    38,
-      40,    44,    46,    50,    54,    55,    58,    61,    66,    73,
-      76,    81,    83,    87,    90,    91,    94,    95,    96,    97,
-      98,    99,   100,   103,   104,   107,   120,   138,   145,   154,
-     171,   173,   176,   181,   184,   191,   195,   196,   199,   200,
-     202,   203,   207,   211,   215,   220,   223,   225,   230,   234,
-     238,   242,   246,   250,   256,   258,   260,   264,   267,   270,
-     275,   278,   279,   282,   287
+      40,    44,    46,    50,    54,    55,    58,    62,    68,    75,
+      78,    83,    85,    89,    92,    93,    96,    97,    98,    99,
+     100,   101,   102,   105,   106,   109,   122,   140,   147,   156,
+     173,   175,   178,   183,   186,   193,   197,   198,   201,   202,
+     204,   205,   209,   213,   217,   222,   225,   227,   232,   236,
+     240,   244,   248,   252,   258,   260,   262,   266,   269,   272,
+     277,   280,   281,   284,   289
 };
 #endif
 
@@ -1414,61 +1414,63 @@ yyreduce:
   case 16:
 #line 58 "gram.y" /* yacc.c:1646  */
     {	
+								printf("Decs -> Decs Dec %p %p\n", (void*)(yyval), (void*)(yyvsp[0]));
 							addToGreatList( (yyvsp[0]), 1, (yyvsp[0]) -> tipe_temp);
 						}
-#line 1420 "gram.tab.c" /* yacc.c:1646  */
+#line 1421 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 61 "gram.y" /* yacc.c:1646  */
+#line 62 "gram.y" /* yacc.c:1646  */
     {	
+								printf("Decs -> Dec %p %p\n", (void*)(yyval), (void*)(yyvsp[0]));
 							addToGreatList( (yyvsp[0]), 1, (yyvsp[0]) -> tipe_temp);
 						}
-#line 1428 "gram.tab.c" /* yacc.c:1646  */
+#line 1430 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 66 "gram.y" /* yacc.c:1646  */
+#line 68 "gram.y" /* yacc.c:1646  */
     {	
 									(yyvsp[-1]) -> tipe_temp = (yyvsp[-2]) -> tipe_temp;
 									(yyval) = (yyvsp[-1]);
 									free((yyvsp[-2]));
 								}
-#line 1438 "gram.tab.c" /* yacc.c:1646  */
+#line 1440 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 73 "gram.y" /* yacc.c:1646  */
+#line 75 "gram.y" /* yacc.c:1646  */
     {
 									(yyval) = createTipe( T_INT);
 								}
-#line 1446 "gram.tab.c" /* yacc.c:1646  */
+#line 1448 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 76 "gram.y" /* yacc.c:1646  */
+#line 78 "gram.y" /* yacc.c:1646  */
     {
 									(yyval) = createTipe( T_STR);
 								}
-#line 1454 "gram.tab.c" /* yacc.c:1646  */
+#line 1456 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 81 "gram.y" /* yacc.c:1646  */
+#line 83 "gram.y" /* yacc.c:1646  */
     {	addIdToList((yyvsp[-2]), (yyvsp[0]));
 								}
-#line 1461 "gram.tab.c" /* yacc.c:1646  */
+#line 1463 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 83 "gram.y" /* yacc.c:1646  */
+#line 85 "gram.y" /* yacc.c:1646  */
     {	addIdToList((yyval), (yyvsp[0]));
 								}
-#line 1468 "gram.tab.c" /* yacc.c:1646  */
+#line 1470 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 107 "gram.y" /* yacc.c:1646  */
+#line 109 "gram.y" /* yacc.c:1646  */
     {	
 																	corrigirLabel( (yyvsp[-3]) -> seVerdadeiro, (yyvsp[-1]) -> label);
 																	
@@ -1482,11 +1484,11 @@ yyreduce:
 																	free((yyvsp[-3]));
 																	free((yyvsp[-1]));
 																}
-#line 1486 "gram.tab.c" /* yacc.c:1646  */
+#line 1488 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 120 "gram.y" /* yacc.c:1646  */
+#line 122 "gram.y" /* yacc.c:1646  */
     {	
 																	corrigirLabel( (yyvsp[-7]) -> seVerdadeiro, (yyvsp[-5]) -> label);
 																	corrigirLabel( (yyvsp[-7]) -> seFalso, (yyvsp[-1]) -> label);	
@@ -1503,21 +1505,21 @@ yyreduce:
 																	free((yyvsp[-3]));
 																	free((yyvsp[-1]));
 																}
-#line 1507 "gram.tab.c" /* yacc.c:1646  */
+#line 1509 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 138 "gram.y" /* yacc.c:1646  */
+#line 140 "gram.y" /* yacc.c:1646  */
     {	nlabel++;
 				/*printf("n_labl %i\n", nlabel);*/
 				labelAtual = nlabel;
 				(yyval) = addLabel( labelAtual);
 			}
-#line 1517 "gram.tab.c" /* yacc.c:1646  */
+#line 1519 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 145 "gram.y" /* yacc.c:1646  */
+#line 147 "gram.y" /* yacc.c:1646  */
     {	
 				int linha = getTamListInstrucoes(); 
 				addGoto( labelAtual);
@@ -1525,11 +1527,11 @@ yyreduce:
 				(yyval) = createListVeF( GOTO, linha);
 				(yyval) -> label = labelAtual;
 			}
-#line 1529 "gram.tab.c" /* yacc.c:1646  */
+#line 1531 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 154 "gram.y" /* yacc.c:1646  */
+#line 156 "gram.y" /* yacc.c:1646  */
     {   
 														corrigirLabel( (yyvsp[-3]) -> seVerdadeiro, (yyvsp[-1]) -> label);
 														addGoto((yyvsp[-5]) -> label);
@@ -1545,247 +1547,247 @@ yyreduce:
 														free((yyvsp[-3]));
 														free((yyvsp[-1]));
 													}
-#line 1549 "gram.tab.c" /* yacc.c:1646  */
+#line 1551 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 171 "gram.y" /* yacc.c:1646  */
+#line 173 "gram.y" /* yacc.c:1646  */
     {	addInstrucaoListaPosVal( ISTORE, getPosVal( (yyvsp[-3]) -> nomeIdTemp), -1, labelAtual);
 										}
-#line 1556 "gram.tab.c" /* yacc.c:1646  */
+#line 1558 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 176 "gram.y" /* yacc.c:1646  */
+#line 178 "gram.y" /* yacc.c:1646  */
     {	addNumLista( 3, labelAtual);
 															addInstrucaoListaPosVal( ISTORE, getPosVal((yyvsp[-4])->nomeIdTemp), -1, labelAtual);
 														}
-#line 1564 "gram.tab.c" /* yacc.c:1646  */
+#line 1566 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 181 "gram.y" /* yacc.c:1646  */
+#line 183 "gram.y" /* yacc.c:1646  */
     {	/*addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL, labelAtual);*/
 															addPrintInt( labelAtual);
 														}
-#line 1572 "gram.tab.c" /* yacc.c:1646  */
+#line 1574 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 184 "gram.y" /* yacc.c:1646  */
+#line 186 "gram.y" /* yacc.c:1646  */
     { 	addInstrucaoLista( LDC, addLiteralLista( (yyvsp[-2])), INVAL, labelAtual);
 															/*addInstrucaoLista( INVOKEVIRTUAL, PRINT_STR, INVAL, labelAtual);*/
 															addPrintStr( labelAtual);
 
 														}
-#line 1582 "gram.tab.c" /* yacc.c:1646  */
+#line 1584 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 191 "gram.y" /* yacc.c:1646  */
+#line 193 "gram.y" /* yacc.c:1646  */
     { 	addGetstaticSout( labelAtual);
 				}
-#line 1589 "gram.tab.c" /* yacc.c:1646  */
+#line 1591 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 200 "gram.y" /* yacc.c:1646  */
+#line 202 "gram.y" /* yacc.c:1646  */
     {	addLiteralLista((yyvsp[0]));
 									}
-#line 1596 "gram.tab.c" /* yacc.c:1646  */
+#line 1598 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 203 "gram.y" /* yacc.c:1646  */
+#line 205 "gram.y" /* yacc.c:1646  */
     {	addLiteralLista((yyvsp[0]));
 									}
-#line 1603 "gram.tab.c" /* yacc.c:1646  */
+#line 1605 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 207 "gram.y" /* yacc.c:1646  */
+#line 209 "gram.y" /* yacc.c:1646  */
     {	
 										corrigirLabel( (yyvsp[-3]) -> seVerdadeiro, (yyvsp[-1]) -> label);
 										(yyval) = mergeAnd( (yyvsp[0]), (yyvsp[-3]));
 									}
-#line 1612 "gram.tab.c" /* yacc.c:1646  */
+#line 1614 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 211 "gram.y" /* yacc.c:1646  */
+#line 213 "gram.y" /* yacc.c:1646  */
     {	
 										corrigirLabel( (yyvsp[-3]) -> seFalso, (yyvsp[-1]) -> label);
 										(yyval) = mergeOr( (yyvsp[0]), (yyvsp[-3]));
 									}
-#line 1621 "gram.tab.c" /* yacc.c:1646  */
+#line 1623 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 215 "gram.y" /* yacc.c:1646  */
+#line 217 "gram.y" /* yacc.c:1646  */
     {	
 										(yyval) = (yyvsp[0]);
 									}
-#line 1629 "gram.tab.c" /* yacc.c:1646  */
+#line 1631 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 220 "gram.y" /* yacc.c:1646  */
+#line 222 "gram.y" /* yacc.c:1646  */
     {	
 										(yyval) = (yyvsp[-1]);
 									}
-#line 1637 "gram.tab.c" /* yacc.c:1646  */
+#line 1639 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 223 "gram.y" /* yacc.c:1646  */
+#line 225 "gram.y" /* yacc.c:1646  */
     {	(yyval) = not( (yyvsp[0]));
 									}
-#line 1644 "gram.tab.c" /* yacc.c:1646  */
+#line 1646 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 225 "gram.y" /* yacc.c:1646  */
+#line 227 "gram.y" /* yacc.c:1646  */
     {	
 										(yyval) = (yyvsp[0]);
 									}
-#line 1652 "gram.tab.c" /* yacc.c:1646  */
+#line 1654 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 230 "gram.y" /* yacc.c:1646  */
+#line 232 "gram.y" /* yacc.c:1646  */
     {	int linha = getTamListInstrucoes();
 											(yyval) = createListVeF( IFEQ, linha);
 											addIf( IFEQ, -1, -1, labelAtual);
 										}
-#line 1661 "gram.tab.c" /* yacc.c:1646  */
+#line 1663 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 234 "gram.y" /* yacc.c:1646  */
+#line 236 "gram.y" /* yacc.c:1646  */
     {	int linha = getTamListInstrucoes();
 											(yyval) = createListVeF( IFDIF, linha);
 											addIf( IFDIF, -1, -1, labelAtual);
 										}
-#line 1670 "gram.tab.c" /* yacc.c:1646  */
+#line 1672 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 238 "gram.y" /* yacc.c:1646  */
+#line 240 "gram.y" /* yacc.c:1646  */
     {	int linha = getTamListInstrucoes();
 											(yyval) = createListVeF( IFMAEQ, linha);
 											addIf( IFMAEQ, -1, -1, labelAtual);
 										}
-#line 1679 "gram.tab.c" /* yacc.c:1646  */
+#line 1681 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 242 "gram.y" /* yacc.c:1646  */
+#line 244 "gram.y" /* yacc.c:1646  */
     {	int linha = getTamListInstrucoes();
 											(yyval) = createListVeF( IFMEEQ, linha);
 											addIf( IFMEEQ, -1, -1, labelAtual);
 										}
-#line 1688 "gram.tab.c" /* yacc.c:1646  */
+#line 1690 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 246 "gram.y" /* yacc.c:1646  */
+#line 248 "gram.y" /* yacc.c:1646  */
     {	int linha = getTamListInstrucoes();
 											(yyval) = createListVeF( IFMA, linha);
 											addIf( IFMA, -1, -1, labelAtual);
 										}
-#line 1697 "gram.tab.c" /* yacc.c:1646  */
+#line 1699 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 250 "gram.y" /* yacc.c:1646  */
+#line 252 "gram.y" /* yacc.c:1646  */
     {	int linha = getTamListInstrucoes();
 											(yyval) = createListVeF( IFME, linha);
 											addIf( IFME, -1, -1, labelAtual);
 										}
-#line 1706 "gram.tab.c" /* yacc.c:1646  */
+#line 1708 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 256 "gram.y" /* yacc.c:1646  */
+#line 258 "gram.y" /* yacc.c:1646  */
     {	addInstrucaoLista( IADD, INVAL, INVAL, labelAtual);
 								}
-#line 1713 "gram.tab.c" /* yacc.c:1646  */
+#line 1715 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 258 "gram.y" /* yacc.c:1646  */
+#line 260 "gram.y" /* yacc.c:1646  */
     {	addInstrucaoLista( ISUB, INVAL, INVAL, labelAtual);
 								}
-#line 1720 "gram.tab.c" /* yacc.c:1646  */
+#line 1722 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 260 "gram.y" /* yacc.c:1646  */
+#line 262 "gram.y" /* yacc.c:1646  */
     {	(yyval) = (yyvsp[0]);
 								}
-#line 1727 "gram.tab.c" /* yacc.c:1646  */
+#line 1729 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 264 "gram.y" /* yacc.c:1646  */
+#line 266 "gram.y" /* yacc.c:1646  */
     {	
 										addInstrucaoLista( IMUL, INVAL, INVAL, labelAtual);
 									}
-#line 1735 "gram.tab.c" /* yacc.c:1646  */
+#line 1737 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 267 "gram.y" /* yacc.c:1646  */
+#line 269 "gram.y" /* yacc.c:1646  */
     {	
 										addInstrucaoLista( IDIV, INVAL, INVAL, labelAtual);
 									}
-#line 1743 "gram.tab.c" /* yacc.c:1646  */
+#line 1745 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 270 "gram.y" /* yacc.c:1646  */
+#line 272 "gram.y" /* yacc.c:1646  */
     {	
 										(yyval) = (yyvsp[0]);
 									}
-#line 1751 "gram.tab.c" /* yacc.c:1646  */
+#line 1753 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 275 "gram.y" /* yacc.c:1646  */
+#line 277 "gram.y" /* yacc.c:1646  */
     {	
 										addInstrucaoLista( INEG, INVAL, INVAL, labelAtual);
 									}
-#line 1759 "gram.tab.c" /* yacc.c:1646  */
+#line 1761 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 279 "gram.y" /* yacc.c:1646  */
+#line 281 "gram.y" /* yacc.c:1646  */
     { 	
 										addInstrucaoListaPosVal( ILOAD, getPosVal((yyvsp[0])->nomeIdTemp), -1, labelAtual);
 									}
-#line 1767 "gram.tab.c" /* yacc.c:1646  */
+#line 1769 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 282 "gram.y" /* yacc.c:1646  */
+#line 284 "gram.y" /* yacc.c:1646  */
     {
 										if( existeId( getGreatList(), (yyvsp[0])) == 0){
 
 										}
 									}
-#line 1777 "gram.tab.c" /* yacc.c:1646  */
+#line 1779 "gram.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 287 "gram.y" /* yacc.c:1646  */
+#line 289 "gram.y" /* yacc.c:1646  */
     {	
 										addNumLista( (yyvsp[0]) -> numTemp, labelAtual);
 									}
-#line 1785 "gram.tab.c" /* yacc.c:1646  */
+#line 1787 "gram.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1789 "gram.tab.c" /* yacc.c:1646  */
+#line 1791 "gram.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2013,7 +2015,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 292 "gram.y" /* yacc.c:1906  */
+#line 294 "gram.y" /* yacc.c:1906  */
 
 #include "lex.yy.c"
 int yyerror (char *str){
