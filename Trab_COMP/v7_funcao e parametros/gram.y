@@ -56,11 +56,11 @@ BlocoP :	TLCH Decs ListCom TRCH
 			;
 			
 Decs :		Decs Dec 	{	
-								printf("Decs -> Decs Dec %p %p\n", (void*)$$, (void*)$2);
+								/*printf("Decs -> Decs Dec %p %p\n", (void*)$$, (void*)$2);*/
 							addToGreatList( $2, 1, $2 -> tipe_temp);
 						}
 			| Dec 		{	
-								printf("Decs -> Dec %p %p\n", (void*)$$, (void*)$1);
+								/*printf("Decs -> Dec %p %p\n", (void*)$$, (void*)$1);*/
 							addToGreatList( $1, 1, $1 -> tipe_temp);
 						}
 			;
@@ -183,8 +183,9 @@ Cread :		TREAD TLPAR TID TRPAR TFLIN					{	addNumLista( 3, labelAtual);
 Cprint :	TPRINT Cnprint TLPAR ExpAr TRPAR TFLIN		{	/*addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL, labelAtual);*/
 															addPrintInt( labelAtual);
 														}
-			| TPRINT Cnprint TLPAR TLIT TRPAR TFLIN 	{ 	addInstrucaoLista( LDC, addLiteralLista( $4), INVAL, labelAtual);
+			| TPRINT Cnprint TLPAR TLIT TRPAR TFLIN 	{ 	/*addInstrucaoLista( LDC, addLiteralLista( $4), INVAL, labelAtual);*/
 															/*addInstrucaoLista( INVOKEVIRTUAL, PRINT_STR, INVAL, labelAtual);*/
+															addLdc( addLiteralLista( $4), labelAtual);
 															addPrintStr( labelAtual);
 
 														}

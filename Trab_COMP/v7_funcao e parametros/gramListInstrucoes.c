@@ -16,21 +16,53 @@ int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2,
 		printf("\nLista de instruções cheia\n");
 		return 0;
 	}
-	//printf("%s %s %s", byte_code, parametro_1, parametro_2);
+	printf("%s %s %s", byte_code, parametro_1, parametro_2);
 	listaInstrucao[ numIntrucoes] = (Instrucao*)malloc(sizeof(Instrucao));
-	listaInstrucao[ numIntrucoes] -> parametro_1 = ( char*)malloc( sizeof( strlen( parametro_1) + 1));
-	listaInstrucao[ numIntrucoes] -> parametro_2 = ( char*)malloc( sizeof( strlen( parametro_2) + 1));
-
 	strcpy( listaInstrucao[ numIntrucoes] -> byte_code, byte_code);
+
+	listaInstrucao[ numIntrucoes] -> parametro_1 = ( char*)malloc( sizeof( strlen( parametro_1) + 1));
 	strncpy(listaInstrucao[ numIntrucoes] -> parametro_1, parametro_1, strlen( parametro_1));
+
+	listaInstrucao[ numIntrucoes] -> parametro_2 = ( char*)malloc( sizeof( strlen( parametro_2) + 1));
 	strncpy(listaInstrucao[ numIntrucoes] -> parametro_2, parametro_2, strlen( parametro_2));
 
-	//printf("%s", listaInstrucao[ numIntrucoes] -> byte_code);
-	//printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_1, strlen(listaInstrucao[ numIntrucoes] -> parametro_1));
-	//printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_2, strlen(listaInstrucao[ numIntrucoes] -> parametro_2));
+	printf("%s", listaInstrucao[ numIntrucoes] -> byte_code);
+	printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_1, strlen(listaInstrucao[ numIntrucoes] -> parametro_1));
+	printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_2, strlen(listaInstrucao[ numIntrucoes] -> parametro_2));
+
 	listaInstrucao[ numIntrucoes] -> label = label;
-	//printf("\n");
+	printf("\n");
 	return 1;
+}
+
+int addLdc( char* literal, int label){
+	int numIntrucoes = 0;
+
+	pInstrucao* listaInstrucao = getListaInstrucao();
+	while( (listaInstrucao[ numIntrucoes] != NULL) && ( numIntrucoes < 200)){
+		numIntrucoes++;
+	}
+
+	if( numIntrucoes == 200){
+		printf("\nLista de instruções cheia\n");
+		return 0;
+	}
+
+	listaInstrucao[ numIntrucoes] = (Instrucao*)malloc(sizeof(Instrucao));
+	strcpy( listaInstrucao[ numIntrucoes] -> byte_code, LDC);
+
+	listaInstrucao[ numIntrucoes] -> parametro_1 = ( char*)malloc( sizeof( strlen( literal) + 1));
+	strncpy(listaInstrucao[ numIntrucoes] -> parametro_1, literal, strlen( literal));
+
+	listaInstrucao[ numIntrucoes] -> parametro_2 = ( char*)malloc( sizeof( 4));
+	strncpy(listaInstrucao[ numIntrucoes] -> parametro_2, INVAL, 3);
+	//listaInstrucao[ numIntrucoes] -> parametro_2 = INVAL;
+
+	printf("%s", listaInstrucao[ numIntrucoes] -> byte_code);
+	printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_1, strlen(listaInstrucao[ numIntrucoes] -> parametro_1));
+	printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_2, strlen(listaInstrucao[ numIntrucoes] -> parametro_2));
+	listaInstrucao[ numIntrucoes] -> label = label;
+	printf("\n");
 }
 
 

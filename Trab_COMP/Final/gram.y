@@ -14,35 +14,26 @@ Codigo : 	Prog
 			
 Prog : 		ListFunc BlocoP 	{	/*
 									*/
-									printf("Prog -> ListFunc BlocoP\n");
-									printf("$$ : %p;  $1 : %p; $2 : %p;\n", (void*)$$, (void*)$1, (void*)$2);
-									/*$$ = $2;*/
-									addListaVariaveis_ListaSuperior( $$, $2);
-									putsListaVariaveis($$);
+									/*printf("Prog -> ListFunc BlocoP\n");*/
 								}
 			| BlocoP 			{	/*
 									*/
-									printf("Prog -> BlocoP\n");
-									putsListaVariaveis($$);
+									/*printf("Prog -> BlocoP\n");*/
 								}
 			;
 			
 ListFunc : 	ListFunc Func		{	/*
 									*/
-									printf("ListFunc -> ListFunc Func\n");
-									putsListaVariaveis($$);
+									/*printf("ListFunc -> ListFunc Func\n");*/
 								}
 			| Func 				{	/*
 									*/
-									printf("ListFunc -> Func\n");
-									putsListaVariaveis($1);
+									/*printf("ListFunc -> Func\n");*/
 								}
 			;
 			
 Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{	/*
 													*/
-													$$ = $4;
-													putsListaVariaveis($$);
 												}
 			| TipeReturn TID TLPAR TRPAR		{	/*
 													*/
@@ -74,9 +65,8 @@ Par :		Tipe TID 			{	/*
 			
 BlocoP :	TLCH Decs ListCom TRCH 		{	/*
 											*/
-											printf("BlocoP -> TLCH Decs ListCom TRCH\n");
-											$$ = $2;
-											putsListaVariaveis($$);
+											/*printf("BlocoP -> TLCH Decs ListCom TRCH\n");*/
+											/*putsListaVariaveis($1);*/
 										}	
 			| TLCH ListCom TRCH 		{	/*
 											*/
@@ -85,20 +75,18 @@ BlocoP :	TLCH Decs ListCom TRCH 		{	/*
 			
 Decs :		Decs Dec 			{	/*
 									*/
-									/*printf("Decs -> Decs Dec\n");
-									printf("%p %p\n", (void*)$1, (void*)$2);*/
-									/*putsListaVariaveis( $2);*/
-									/*addListaVariaveis_ListaSuperior( $1, $2);*/
-									/*$$ = $1;*/
-									/*putsListaVariaveis( $$);*/
+									printf("Decs -> Decs Dec\n");
+									/*printf("%p %p\n", (void*)$1, (void*)$2);*/
+									putsListaVariaveis( $1);
+									addToListaSimbolos( $1);
+									/*$$ = $2;*/
 								}
 			| Dec 				{	/*
 									*/
-									/*printf("Decs -> Dec\n");
-									printf("%p %p\n", (void*)$$, (void*)$1);*/
-									/*putsListaVariaveis( $1);*/
-									/*addListaVariaveis_ListaSuperior( $$, $1);*/
-									/*putsListaVariaveis( $$);*/
+									/*printf("Decs -> Dec\n");*/
+									/*printf("%p %p\n", (void*)$$, (void*)$1);*/
+									/*putsListaVariaveis( $1);
+									addToListaSimbolos( $1);*/
 								}
 			;
 			

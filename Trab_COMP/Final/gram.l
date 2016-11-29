@@ -40,7 +40,7 @@ literal \".*\"
 "}"       	{ return TRCH;}
 ","       	{ return TVIRG;}
 ";"       	{ return TFLIN;}
-{literal} 	{ /*yylval = createLit( yytext);*/ return TLIT;}
-{num}     	{ /*yylval = createNum( atoi(yytext));*/ return TNUM;}
+{literal} 	{ yylval = criarLiteral( yytext); return TLIT;}
+{num}     	{ yylval = criarValorNumerico( atoi(yytext)); return TNUM;}
 {id}      	{ yylval = criarId( yytext); return TID;}
 "\n"	  	{ /*linha++;*/}

@@ -46,9 +46,11 @@ int addNewId_Variaveis( pModulo lista, pModulo novoId){
 	}
 	pVariavel new = criarVariavel( novoId -> nomeId_temp);
 
-	if( lista -> listaVariaveis == NULL)
+	if( lista -> listaVariaveis == NULL){
+		printf("Primeira variavel da lista temp : %s\n", new -> nomeId);
 		lista -> listaVariaveis = new;
-	else {
+	}else {
+		printf("Adicionando variavel a lista temp : %s\n", new -> nomeId);
 		pVariavel aux = lista -> listaVariaveis;
 		while( aux -> proximo != NULL){
 			if( strncmp( aux -> nomeId, new -> nomeId, 20) == 0)
@@ -66,7 +68,7 @@ int addNewId_Variaveis( pModulo lista, pModulo novoId){
 
 /*--------------------------------------------------------------*/
 
-int addListaVariaveis_ListaSuperior( pModulo superior, pModulo novaLista){
+/*int addListaVariaveis_ListaSuperior( pModulo superior, pModulo novaLista){
 
 	printf("%p %p\n", (void*)superior, (void*)novaLista);
 	if( superior == NULL){
@@ -98,9 +100,9 @@ int addListaVariaveis_ListaSuperior( pModulo superior, pModulo novaLista){
 
 	}
 
-	free( novaLista);
+	//free( novaLista);
 	return 1;
-}
+}*/
 
 /*--------------------------------------------------------------*/
 
@@ -168,7 +170,7 @@ pModulo setTipoListaParametros( pModulo lista, pModulo tipo){
 
 /*--------------------------------------------------------------*/
 
-int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista){
+/*int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista){
 	
 	printf("%p %p\n", (void*)superior, (void*)novaLista);
 	if( superior == NULL){
@@ -209,9 +211,9 @@ int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista){
 
 	}
 
-	free( novaLista);
+	//free( novaLista);
 	return 1;
-}
+}*/
 
 /*--------------------------------------------------------------*/
 
@@ -293,7 +295,50 @@ void putsListaVariaveis( pModulo lista){
 
 /*-----------------------------------------------*/
 
-int addToListaAtual( pModulo novaLista){
-	
+int addToListaSimbolos( pModulo novaLista){
+	printf("Iniciando incersão na lista principal\n");
+	//putsListaVariaveis( novaLista);
+	pModulo listaSimbolos = getListaSimbolos();
+		
+
+	if( novaLista -> listaVariaveis != NULL){
+
+		if( listaSimbolos -> listaVariaveis == NULL){
+			printf("Lista de variaveis vazia\n");
+
+			pVariavel auxNew = novaLista -> listaVariaveis;
+			do{
+				//printf("nomeId: %s\n", auxNew -> nomeId);
+				if( existeId( listaSimbolos, auxNew -> nomeId) == 0)
+					return 0;
+				auxNew = auxNew -> proximo;
+			}while( auxNew != NULL);
+			listaSimbolos -> listaVariaveis = novaLista -> listaVariaveis;
+		} else {
+
+			pVariavel auxNew = novaLista -> listaVariaveis;
+			do{
+				//printf("nomeId: %s\n", auxNew -> nomeId);
+				if( existeId( listaSimbolos, auxNew -> nomeId) == 0)
+					return 0;
+				auxNew = auxNew -> proximo;
+			}while( auxNew != NULL);
+
+			pVariavel auxSup = listaSimbolos -> listaVariaveis;
+			while( auxSup -> proximo != NULL){
+				printf("nomeId: %s\n", auxSup -> nomeId);
+				auxSup = auxSup -> proximo;
+			}
+			auxSup -> proximo = novaLista -> listaVariaveis;
+			auxNew = novaLista -> listaVariaveis;
+			auxNew -> anterior = auxSup;
+		}
+	}
+
+	if( novaLista -> listaParametros != NULL){
+
+	}
+
+
 	return 1;
 }

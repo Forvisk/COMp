@@ -117,6 +117,7 @@ typedef struct
 /*_-_gramMain.c_-_*/
 
 void setErro();
+pModulo criarListaSimbolos();
 
 /*_-_basicId.c_-_*/
 
@@ -139,6 +140,8 @@ int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista);
 int existeId( pModulo lista, char* nomeId);
 
 void putsListaVariaveis( pModulo lista);
+
+int addToListaSimbolos( pModulo novaLista);
 
 /*_-_basicFuncao.c_-_*/
 
