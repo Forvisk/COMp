@@ -205,8 +205,12 @@ Cnprint :			{	/*
 					}
 			;
 			
-Cfunc :		TID TLPAR ListPar TRPAR
-			| TID TLPAR TRPAR
+Cfunc :		TID TLPAR ListPar TRPAR 		{	/*
+												*/
+											}
+			| TID TLPAR TRPAR 				{	/*
+												*/
+											}
 			;
 			
 ListPar :	ListPar TVIRG ExpAr
@@ -296,7 +300,8 @@ An :		TSUB An 				{	/*
 			| TID 					{	/*
 										*/
 									}
-			| Cfunc 				{	/*
+			| Cfunc 				{	/*invokestatic f(par)Ret
+											par - 0 -> N
 										*/
 									}
 			| TNUM					{	/*

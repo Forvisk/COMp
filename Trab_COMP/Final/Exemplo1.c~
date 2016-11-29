@@ -1,5 +1,6 @@
 {
 	int a, b;
+	
 	print("Valor de A:");
 	read(a);
 	print("Valor de B:");

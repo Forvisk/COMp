@@ -1,13 +1,7 @@
 #include "gramF.h"
 
-/* colocar essa função em outro lugar */
-/*pModulo criarValorNumerico( int valor){
-	pModulo new = ( pModulo)malloc( sizeof(Modulo));
 
-	new -> valor_temp = valor;
-
-	return new;
-}*/
+/*--------------------------------------------------------------*/
 
 pModulo criarId( char* nomeId){
 	pModulo new = ( pModulo)malloc( sizeof(Modulo));
@@ -17,6 +11,8 @@ pModulo criarId( char* nomeId){
 	return new;
 }
 
+/*--------------------------------------------------------------*/
+
 pModulo criarTipo( int tipo){
 	pModulo new = ( pModulo)malloc( sizeof(Modulo));
 
@@ -24,6 +20,8 @@ pModulo criarTipo( int tipo){
 
 	return new;
 }
+
+/*--------------------------------------------------------------*/
 
 pVariavel criarVariavel( char* nomeId){
 	pVariavel new = ( pVariavel)malloc( sizeof( Variavel));
@@ -37,6 +35,8 @@ pVariavel criarVariavel( char* nomeId){
 
 	return new;
 }
+
+/*--------------------------------------------------------------*/
 
 int addNewId_Variaveis( pModulo lista, pModulo novoId){
 	if( lista == NULL){
@@ -63,6 +63,8 @@ int addNewId_Variaveis( pModulo lista, pModulo novoId){
 
 	return 1;
 }
+
+/*--------------------------------------------------------------*/
 
 int addListaVariaveis_ListaSuperior( pModulo superior, pModulo novaLista){
 
@@ -100,6 +102,8 @@ int addListaVariaveis_ListaSuperior( pModulo superior, pModulo novaLista){
 	return 1;
 }
 
+/*--------------------------------------------------------------*/
+
 pModulo setTipoListaVariaveis( pModulo lista, pModulo tipo){
 	if( lista -> listaVariaveis == NULL){
 		return lista;
@@ -115,6 +119,8 @@ pModulo setTipoListaVariaveis( pModulo lista, pModulo tipo){
 	free(tipo);
 	return lista;
 }
+
+/*--------------------------------------------------------------*/
 
 int addNewId_Parametros( pModulo lista, pModulo novoPar){
 	if( lista == NULL){
@@ -142,6 +148,8 @@ int addNewId_Parametros( pModulo lista, pModulo novoPar){
 	return 1;
 }
 
+/*--------------------------------------------------------------*/
+
 pModulo setTipoListaParametros( pModulo lista, pModulo tipo){
 	if( lista -> listaParametros == NULL){
 		return lista;
@@ -158,8 +166,10 @@ pModulo setTipoListaParametros( pModulo lista, pModulo tipo){
 	return lista;
 }
 
-int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista){
+/*--------------------------------------------------------------*/
 
+int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista){
+	
 	printf("%p %p\n", (void*)superior, (void*)novaLista);
 	if( superior == NULL){
 		printf("Criando sup\n");
@@ -203,6 +213,8 @@ int addListaParametros_ListaSuperior( pModulo superior, pModulo novaLista){
 	return 1;
 }
 
+/*--------------------------------------------------------------*/
+
 int existeId( pModulo lista, char* nomeId){
 
 	if( lista -> listaVariaveis != NULL){
@@ -225,6 +237,8 @@ int existeId( pModulo lista, char* nomeId){
 
 	return 1;
 }
+
+/*--------------------------------------------------------------*/
 
 void putsListaVariaveis( pModulo lista){
 	if( lista == NULL){
@@ -277,3 +291,9 @@ void putsListaVariaveis( pModulo lista){
 	}
 }
 
+/*-----------------------------------------------*/
+
+int addToListaAtual( pModulo novaLista){
+	
+	return 1;
+}

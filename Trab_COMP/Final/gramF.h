@@ -140,4 +140,41 @@ int existeId( pModulo lista, char* nomeId);
 
 void putsListaVariaveis( pModulo lista);
 
+/*_-_basicFuncao.c_-_*/
+
+/*_-_basicInstrucao_-_*/
+
+pModulo criarValorNumerico( int valor);
+
+int addIf();
+int addWhile();
+
+int addAdd();
+int addSub();
+int addDiv();
+int addMult();
+
+int addIstore( int var);
+int addIload( int var);
+
+int addConstante( int valor);
+int addLdcString( char* string);
+int addLdcInt( int val);
+
+int addGetPrint();
+int addInvokePrint( int tipo);
+
 #endif
+
+
+/*
+	x = f( 1, 2, 3) + 1;
+
+	icont_1
+	icont_2
+	icont_3
+	invokestatic f(III)I
+	iconst_1
+	iadd
+	istore x
+*/
