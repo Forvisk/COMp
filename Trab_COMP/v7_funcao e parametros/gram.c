@@ -18,6 +18,7 @@ extern FILE *yyin;
 pListaAtributos greatList;
 pInstrucao listaInstrucao[200];
 pListaLiteral primeiroLiteral;
+pFuncao tabelaFuncao;
 
 int posValGlobal = 1;
 int possuiErro = 0;
@@ -46,7 +47,7 @@ int main(int argc, char const *argv[])
 
 	if( i == 1){
 		putsListId(greatList);
-		//putsListaLiteral();
+		putsListaLiteral();
 
 		createCabecalho( argv[ 1]);
 		createMethodMain();
@@ -139,7 +140,7 @@ void createMethodMain(){
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
-	printf(".limit local %i\n", numVariaveisLocais);
+	printf(".limit locals %i\n", numVariaveisLocais);
 }
 
 
@@ -188,7 +189,16 @@ void putsListId( pListaAtributos lista){
 	if( lista->lista != NULL){
 		pAtributo aux = lista->lista;
 		do{
-			printf("\t%s\t%i\n", aux->nomeId, aux->posVal);
+			printf("\t%s\t%i", aux->nomeId, aux->posVal);
+			if( aux-> tipe == T_INT){
+				printf("\tint\n");
+			} else if( aux -> tipe == T_STR){
+				printf("\tstring\n");
+			} else if( aux -> tipe == T_VOID){
+				printf("\tvoid\n");
+			} else {
+				printf("\tno tipe\n");
+			}
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}

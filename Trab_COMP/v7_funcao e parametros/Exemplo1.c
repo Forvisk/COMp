@@ -1,4 +1,4 @@
-{
+int main(){
 	int a, b, c;
 	String s;
 	print("Valor de A:");

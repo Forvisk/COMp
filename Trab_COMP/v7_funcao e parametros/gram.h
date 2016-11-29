@@ -5,6 +5,7 @@
 #define T_GREAT_LIST 0
 #define T_INT 1
 #define T_STR 2
+#define T_VOID 3
 #define T_TODEF -1
 
 #define AND 1
@@ -58,8 +59,20 @@ typedef struct
 	char nomeId[21];
 	int posVal;
 	struct Atributo* proximo;
+	int tipe;
 } Atributo, *pAtributo;
 
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+typedef struct 
+{
+	char nomeFuncao[21];
+	int posFinal;
+	int tipeRetorno;
+	int *parametros;
+	struct Funcao *proximo;
+} Funcao, *pFuncao;
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 typedef struct
@@ -75,6 +88,7 @@ typedef struct
 	char nomeIdTemp[21];
 	int numTemp;
 	char* literal;
+	int tipe_temp;
 
 	pLinhaInst seVerdadeiro;
 	pLinhaInst seFalso;
@@ -143,13 +157,15 @@ void setPossuiErro();
 /*____________________________*/
 
 pListaAtributos createGreatList();
-pAtributo createAtributo( char* nomeId, int posVal);
+pAtributo createAtributo( char* nomeId, int posVal, int tipe);
 pListaAtributos createList();
+
+pListaAtributos createTipe( int tipe);
 
 pListaAtributos createId( char* nomeId);
 pListaAtributos createNum( int num);
 
-void addToGreatList( pListaAtributos newlista, int sePosVal);
+void addToGreatList( pListaAtributos newlista, int sePosVal, int tipe);
 
 void addIdToList( pListaAtributos listaFinal, pListaAtributos lista);
 int existeId( pListaAtributos lista, char* nomeId);
@@ -192,9 +208,10 @@ pListaAtributos createLit( char* literal);
 char* addLiteralLista( pListaAtributos literal);
 
    /*____________________________*/
-  /*		gramFuncoes.c 		*/
+  /*		gramListFunc.c 		*/
  /*____________________________*/
 /*____________________________*/
 
+pListaAtributos addParametros( pListaAtributos new, pListaAtributos listParametros);
 
 #endif

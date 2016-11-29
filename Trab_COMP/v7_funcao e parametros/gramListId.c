@@ -13,7 +13,7 @@ pListaAtributos createGreatList(){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-void addToGreatList( pListaAtributos newlista, int sePosVal){
+void addToGreatList( pListaAtributos newlista, int sePosVal, int tipe){
 	//printf("\nAdicionando a greatList:\n");
 	//putsListId( newlista);
 
@@ -34,7 +34,7 @@ void addToGreatList( pListaAtributos newlista, int sePosVal){
 				if( existeId( greatList, aux)){
 					if(sePosVal != 1)
 						posVal = -1;
-					greatList -> lista = createAtributo( aux -> nomeId, posVal);
+					greatList -> lista = createAtributo( aux -> nomeId, posVal, tipe);
 					auxGreat = greatList -> lista;
 					auxGreat -> proximo = NULL;
 					posVal++;
@@ -57,7 +57,7 @@ void addToGreatList( pListaAtributos newlista, int sePosVal){
 					if( auxGreat -> posVal != -1){
 						posVal = auxGreat -> posVal +1;
 					}
-					auxGreat -> proximo = createAtributo( aux -> nomeId, posVal);
+					auxGreat -> proximo = createAtributo( aux -> nomeId, posVal, tipe);
 					auxGreat = auxGreat -> proximo;
 					//printf("\tnovo simbolo na greatList: %s %i\n", auxGreat->nomeId, auxGreat->posVal);
 					posVal++;
@@ -76,12 +76,22 @@ void addToGreatList( pListaAtributos newlista, int sePosVal){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-pAtributo createAtributo( char* nomeId, int posVal){
+pAtributo createAtributo( char* nomeId, int posVal, int tipe){
 	pAtributo new = (Atributo*)malloc(sizeof(Atributo));
 	strncpy(new->nomeId, nomeId, 20);
 	//printf("\n\tNovo atributo: %s\n", new->nomeId);
 	new -> proximo = NULL;
 	new -> posVal = posVal;
+	new -> tipe = tipe;
+	return new;
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+pListaAtributos createTipe( int tipe){
+	pListaAtributos new = (ListaAtributos*)malloc(sizeof(ListaAtributos));
+	new -> tipe_temp = tipe;
 	return new;
 }
 
@@ -91,6 +101,7 @@ pAtributo createAtributo( char* nomeId, int posVal){
 pListaAtributos createList(){
 	pListaAtributos new = (ListaAtributos*)malloc(sizeof(ListaAtributos));
 	new->lista = NULL;
+	new -> tipe_temp = T_TODEF;
 	return new;
 }
 
@@ -108,7 +119,7 @@ pListaAtributos createId( char *nomeId){
 /*_________________________________________________________________________________________*/
 
 void addIdToList( pListaAtributos listaFinal, pListaAtributos lista){
-	pAtributo new = createAtributo( lista -> nomeIdTemp, 0);
+	pAtributo new = createAtributo( lista -> nomeIdTemp, 0, lista -> tipe_temp);
 	//printf(" %s\n", lista -> nomeIdTemp);
 	if( listaFinal -> lista == NULL){
 		//printf("Lista %p vazia primeiro simbolo %s\n", listaFinal, new -> nomeId);
@@ -121,6 +132,71 @@ void addIdToList( pListaAtributos listaFinal, pListaAtributos lista){
 		aux = (pAtributo) aux -> proximo;
 		//printf("Adicionando em %p o simbolo %s\n", listaFinal, aux -> nomeId);
 	}
+}
+
+ /*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/
+
+pListaAtributos addToBigList( pListaAtributos new, pListaAtributos newlista, int sePosVal, int tipe){
+	//printf("\nAdicionando a greatList:\n");
+	//putsListId( newlista);
+	if( new == NULL){
+		new = (ListaAtributos*)malloc(sizeof(ListaAtributos));
+	}
+
+	if( newlista -> lista == NULL){
+		//printf("Lista vazia\n");
+
+	}else{
+		pAtributo aux = newlista -> lista;
+		pAtributo auxGreat = new -> lista;
+		pAtributo auxDel;
+		int posVal = 0;
+
+		do{
+			if( new -> lista == NULL){
+				if( existeId( new, aux)){
+					if(sePosVal != 1)
+						posVal = -1;
+					new -> lista = createAtributo( aux -> nomeId, posVal, tipe);
+					auxGreat = new -> lista;
+					auxGreat -> proximo = NULL;
+					posVal++;
+					//printf("\tprimeiro simbolo da greatList: %s %i\n", auxGreat->nomeId, auxGreat -> posVal);
+				}
+			}else{
+
+				while( auxGreat -> proximo != NULL){
+					//printf("\tGreatList : %s\n", auxGreat->nomeId);
+					if( auxGreat -> posVal != -1){
+						posVal++;
+					}
+					auxGreat = auxGreat -> proximo;
+				}
+				if( existeId( new, aux)){
+					if(sePosVal != 1)
+						posVal = -1;
+					/*else
+						posVal++;*/
+					if( auxGreat -> posVal != -1){
+						posVal = auxGreat -> posVal +1;
+					}
+					auxGreat -> proximo = createAtributo( aux -> nomeId, posVal, tipe);
+					auxGreat = auxGreat -> proximo;
+					//printf("\tnovo simbolo na greatList: %s %i\n", auxGreat->nomeId, auxGreat->posVal);
+					posVal++;
+				}
+			}
+
+			auxDel = aux;
+			aux = aux -> proximo;
+			//free( auxDel);
+		}while( aux != NULL);
+	}
+		
+	//free(newlista);
+	putsListId(new);
+	return new;
 }
 
  /*_________________________________________________________________________________________*/
@@ -202,3 +278,7 @@ int getPosVal( char* nomeId){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
+
+
+/*_________________________________________________________________________________________*/
+/*_________________________________________________________________________________________*/

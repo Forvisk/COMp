@@ -9,30 +9,36 @@ int nlabel = 0, labelAtual = 0;
 %token TID TINT TSTR TVOID TADD TINC TSUB TDEC TMUL TDIV TIGUAL TIGUALMA TIGUALME TMAIOR TMENOR TDIF TNOT TAND TOR TNUM TLIT TIF TELSE TWHILE TREAD TPRINT TATR TRPAR TLPAR TVIRG TLCH TRCH TRET TFLIN TFIM
 
 %%
-Codigo : 	Prog
+Codigo : 	Prog			
 			;
 			
-Prog : 		ListFunc BlocoP
-			| BlocoP
+Prog : 		ListFunc BlocoP 	
+			| BlocoP 			
 			;
 			
-ListFunc : 	ListFunc Func	{	addToGreatList( $2, 0);
+ListFunc : 	ListFunc Func	{	
+								addToGreatList( $2, 0, $2 -> tipe_temp);
 							}
-			| Func 			{	addToGreatList( $1, 0);
+			| Func 			{	
+								addToGreatList( $1, 0, $1 -> tipe_temp);
 							}
 			;
 			
-Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{	$$ = createList();
-													addIdToList( $$, $2);
-													addToGreatList($4, 0);
+Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{	
+													addIdToList( $4, $2);
+													addToBigList( $$, $4, 0, T_TODEF);
+													addToGreatList($4, 0, T_TODEF);
 												}
-			| TipeReturn TID TLPAR TRPAR		{	$$ = createList();
-													addIdToList( $$, $2);
+			| TipeReturn TID TLPAR TRPAR		{	
+													addIdToList( $4, $2);
+													addToGreatList($4, 0, T_TODEF);
 												}
 			;
 
-TipeReturn :	Tipe
-			| TVOID
+TipeReturn :	Tipe 			{	$$ = $1;
+								}
+			| TVOID				{	$$ = createTipe( T_VOID);
+								}
 			;
 
 DecPar :	DecPar TVIRG Par 	{	addIdToList( $1, $3);
@@ -45,21 +51,31 @@ Par :		Tipe TID 	{	addIdToList( $$, $2);
 						}
 			;
 			
-BlocoP :	TLCH Decs ListCom TRCH
-			| TLCH ListCom TRCH
+BlocoP :	TLCH Decs ListCom TRCH 		
+			| TLCH ListCom TRCH 		
 			;
 			
-Decs :		Decs Dec 	{	addToGreatList( $2, 1);
+Decs :		Decs Dec 	{	
+							addToGreatList( $2, 1, $2 -> tipe_temp);
 						}
-			| Dec 		{	addToGreatList( $1, 1);
+			| Dec 		{	
+							addToGreatList( $1, 1, $1 -> tipe_temp);
 						}
 			;
 			
-Dec :		Tipe Listid TFLIN 	{$$ = $2;}
+Dec :		Tipe Listid TFLIN 	{	
+									$2 -> tipe_temp = $1 -> tipe_temp;
+									$$ = $2;
+									free($1);
+								}
 			;
 			
-Tipe :		TINT 
-			| TSTR 
+Tipe :		TINT 				{
+									$$ = createTipe( T_INT);
+								}
+			| TSTR 				{
+									$$ = createTipe( T_STR);
+								}
 			;
 			
 Listid :	Listid TVIRG TID 	{	addIdToList($1, $3);
@@ -176,8 +192,8 @@ Cnprint :		{ 	addGetstaticSout( labelAtual);
 				}
 			;
 			
-Cfunc :		TID TLPAR ListPar TRPAR TFLIN
-			| TID TLPAR TRPAR TFLIN
+Cfunc :		TID TLPAR ListPar TRPAR
+			| TID TLPAR TRPAR
 			;
 			
 ListPar :	ListPar TVIRG ExpAr
@@ -245,22 +261,31 @@ ExpAr :		ExpAr TADD Am		{	addInstrucaoLista( IADD, INVAL, INVAL, labelAtual);
 								}
 			;
 			
-Am :		Am TMUL An 				{	addInstrucaoLista( IMUL, INVAL, INVAL, labelAtual);
+Am :		Am TMUL An 				{	
+										addInstrucaoLista( IMUL, INVAL, INVAL, labelAtual);
 									}
-			| Am TDIV An 			{	addInstrucaoLista( IDIV, INVAL, INVAL, labelAtual);
+			| Am TDIV An 			{	
+										addInstrucaoLista( IDIV, INVAL, INVAL, labelAtual);
 									}
-			| An 					{	$$ = $1;
+			| An 					{	
+										$$ = $1;
 									}
 			;
 			
-An :		TSUB An 				{	addInstrucaoLista( INEG, INVAL, INVAL, labelAtual);
+An :		TSUB An 				{	
+										addInstrucaoLista( INEG, INVAL, INVAL, labelAtual);
 									}
 			| TLPAR ExpAr TRPAR
 			| TID 					{ 	
 										addInstrucaoListaPosVal( ILOAD, getPosVal($1->nomeIdTemp), -1, labelAtual);
 									}
-			| Cfunc
-			| TNUM					{	addNumLista( $1 -> numTemp, labelAtual);
+			| Cfunc 				{
+										if( existeId( getGreatList(), $1) == 0){
+
+										}
+									}
+			| TNUM					{	
+										addNumLista( $1 -> numTemp, labelAtual);
 									}
 			;
 

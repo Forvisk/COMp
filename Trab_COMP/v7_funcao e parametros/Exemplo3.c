@@ -1,3 +1,10 @@
+
+int fat(int k){
+	while( k < 10){
+		k = k + 1;
+	}
+	return k;
+}
 void test(){
 	int n, x;
 	
@@ -5,5 +12,5 @@ void test(){
 	read(n);
 	x = fat(n);
 	print(x);
-}	
+}
 	
