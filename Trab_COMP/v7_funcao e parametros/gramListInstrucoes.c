@@ -164,8 +164,8 @@ int addGetstaticSout( int label){
 	listaInstrucao[ numIntrucoes] -> parametro_1 = (char*)malloc( strlen(SYSTEM_OUT) + 1);
 	strncpy( listaInstrucao[ numIntrucoes] -> parametro_1, SYSTEM_OUT, strlen(SYSTEM_OUT));
 
-	listaInstrucao[ numIntrucoes] -> parametro_2 = (char*)malloc( 4);
-	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2 ,INVAL);
+	listaInstrucao[ numIntrucoes] -> parametro_2 = (char*)malloc( PRINTSTREAM);
+	strcpy( listaInstrucao[ numIntrucoes] -> parametro_2 ,PRINTSTREAM);
 
 	listaInstrucao[ numIntrucoes] -> label = label;
 
