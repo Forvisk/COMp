@@ -45,6 +45,7 @@
 #define GETSTATIC "getstatic"//0xB2
 #define INVOKEVIRTUAL "invokevirtual"//0xB6
 #define SYSTEM_OUT "java/lang/System/out"
+#define PRINTSTREAM "Ljava/io/PrintStream"
 #define PRINT_STR "java/io/PrintStream/println(Ljava/lang/String;)V"
 #define PRINT_INT "java/io/PrintStream/println(I)V"
 //#define 
