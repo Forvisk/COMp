@@ -174,25 +174,33 @@ Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoListaPosVal( ISTORE, getPosVal( $1 -
 			| TID TATR TLIT TFLIN
 			;
 			
-Cread :		TREAD TLPAR TID TRPAR TFLIN					{	int tipe = getTipe( $1->nomeIdTemp);
+Cread :		TREAD TLPAR TID TRPAR TFLIN					{	int tipe = getTipe( $3->nomeIdTemp);
 															if( tipe == T_INT){
-																printf(" ler inteiro\n");
+																printf(" ler inteiro %s\n", $3->nomeIdTemp);
 																addNumLista( 3, labelAtual);
 															} else if( tipe == T_STR){
-																printf(" ler string\n");
+																printf(" ler string %s\n", $3->nomeIdTemp);
 																addLdc( "Aqui temos sorvete.", labelAtual);
 															} else {
-																printf("\nErro\n");
+																printf("\nErro %s\n", $3->nomeIdTemp);
 															}
-															addInstrucaoListaPosVal( ISTORE, getPosVal($1->nomeIdTemp), -1, labelAtual);
+															addInstrucaoListaPosVal( ISTORE, getPosVal($3->nomeIdTemp), -1, labelAtual);
 														}
 			;
 			
 Cprint :	TPRINT Cnprint TLPAR ExpAr TRPAR TFLIN		{	/*addInstrucaoLista( INVOKEVIRTUAL, PRINT_INT, INVAL, labelAtual);*/
-															addPrintInt( labelAtual);
+															if( $4 -> tipe_temp == T_INT)
+																addPrintInt( labelAtual);
+															else if( $4 -> tipe_temp == T_STR)
+																addPrintStr(labelAtual);
+															else{
+																setPossuiErro();
+																printf("\nTipo incompativel para escrita\n");
+															}
 														}
 			| TPRINT Cnprint TLPAR TLIT TRPAR TFLIN 	{ 	/*addInstrucaoLista( LDC, addLiteralLista( $4), INVAL, labelAtual);*/
 															/*addInstrucaoLista( INVOKEVIRTUAL, PRINT_STR, INVAL, labelAtual);*/
+															printf("\nliteral : %s\n", $4 -> literal);
 															addLdc( addLiteralLista( $4), labelAtual);
 															addPrintStr( labelAtual);
 
@@ -288,11 +296,17 @@ An :		TSUB An 				{
 									}
 			| TLPAR ExpAr TRPAR
 			| TID 					{ 	
+										if( existeId( getGreatList(), $1 -> nomeIdTemp) == 1){
+											setPossuiErro();
+											printf("ID %s não existe\n", $1 -> nomeIdTemp);
+										}
 										addInstrucaoListaPosVal( ILOAD, getPosVal($1->nomeIdTemp), -1, labelAtual);
+										$$ -> tipe_temp = getTipe( $1 -> nomeIdTemp);
+										free($1);
 									}
 			| Cfunc 				{
 										if( existeId( getGreatList(), $1) == 0){
-
+											printf("\nFuncao nao implemetada\n");
 										}
 									}
 			| TNUM					{	

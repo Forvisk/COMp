@@ -25,11 +25,13 @@ int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2,
 	if( num_par > 0){
 		listaInstrucao[ numIntrucoes] -> parametro_1 = ( char*)malloc( sizeof( strlen( parametro_1) + 1));
 		strncpy(listaInstrucao[ numIntrucoes] -> parametro_1, parametro_1, strlen( parametro_1));
+		listaInstrucao[ numIntrucoes] -> parametro_1[ strlen(parametro_1) + 1] = '\0';
 		printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_1, strlen(listaInstrucao[ numIntrucoes] -> parametro_1));
 
 		if( num_par > 1){
 			listaInstrucao[ numIntrucoes] -> parametro_2 = ( char*)malloc( sizeof( strlen( parametro_2) + 1));
 			strncpy(listaInstrucao[ numIntrucoes] -> parametro_2, parametro_2, strlen( parametro_2));
+			listaInstrucao[ numIntrucoes] -> parametro_2[ strlen(parametro_2) + 1] = '\0';
 			//printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_2, strlen(listaInstrucao[ numIntrucoes] -> parametro_2));
 		}
 	}
@@ -42,7 +44,7 @@ int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2,
 
 int addLdc( char* literal, int label){
 	int numIntrucoes = 0;
-
+	printf("literal que chegou : %s\n", literal);
 	pInstrucao* listaInstrucao = getListaInstrucao();
 	while( (listaInstrucao[ numIntrucoes] != NULL) && ( numIntrucoes < 200)){
 		numIntrucoes++;
@@ -58,14 +60,11 @@ int addLdc( char* literal, int label){
 
 	listaInstrucao[ numIntrucoes] -> parametro_1 = ( char*)malloc( sizeof( strlen( literal) + 1));
 	strncpy(listaInstrucao[ numIntrucoes] -> parametro_1, literal, strlen( literal));
-
-	/*listaInstrucao[ numIntrucoes] -> parametro_2 = ( char*)malloc( sizeof( 4));
-	strncpy(listaInstrucao[ numIntrucoes] -> parametro_2, INVAL, 3);
-	//listaInstrucao[ numIntrucoes] -> parametro_2 = INVAL;*/
+	listaInstrucao[ numIntrucoes] -> parametro_1[ strlen(literal)] = '\0';
 
 	printf("%s", listaInstrucao[ numIntrucoes] -> byte_code);
-	printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_1, strlen(listaInstrucao[ numIntrucoes] -> parametro_1));
-	//printf("\t%s %i", listaInstrucao[ numIntrucoes] -> parametro_2, strlen(listaInstrucao[ numIntrucoes] -> parametro_2));
+	printf("\t%s == %s / %i == %i", listaInstrucao[ numIntrucoes] -> parametro_1, literal, strlen(listaInstrucao[ numIntrucoes] -> parametro_1), strlen(literal));
+
 	listaInstrucao[ numIntrucoes] -> label = label;
 	listaInstrucao[ numIntrucoes] -> num_par = 1;
 	printf("\n");

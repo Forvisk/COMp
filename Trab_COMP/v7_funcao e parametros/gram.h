@@ -36,9 +36,9 @@
 #define IFEQ "if_icmpeq" 	// if( E == E)
 #define IFDIF "if_icmpne" 	// if( E != E)
 #define IFMAEQ "if_icmpge" 	// if( E >= E)
-#define IFMA "if_cmpgt"		// if( E > E)
-#define IFMEEQ "if_cmple" 	// if( E <= E)
-#define IFME "if_cmplt"		// if( E < E)
+#define IFMA "if_icmpgt"		// if( E > E)
+#define IFMEEQ "if_icmple" 	// if( E <= E)
+#define IFME "if_icmplt"		// if( E < E)
 
 #define GOTO "goto"
 

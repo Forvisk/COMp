@@ -19,6 +19,8 @@ char* addLiteralLista( pListaAtributos literal){
 	pListaLiteral new = ( ListaLiteral*)malloc( sizeof( ListaLiteral));
 	new -> literal = ( char*)malloc( sizeof( strlen( literal -> literal) + 1));
 	strcpy( new -> literal, literal -> literal);
+	new -> literal [ strlen( literal -> literal) + 1] = '\0';
+	printf("novo literal : %s\n", new->literal);
 	new -> proximo = NULL;
 	pListaLiteral aux = getListaLiteral();
 	
@@ -34,6 +36,8 @@ char* addLiteralLista( pListaAtributos literal){
 	}
 	//printf("%s\n", aux -> literal);
 	free(literal);
+
+	printf("novo2 literal : %s\n", aux->literal);
 	return aux -> literal;
 }
 
