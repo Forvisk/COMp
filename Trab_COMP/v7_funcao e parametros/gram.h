@@ -107,6 +107,7 @@ typedef struct
 typedef struct
 {
 	int label;
+	int num_par;
 	char byte_code[21];
 	char* parametro_1;
 	char* parametro_2;
@@ -172,14 +173,16 @@ void addIdToList( pListaAtributos listaFinal, pListaAtributos lista);
 int existeId( pListaAtributos lista, char* nomeId);
 char* buscaId( char* nomeId);
 int getPosVal( char* nomeId);
+int getTipe( char* nomeId);
 
    /*____________________________*/
   /*	gramListInstrucoes.c 	*/
  /*____________________________*/
 /*____________________________*/
 
-int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2, int label);
+int addInstrucaoLista( char byte_code[21], char* parametro_1, char* parametro_2, int label, int num_par);
 int addInstrucaoListaPosVal( char byte_code[21], int posVal_1, int posVal_2, int label);
+int addLdc( char* literal, int label);
 
 int addNumLista(int num, int label);
 

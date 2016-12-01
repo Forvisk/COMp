@@ -278,7 +278,25 @@ int getPosVal( char* nomeId){
  /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/
 
-
+int getTipe( char* nomeId){
+	pListaAtributos lista = getGreatList();
+	if( lista -> lista == NULL){
+		return -1;
+	}else{
+		pAtributo aux = lista -> lista;
+		while( aux -> proximo != NULL){
+			//printf("Verificando se %s == %s\n", aux -> nomeId, nomeId);
+			if( strncmp( aux -> nomeId, nomeId, 20) == 0){
+				/*char ret[10];
+				sprintf( ret, "%i\0", aux -> posVal);
+				printf("%s %i\n", ret, strlen( ret));*/
+				return aux -> tipe;
+			}
+			aux = aux -> proximo;
+		}
+		return -1;
+	}
+}
 
 /*_________________________________________________________________________________________*/
 /*_________________________________________________________________________________________*/

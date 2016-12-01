@@ -162,7 +162,7 @@ void writeMethodMain( FILE *arq){
 			aux = aux->proximo;
 		}while( aux != NULL);
 	}
-	fprintf( arq, ".limit local %i\n", numVariaveisLocais);
+	fprintf( arq, ".limit locals %i\n", numVariaveisLocais);
 }
 
 
@@ -218,10 +218,10 @@ void putsListaInstrucao(){
 			printf("  ");
 		printf("  %s", listaInstrucao[ numIntrucoes]->byte_code);
 
-		if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_1, INVAL, 2000) != 0){
+		if( listaInstrucao[ numIntrucoes] -> num_par > 0){
 			printf(" %s", listaInstrucao[ numIntrucoes] -> parametro_1);
 
-			if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL, 2000) != 0)
+			if( listaInstrucao[ numIntrucoes] -> num_par > 1)
 				printf(" %s", listaInstrucao[ numIntrucoes] -> parametro_2);
 			
 		}
@@ -241,10 +241,10 @@ void writeListaInstrucao( FILE *arq){
 		if( listaInstrucao[ numIntrucoes] -> label != 0)
 			fprintf( arq, "\t");
 		fprintf( arq, "\n  %s", listaInstrucao[ numIntrucoes]->byte_code);
-		if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_1, INVAL, 2000) != 0){
+		if( listaInstrucao[ numIntrucoes] -> num_par > 0){
 			fprintf( arq, " %s", listaInstrucao[ numIntrucoes] -> parametro_1);
 
-			if( strncmp( listaInstrucao[ numIntrucoes] -> parametro_2, INVAL, 2000) != 0)
+			if( listaInstrucao[ numIntrucoes] -> num_par > 1)
 				fprintf( arq, " %s", listaInstrucao[ numIntrucoes] -> parametro_2);
 			
 		}

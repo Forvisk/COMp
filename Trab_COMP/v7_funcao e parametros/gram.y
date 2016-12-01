@@ -26,7 +26,6 @@ ListFunc : 	ListFunc Func	{
 			
 Func : 		TipeReturn TID TLPAR DecPar TRPAR 	{	
 													addIdToList( $4, $2);
-													addToBigList( $$, $4, 0, T_TODEF);
 													addToGreatList($4, 0, T_TODEF);
 												}
 			| TipeReturn TID TLPAR TRPAR		{	
@@ -175,7 +174,16 @@ Catr :		TID TATR ExpAr TFLIN		{	addInstrucaoListaPosVal( ISTORE, getPosVal( $1 -
 			| TID TATR TLIT TFLIN
 			;
 			
-Cread :		TREAD TLPAR TID TRPAR TFLIN					{	addNumLista( 3, labelAtual);
+Cread :		TREAD TLPAR TID TRPAR TFLIN					{	int tipe = getTipe( $1->nomeIdTemp);
+															if( tipe == T_INT){
+																printf(" ler inteiro\n");
+																addNumLista( 3, labelAtual);
+															} else if( tipe == T_STR){
+																printf(" ler string\n");
+																addLdc( "Aqui temos sorvete.", labelAtual);
+															} else {
+																printf("\nErro\n");
+															}
 															addInstrucaoListaPosVal( ISTORE, getPosVal($1->nomeIdTemp), -1, labelAtual);
 														}
 			;
@@ -256,19 +264,19 @@ ExpRela :	ExpAr TIGUAL ExpAr			{	int linha = getTamListInstrucoes();
 										}
 			;
 			
-ExpAr :		ExpAr TADD Am		{	addInstrucaoLista( IADD, INVAL, INVAL, labelAtual);
+ExpAr :		ExpAr TADD Am		{	addInstrucaoLista( IADD, INVAL, INVAL, labelAtual, 0);
 								}
-			| ExpAr TSUB Am		{	addInstrucaoLista( ISUB, INVAL, INVAL, labelAtual);
+			| ExpAr TSUB Am		{	addInstrucaoLista( ISUB, INVAL, INVAL, labelAtual, 0);
 								}
 			| Am				{	$$ = $1;
 								}
 			;
 			
 Am :		Am TMUL An 				{	
-										addInstrucaoLista( IMUL, INVAL, INVAL, labelAtual);
+										addInstrucaoLista( IMUL, INVAL, INVAL, labelAtual, 0);
 									}
 			| Am TDIV An 			{	
-										addInstrucaoLista( IDIV, INVAL, INVAL, labelAtual);
+										addInstrucaoLista( IDIV, INVAL, INVAL, labelAtual, 0);
 									}
 			| An 					{	
 										$$ = $1;
@@ -276,7 +284,7 @@ Am :		Am TMUL An 				{
 			;
 			
 An :		TSUB An 				{	
-										addInstrucaoLista( INEG, INVAL, INVAL, labelAtual);
+										addInstrucaoLista( INEG, INVAL, INVAL, labelAtual, 0);
 									}
 			| TLPAR ExpAr TRPAR
 			| TID 					{ 	
